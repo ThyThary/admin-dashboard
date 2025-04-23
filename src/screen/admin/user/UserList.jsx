@@ -80,8 +80,8 @@ const UserList = (onSelect) => {
       width: "60px",
       cell: (row, index) => (
         <div
-          className="w-10 min-w-10 max-w-10 text-center"
-          style={{ fontFamily: "Moul, serif" }}
+          className="w-10 text-center"
+          style={{ fontFamily: "Hanuman, sans-serif" }}
         >
           {index + 1}
         </div>
@@ -101,7 +101,7 @@ const UserList = (onSelect) => {
       cell: (row) => (
         <div
           className="truncate w-60"
-          style={{ fontFamily: "Moul, serif", fontSize: "14px" }}
+          style={{ fontFamily: "Hanuman, sans-serif", fontSize: "14px" }}
         >
           {row.position}
         </div>
@@ -113,7 +113,7 @@ const UserList = (onSelect) => {
       cell: (row) => (
         <div
           className="truncate w-60"
-          style={{ fontFamily: "Moul, serif", fontSize: "14px" }}
+          style={{ fontFamily: "Hanuman, sans-serif", fontSize: "14px" }}
         >
           {row.email}
         </div>
@@ -163,8 +163,6 @@ const UserList = (onSelect) => {
       .get("/api/users/list", {
         headers: {
           Authorization: `Bearer ${token}`, // 👈 attach token here
-          // Accept: "application/json",
-          // contentType: "application/json",
         },
       })
       .then((res) => {
@@ -224,7 +222,7 @@ const UserList = (onSelect) => {
                 / បញ្ជី
               </label>
             </Link>
-            <div className="flex ml-auto">
+            <div className="hidden sm:block ml-auto">
               <DateKhmer />
             </div>
           </div>

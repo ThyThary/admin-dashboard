@@ -26,28 +26,12 @@ const Edit = () => {
           },
         });
         setUser(response.data.data);
-        localStorage.setItem("staff_id", response.data.data.staff_id);
-        localStorage.setItem("username_kh", response.data.data.username_kh);
-        localStorage.setItem("position", response.data.data.position);
-        localStorage.setItem("email", response.data.data.email);
-        localStorage.setItem("phone_number", response.data.data.phone_number);
-        localStorage.setItem("sex", response.data.data.sex);
-        localStorage.setItem("role", response.data.data.role);
-        console.log(response.data.data);
       } catch (error) {
         console.error("API fetch error:", error);
       }
     };
     fetchUserDetails();
   }, [id]);
-
-  const userId = localStorage.getItem("staff_id");
-  const nameKh = localStorage.getItem("username_kh");
-  const position = localStorage.getItem("position");
-  const email = localStorage.getItem("email");
-  const phone = localStorage.getItem("phone_number");
-  const sex = localStorage.getItem("sex");
-  const role = localStorage.getItem("role");
 
   // use state data form
   const [formData, setFormData] = useState({
@@ -63,7 +47,6 @@ const Edit = () => {
   const [errors, setErrors] = useState({
     email: "",
     role: "",
-    sex: "",
   });
   //Handle input
   const handleChange = (e) => {
@@ -77,7 +60,6 @@ const Edit = () => {
   const validateForm = () => {
     const newErrors = {};
     if (!formData.email) newErrors.email = "អ៊ីមែលត្រូវតែបញ្ចូល";
-    if (!formData.sex) newErrors.sex = "លេខសម្គាល់តែបញ្ចូល";
     if (!formData.role) newErrors.role = "លេខសម្គាល់តែបញ្ចូល";
     else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email = "អ៊ីមែលមិនត្រឹមត្រូវ";
@@ -155,7 +137,7 @@ const Edit = () => {
                   / កែប្រែ
                 </label>
               </Link>
-              <div className="flex ml-auto">
+              <div className="hidden sm:block ml-auto">
                 <DateKhmer />
               </div>
             </div>
@@ -229,8 +211,6 @@ const Edit = () => {
                       onChange={(e) => {
                         handleChange(e);
                       }}
-                      classNname={`${errors.sex && "border-red-500"}`}
-                      star="true"
                     />
                   </div>
                   <div className=" mt-3">

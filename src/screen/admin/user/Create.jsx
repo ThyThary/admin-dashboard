@@ -38,10 +38,8 @@ const Create = () => {
   });
   // State for errors
   const [errors, setErrors] = useState({
-    username: "",
     email: "",
     password: "",
-    role: "",
     username_kh: "",
     // staff_id: "",
   });
@@ -66,7 +64,7 @@ const Create = () => {
   // Form validation (for front-end)
   const validateForm = () => {
     const newErrors = {};
-    if (!formData.username) newErrors.username = "Name is required";
+    // if (!formData.username) newErrors.username = "Name is required";
     if (!formData.email) newErrors.email = "Email is required";
     if (!formData.password) newErrors.password = "Email is required";
     // if (!formData.staff_id) newErrors.staff_id = "Email is required";
@@ -136,7 +134,7 @@ const Create = () => {
                 / បង្កើត
               </label>
             </Link>
-            <div className="flex ml-auto">
+            <div className="hidden sm:block ml-auto">
               <DateKhmer />
             </div>
           </div>
@@ -156,7 +154,7 @@ const Create = () => {
           </div>
         </div>
         {/* Content */}
-        <div className=" relative bg-white overflow-y-auto m-5 shadow-md rounded-md min-h-[72vh]">
+        <div className=" relative bg-white overflow-y-auto m-5 shadow-md rounded-md min-h-[72vh] max-h-[72vh]">
           <div className="p-5">
             <form action="" id="frmCreateUser">
               <div className=" grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 w-full gap-3">
@@ -239,7 +237,7 @@ const Create = () => {
                 </div>
                 {/* Sub content two */}
                 <div className="ml-1">
-                  <div className="">
+                  {/* <div className="">
                     <Input
                       label="ឈ្មោះអង់គ្លេស "
                       text="text"
@@ -255,8 +253,8 @@ const Create = () => {
                       classNname={`${errors.username && "border-red-500"}`}
                       star="true"
                     />
-                  </div>
-                  <div className="mt-3">
+                  </div> */}
+                  <div className="">
                     <Input
                       label="លេខទូរស័ព្ទ"
                       text="text"
@@ -297,8 +295,6 @@ const Create = () => {
                       onChange={(e) => {
                         handleSelectChange(e);
                       }}
-                      star="true"
-                      // classNname={`${errors.role && "border-red-500"}`}
                     />
                   </div>
                 </div>
@@ -306,7 +302,8 @@ const Create = () => {
             </form>
           </div>
           {/* button */}
-          <div className=" absolute  sm:col-span-2 text-end right-5 bottom-5">
+          <div className=" absolute sm:col-span-2 text-end right-5 bottom-5 ">
+            {/* <div className="flex sm:col-span-2 ml-auto justify-end mr-5 mb-5"> */}
             <div className=" flex gap-3">
               {" "}
               <Link to="/admin/user-list">

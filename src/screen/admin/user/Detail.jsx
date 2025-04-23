@@ -56,7 +56,7 @@ export default function Detail() {
                 / លម្អិត
               </label>
             </Link>
-            <div className="flex ml-auto">
+            <div className="hidden sm:block ml-auto">
               <DateKhmer />
             </div>
           </div>

@@ -28,13 +28,15 @@ const Select = ({
           style={{ fontFamily: "Hanuman, sans-serif", fontSize: "12px" }}
           className={`px-2 py-2 border border-[#2f7447] rounded-lg focus:outline-none hover:border-1 hover:border-blue-500  ${classNname}`}
         >
-          <option value="">-- ជ្រើសរើស --</option>
+          <option value="" disabled>
+            -- ជ្រើសរើស --
+          </option>
 
           {options.map((option, index) => (
             <option
               key={index}
               value={option.value}
-              selected={option.value == value ? "selected" : ""}
+              selected={option.value == value ? true : false}
             >
               {option.label}
             </option>

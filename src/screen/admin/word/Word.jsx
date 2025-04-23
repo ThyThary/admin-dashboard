@@ -204,7 +204,7 @@ const Word = () => {
       sortable: true,
       center: true,
       cell: () => (
-        <div className="w-full flex gap-1 !items-center !justify-center *:hover:scale-110">
+        <div className="w-full flex gap-2 !items-center !justify-center *:hover:scale-110">
           <Link to="/admin/word-edit">
             <button title="Edit">
               <EditIcon name="edit" size="20" color="" />
