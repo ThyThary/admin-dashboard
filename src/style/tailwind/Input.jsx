@@ -32,7 +32,7 @@ function Input({
         onChange={onChange}
         style={{ fontFamily: "Hanuman, sans-serif", fontSize: "12px" }}
         className={`${
-          disabled == "true"
+          disabled == true
             ? "disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-500"
             : "hover:border-blue-500"
         } px-2 py-2 border border-[#2f7447] rounded-lg focus:outline-none hover:border-1   ${classNname}`}

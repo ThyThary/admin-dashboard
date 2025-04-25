@@ -9,7 +9,7 @@ const email = async (e, valueOne, valueTwo, errorOne, errorTwo, errorThree) => {
 
   // User name validation
   if (valueOne == "") {
-    errorOne("Field is required");
+    errorOne("បញ្ចូលទិន្នន័យ");
   } else if (validator.isEmail(valueOne)) {
     errorOne("");
     try {
@@ -58,7 +58,7 @@ const email = async (e, valueOne, valueTwo, errorOne, errorTwo, errorThree) => {
   //   Password validation
   switch (true) {
     case valueTwo == "":
-      errorTwo("Field is required");
+      errorTwo("បញ្ចូលទិន្នន័យ");
       break;
     case valueTwo.length < 8:
       errorTwo("Password at least 8 characters");

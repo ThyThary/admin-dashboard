@@ -23,7 +23,7 @@ const App = () => {
           {/* Word routes */}
           <Route path="/admin/word-list" Component={Master}></Route>
           <Route path="/admin/word-create" Component={Master}></Route>
-          <Route path="/admin/word-edit" Component={Master}></Route>
+          <Route path="/admin/word-edit/:id" Component={Master}></Route>
           <Route path="/admin/word-detail/:id" Component={Master}></Route>
           {/* Password routes */}
           <Route path="/change-password" Component={Master}></Route>

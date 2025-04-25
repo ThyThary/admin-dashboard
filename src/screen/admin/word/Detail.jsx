@@ -12,14 +12,14 @@ function Detail() {
   useEffect(() => {
     const token = localStorage.getItem("access");
     api
-      .get(`/api/dictionary/${id}`, {
+      .get(`/api/dictionary/staging/detail?id=${id}`, {
         headers: {
           Authorization: `Bearer ${token}`, // 👈 attach token here
         },
       })
       .then((res) => {
-        console.log("Get data: ", res.data);
-        setUser(res.data);
+        console.log("Get data: ", res.data.data);
+        setUser(res.data.data);
       })
       .catch((err) => {
         console.error("API fetch error:", err);
@@ -95,7 +95,7 @@ function Detail() {
                     className="ml-6 text-md w-full"
                     style={{ fontFamily: "Hanuman, sans-serif" }}
                   >
-                    {user.is_parent ?? ""}
+                    {user.created_by ?? ""}
                   </li>
                 </ul>
                 <ul className="flex mb-2">
@@ -170,7 +170,7 @@ function Detail() {
                     className="ml-6 text-md w-full"
                     style={{ fontFamily: "Hanuman, sans-serif" }}
                   >
-                    {user.is_parent ?? ""}
+                    {user.pronunciation_kh ?? ""}
                   </li>
                 </ul>
                 <ul className="flex mb-2">
@@ -185,7 +185,7 @@ function Detail() {
                     className="ml-6 text-md w-full"
                     style={{ fontFamily: "Hanuman, sans-serif" }}
                   >
-                    {user.is_parent ?? ""}
+                    {user.example_sentence_kh ?? ""}
                   </li>
                 </ul>
               </div>
@@ -203,7 +203,7 @@ function Detail() {
                     className="ml-6 text-md w-full"
                     style={{ fontFamily: "Hanuman, sans-serif" }}
                   >
-                    {user.id ?? ""}
+                    {user.created_at ?? ""}
                   </li>
                 </ul>
 
@@ -264,7 +264,7 @@ function Detail() {
                     className="ml-6 text-md w-full"
                     style={{ fontFamily: "Moul, serif" }}
                   >
-                    {user.is_parent ?? ""}
+                    {user.pronunciation_en ?? ""}
                   </li>
                 </ul>
                 <ul className="flex mb-2">
@@ -279,7 +279,7 @@ function Detail() {
                     className="ml-6 text-md w-full"
                     style={{ fontFamily: "Moul, serif" }}
                   >
-                    {user.is_parent ?? ""}
+                    {user.example_sentence_en ?? ""}
                   </li>
                 </ul>
               </div>

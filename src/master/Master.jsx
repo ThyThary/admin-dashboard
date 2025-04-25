@@ -36,6 +36,7 @@ const ChangePassword = lazy(() =>
 import Button from "../style/tailwind/Button";
 // const ModalChangePassword = lazy(() => import("../components/ChangePasword"));
 const user = JSON.parse(localStorage.getItem("user"));
+
 const Master = ({ color = "#2a4f8a" }) => {
   const [showProfile, setShowProfile] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -195,7 +196,7 @@ const Master = ({ color = "#2a4f8a" }) => {
               <AdminWordCreate />
             </div>
           )}
-          {route === "/admin/word-edit" && (
+          {route === `/admin/word-edit/${routeId}` && (
             <div className=" h-auto">
               <AdminWordEdit />
             </div>

@@ -65,108 +65,6 @@ const paginationOptions = {
   noRowsPerPage: false,
 };
 
-//  Testing data
-const data = [
-  {
-    index: 1,
-    word: "ចន្ទគតិកាល",
-    name: "(បា.)កាលរដូវដែលកំណត់តាមដំណើរព្រះចន្ទក្នុងឆ្នាំ",
-    positon: "ធី​ ថារី",
-    email: "១៣-មីនា-២០២៥",
-    createDate: "ថ្មី​",
-    actions: "Testing",
-  },
-  {
-    index: 1,
-    word: "ចន្ទគតិកាល",
-    name: "(បា.)កាលរដូវដែលកំណត់តាមដំណើរព្រះចន្ទក្នុងឆ្នាំ",
-    positon: "ធី​ ថារី",
-    email: "១៣-មីនា-២០២៥",
-    createDate: "ថ្មី​",
-    actions: "Testing",
-  },
-  {
-    index: 1,
-    word: "ចន្ទគតិកាល",
-    name: "(បា.)កាលរដូវដែលកំណត់តាមដំណើរព្រះចន្ទក្នុងឆ្នាំ",
-    positon: "ធី​ ថារី",
-    email: "១៣-មីនា-២០២៥",
-    createDate: "ថ្មី​",
-    actions: "Testing",
-  },
-  {
-    index: 1,
-    word: "ចន្ទគតិកាល",
-    name: "(បា.)កាលរដូវដែលកំណត់តាមដំណើរព្រះចន្ទក្នុងឆ្នាំ",
-    positon: "ធី​ ថារី",
-    email: "១៣-មីនា-២០២៥",
-    createDate: "ថ្មី​",
-    actions: "Testing",
-  },
-  {
-    index: 1,
-    word: "ចន្ទគតិកាល",
-    name: "(បា.)កាលរដូវដែលកំណត់តាមដំណើរព្រះចន្ទក្នុងឆ្នាំ",
-    positon: "ធី​ ថារី",
-    email: "១៣-មីនា-២០២៥",
-    createDate: "ថ្មី​",
-    actions: "Testing",
-  },
-  {
-    index: 1,
-    word: "ចន្ទគតិកាល",
-    name: "(បា.)កាលរដូវដែលកំណត់តាមដំណើរព្រះចន្ទក្នុងឆ្នាំ",
-    positon: "ធី​ ថារី",
-    email: "១៣-មីនា-២០២៥",
-    createDate: "ថ្មី​",
-    actions: "Testing",
-  },
-  {
-    index: 1,
-    word: "ចន្ទគតិកាល",
-    name: "(បា.)កាលរដូវដែលកំណត់តាមដំណើរព្រះចន្ទក្នុងឆ្នាំ",
-    positon: "ធី​ ថារី",
-    email: "១៣-មីនា-២០២៥",
-    createDate: "ថ្មី​",
-    actions: "Testing",
-  },
-  {
-    index: 1,
-    word: "ចន្ទគតិកាល",
-    name: "(បា.)កាលរដូវដែលកំណត់តាមដំណើរព្រះចន្ទក្នុងឆ្នាំ",
-    positon: "ធី​ ថារី",
-    email: "១៣-មីនា-២០២៥",
-    createDate: "ថ្មី​",
-    actions: "Testing",
-  },
-  {
-    index: 1,
-    word: "ចន្ទគតិកាល",
-    name: "(បា.)កាលរដូវដែលកំណត់តាមដំណើរព្រះចន្ទក្នុងឆ្នាំ",
-    positon: "ធី​ ថារី",
-    email: "១៣-មីនា-២០២៥",
-    createDate: "ថ្មី​",
-    actions: "Testing",
-  },
-  {
-    index: 1,
-    word: "ចន្ទគតិកាល",
-    name: "(បា.)កាលរដូវដែលកំណត់តាមដំណើរព្រះចន្ទក្នុងឆ្នាំ",
-    positon: "ធី​ ថារី",
-    email: "១៣-មីនា-២០២៥",
-    createDate: "ថ្មី​",
-    actions: "Testing",
-  },
-  {
-    index: 1,
-    word: "ចន្ទគតិកាល",
-    name: "(បា.)កាលរដូវដែលកំណត់តាមដំណើរព្រះចន្ទក្នុងឆ្នាំ",
-    positon: "ធី​ ថារី",
-    email: "១៣-មីនា-២០២៥",
-    createDate: "ថ្មី​",
-    actions: "Testing",
-  },
-];
 //Loading
 const CustomLoader = () => (
   <div style={{ padding: "24px", textAlign: "center" }}>
@@ -201,26 +99,34 @@ const Word = () => {
       ),
     },
     {
-      name: "ពាក្យ",
+      name: "ពាក្យខ្មែរ",
       selector: (row) => row.word_kh,
       cell: (row) => <div className="w-32 truncate">{row.word_kh}</div>,
       sortable: true,
     },
     {
-      name: "និយមន័យ",
+      name: "និយមន័យខ្មែរ",
       selector: (row) => row.word_kh_definition,
       cell: (row) => (
         <div className=" w-40 truncate">{row.word_kh_definition}</div>
       ),
     },
     {
-      name: "កាលបរិច្ឆេទត្រួតពិនិត្យ",
-      selector: (row) => row.email,
+      name: "ពាក្យអង់គ្លេស",
+      selector: (row) => row.word_en,
+      cell: (row) => <div className="w-32 truncate">{row.word_en}</div>,
       sortable: true,
     },
     {
-      name: "ស្ថានភាព",
-      selector: (row) => row.createDate,
+      name: "និយមន័យអង់គ្លេស",
+      selector: (row) => row.word_en_definition,
+      cell: (row) => (
+        <div className=" w-40 truncate">{row.word_en_definition}</div>
+      ),
+    },
+    {
+      name: "កាលបរិច្ឆេទត្រួតពិនិត្យ",
+      selector: (row) => row.created_at,
       sortable: true,
     },
     {
@@ -229,7 +135,7 @@ const Word = () => {
       sortable: true,
       cell: (row) => (
         <div className="w-full flex gap-2 !items-center !justify-center *:hover:scale-110">
-          <Link to="/admin/word-edit">
+          <Link to={`/admin/word-edit/${row.id}`}>
             <button title="Edit">
               <EditIcon name="edit" size="20" color="" />
             </button>
@@ -240,7 +146,13 @@ const Word = () => {
             </button>
           </Link>
           <div className="">
-            <button title="Delete" onClick={() => setIsModalOpen(true)}>
+            <button
+              title="Delete"
+              onClick={() => {
+                setIsModalOpen(true);
+                setUserId(row.id);
+              }}
+            >
               <DeleteIcon name="delete" size="18" color="" />
             </button>
           </div>
@@ -251,15 +163,17 @@ const Word = () => {
   // Fetch data from API
   useEffect(() => {
     const token = localStorage.getItem("access");
+    const userId = JSON.parse(localStorage.getItem("user"));
+
     api
-      .get("/api/dictionary/list", {
+      .get(`/api/dictionary/staging/list?id=${userId.id}`, {
         headers: {
           Authorization: `Bearer ${token}`, // 👈 attach token here
         },
       })
       .then((res) => {
-        console.log("Get data: ", res.data);
-        setRecords(res.data);
+        console.log("Get data: ", res.data.data);
+        setRecords(res.data.data.entries);
         setPending(false);
       })
       .catch((err) => {
@@ -289,6 +203,11 @@ const Word = () => {
             />
           }
           btnOk={<Button color="blue" text="បាទ" className="px-3" />}
+          routeWeb="/admin/word-list"
+          routeAPIType="delete"
+          routeAPI="/api/dictionary/staging/drop?id="
+          id={userId}
+          text="លុប"
         />
       </div>
       <div className=" flex-row ">

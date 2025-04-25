@@ -181,7 +181,7 @@ const Edit = () => {
                         formData.staff_id || (formData.staff_id = user.staff_id)
                       }
                       star="true"
-                      disabled="true"
+                      disabled={true}
                     />
                   </div>
                   <div className=" mt-3">
@@ -285,7 +285,7 @@ const Edit = () => {
             <div className=" absolute  sm:col-span-2 text-end right-5 bottom-5">
               <div className=" flex gap-3">
                 {" "}
-                <Link to="/admin/user-list">
+                <Link to="/admin/word-list">
                   <Button color="red" text="បោះបង់" className="" />
                 </Link>
                 <div>

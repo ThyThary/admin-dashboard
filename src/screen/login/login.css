@@ -1,11 +1,11 @@
-.moul-light-title {
+.font-hanuman-title {
   font-family: "Hanuman", sans-serif;
   font-weight: 500;
   font-style: normal;
   font-size: 22px;
   color: #2f7447;
 }
-.siemreap-regular {
+/* .siemreap-regular {
   font-family: "Moul", serif;
   font-weight: 400;
   font-style: normal;
@@ -37,7 +37,7 @@
     0 2px 4px -1px rgba(0, 0, 0, 0.06);
   background-color: #2a4f8a;
   cursor: pointer;
-}
+} */
 
 .btn-color {
   background-color: #2a4f8a;
@@ -66,6 +66,9 @@
 .bg-hover:hover {
   background-color: #172554;
 }
-.font-human {
+.font-hanuman {
   font-family: "Hanuman", sans-serif;
+}
+.font-moul {
+  font-family: "Moul", serif;
 }

@@ -1,8 +1,17 @@
 import React from "react";
 import WarningIcon from "../icons/svg/Warning";
 import Delete from "../components/Delete";
-const Modal = ({ isOpen, btnNo, btnOk, id }) => {
-  // console.log(id);
+const Modal = ({
+  isOpen,
+  btnNo,
+  btnOk,
+  routeWeb,
+  routeAPI,
+  routeAPIType,
+  id,
+  text,
+}) => {
+  console.log(id);
   if (!isOpen) return null;
 
   return (
@@ -26,7 +35,9 @@ const Modal = ({ isOpen, btnNo, btnOk, id }) => {
         <div className="flex w-full gap-3 justify-center">
           {" "}
           <div>{btnNo}</div>
-          <button onClick={() => Delete(id)}>
+          <button
+            onClick={() => Delete(routeWeb, routeAPIType, routeAPI, id, text)}
+          >
             <div>{btnOk}</div>
           </button>
         </div>

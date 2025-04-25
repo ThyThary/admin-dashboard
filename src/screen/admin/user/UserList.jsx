@@ -13,7 +13,6 @@ import Input from "../../../style/tailwind/Input";
 import Modal from "../../../components/Modal";
 import DateKhmer from "../../../components/DateKhmer";
 import api from "../../../api";
-
 import "./style/table.css";
 
 // Custom Styles
@@ -67,8 +66,21 @@ const paginationOptions = {
   selectAllRowsItemText: "All",
   noRowsPerPage: false,
 };
-
-const UserList = (onSelect) => {
+//Loading
+const CustomLoader = () => (
+  <div style={{ padding: "24px", textAlign: "center" }}>
+    <span
+      style={{
+        fontSize: "24px",
+        color: "#007bff",
+        fontFamily: "Hanuman, sans-serif",
+      }}
+    >
+      កំពុងដំណើរការ... 🔄
+    </span>
+  </div>
+);
+const UserList = () => {
   const [value, setValue] = useState("");
   const [records, setRecords] = useState();
   const [entries, setEntries] = useState(10);
@@ -145,7 +157,6 @@ const UserList = (onSelect) => {
                 setIsModalOpen(true);
                 setUserId(row.id);
               }}
-              // onClick={() => handleId(row.id)}
             >
               <DeleteIcon name="delete" size="18" color="" />
             </button>
@@ -183,7 +194,7 @@ const UserList = (onSelect) => {
 
   return (
     <>
-      {/* Modal profile */}
+      {/* Modal Delete */}
       <div className="overflow-hidden">
         <Modal
           isOpen={isModalOpen}
@@ -196,7 +207,11 @@ const UserList = (onSelect) => {
             />
           }
           btnOk={<Button color="blue" text="បាទ" className=" px-3" />}
+          routeWeb="/admin/user-list"
+          routeAPIType="delete"
+          routeAPI="/api/users/drop?id="
           id={userId}
+          text="លុប"
         />
       </div>
       <div className=" flex-row">
@@ -314,6 +329,7 @@ const UserList = (onSelect) => {
                 paginationComponentOptions={paginationOptions}
                 paginationPerPage={entries} // Controlled by state
                 paginationRowsPerPageOptions={[10, 20, 50, 100]}
+                progressComponent={<CustomLoader />}
               />
             </div>
           </div>

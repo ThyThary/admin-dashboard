@@ -4,32 +4,89 @@ import DateKhmer from "../../../components/DateKhmer";
 const HomeIcon = lazy(() => import("../../../icons/svg/Home"));
 const DetailIcon = lazy(() => import("../../../icons/svg/Detail"));
 const Button = lazy(() => import("../../../style/tailwind/Button"));
+import Modal from "../../../components/Modal";
+import ModalReject from "./ModalReject";
 import api from "../../../api";
 function Detail() {
   // Get user id
   const { id } = useParams();
   const [user, setUser] = useState();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalReject, setIsModalReject] = useState(false);
   // Fetch data from API
   useEffect(() => {
     const token = localStorage.getItem("access");
     api
-      .get(`/api/dictionary/staging/${id}`, {
+      .get(`/api/dictionary/staging/detail?id=${id}`, {
         headers: {
           Authorization: `Bearer ${token}`, // 👈 attach token here
         },
       })
       .then((res) => {
-        console.log("Get data: ", res.data);
-        setUser(res.data);
+        console.log("Get data: ", res.data.data);
+        setUser(res.data.data);
       })
       .catch((err) => {
         console.error("API fetch error:", err);
         // setPending(false);
       });
   }, []);
-  if (!user) return <div>Loading...</div>;
+  if (!user)
+    return (
+      <div
+        className=" flex justify-center items-center text-center "
+        style={{ padding: "24px", textAlign: "center" }}
+      >
+        <span
+          style={{
+            fontSize: "24px",
+            color: "#007bff",
+            fontFamily: "Hanuman, sans-serif",
+          }}
+        >
+          កំពុងដំណើរការ... 🔄
+        </span>
+      </div>
+    );
   return (
     <>
+      {/* Modal Delete */}
+      <div className="overflow-hidden">
+        <Modal
+          isOpen={isModalOpen}
+          btnNo={
+            <Button
+              color="red"
+              text="ទេ"
+              onClick={() => setIsModalOpen(false)}
+              className="!px-4.5"
+            />
+          }
+          btnOk={<Button color="blue" text="បាទ" className=" px-3" />}
+          routeWeb="/admin/controller-list"
+          routeAPIType="post"
+          routeAPI="/api/dictionary/staging/approve?id="
+          id={id}
+          text="អនុម័ត"
+        />
+        <ModalReject
+          isOpen={isModalReject}
+          btnNo={
+            <Button
+              color="red"
+              text="ទេ"
+              onClick={() => setIsModalReject(false)}
+              className="!px-4.5"
+            />
+          }
+          btnOk={<Button color="blue" text="បាទ" className=" px-3" />}
+          routeWeb="/admin/controller-list"
+          routeAPIType="post"
+          routeAPI="/api/dictionary/staging/approve?id="
+          id={id}
+          text="អនុម័ត"
+        />
+      </div>
       <div className=" flex-row">
         <div className="flex flex-col min-h-28 max-h-28 px-5 pt-5">
           {/* Breakcrabe */}
@@ -48,7 +105,7 @@ function Detail() {
                 className="text-sm cursor-pointer"
                 style={{ fontFamily: "Hanuman, sans-serif" }}
               >
-                / បង្កើត
+                / លម្អិត
               </label>
             </Link>
             <div className="flex ml-auto">
@@ -65,7 +122,7 @@ function Detail() {
                 className="text-md font-bold pt-1 text-[#2a4f8a] "
                 style={{ fontFamily: "Hanuman, sans-serif" }}
               >
-                បង្កើត
+                លម្អិត
               </label>
             </div>
           </div>
@@ -255,12 +312,26 @@ function Detail() {
                 return (
                   <div className="flex gap-3">
                     {" "}
-                    <Link to="/admin/controller-list">
-                      <Button color="red" text="បដិសេធ" className="" />
-                    </Link>
-                    <Link to="/admin/controller-list">
-                      <Button color="blue" text="អនុម័ត" className="" />
-                    </Link>
+                    <div>
+                      <Button
+                        color="red"
+                        text="បដិសេធ"
+                        className=""
+                        onClick={() => {
+                          setIsModalReject(true);
+                        }}
+                      />
+                    </div>
+                    <div>
+                      <Button
+                        color="blue"
+                        text="អនុម័ត"
+                        className=""
+                        onClick={() => {
+                          setIsModalOpen(true);
+                        }}
+                      />
+                    </div>
                   </div>
                 );
               }

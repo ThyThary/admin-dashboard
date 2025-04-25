@@ -17,23 +17,23 @@ const Login = () => {
     <>
       <div className="flex h-screen font-serif bg-slate-100 ">
         <div className="flex w-full justify-center items-center text-center">
-          <div className=" w-[300px] h-[350px] bg-white rounded-xl shadow-xl">
+          <div className=" w-[310px] h-[360px] bg-white rounded-xl shadow-xl">
             <div className="flex mt-3 justify-center">
               {/* Icons */}
               <Svg name="userStroke" size="80" color="#2A4F8A" />
             </div>
-            <div className="mt-1">
-              <label htmlFor="employeefrm" className="moul-light-title ">
-                ចូលប្រើប្រាស់ប្រព័ន្ធ
+            <div className="mt-2">
+              <label htmlFor="employeefrm" className="font-hanuman-title">
+                ប្រព័ន្ធគ្រប់គ្រងវចនានុក្រម
               </label>
             </div>
-            <form className="grid grid-cols-1 mt-1">
-              <p className=" text-red-500 text-center tracking-[1px] !text-xs siemreap-regular">
+            <form className="grid grid-cols-1 mt-2">
+              <p className=" !text-red-500 text-center tracking-[1px] !text-xs font-hanuman">
                 {unauthorizedError}
               </p>
               <div className="grid justify-center">
                 <input
-                  className={`input-box line-hover font-human
+                  className={`input-box line-hover font-hanuman
                     ${userNameError == "" ? "" : "!border-red-500"}
                     `}
                   type="text"
@@ -46,7 +46,7 @@ const Login = () => {
                     validatorEnglish(e, setUserName);
                   }}
                 />
-                <p className=" text-red-500 text-center tracking-[1px] !text-xs siemreap-regular ">
+                <p className=" !text-red-500 text-center tracking-[1px] !text-xs font-hanuman ">
                   {userNameError}
                 </p>
               </div>
@@ -56,7 +56,7 @@ const Login = () => {
                 }`}
               >
                 <input
-                  className={`input-box line-hover font-human  ${
+                  className={`input-box line-hover font-hanuman  ${
                     passwordError == "" ? "" : "!border-red-500"
                   }`}
                   type="password"
@@ -69,7 +69,7 @@ const Login = () => {
                     validatorEnglish(e, setPassword);
                   }}
                 />
-                <p className=" text-red-500 text-center tracking-[1px] !text-xs siemreap-regular">
+                <p className=" !text-red-500 text-center tracking-[1px] !text-xs font-hanuman">
                   {passwordError}
                 </p>
               </div>
@@ -91,7 +91,7 @@ const Login = () => {
                   }}
                   color="blue"
                   text="ចូលប្រព័ន្ធ"
-                  className="px-7 py-2 font-bold text-lg"
+                  className="px-7 py-2 font-bold text-lg mt-1"
                 />
               </div>
             </form>

@@ -28,7 +28,7 @@ const Create = () => {
   const [formData, setFormData] = useState({
     username: "",
     email: "",
-    password: "",
+    password: "Fmi$2025",
     role: "",
     sex: "",
     username_kh: "",
@@ -39,7 +39,6 @@ const Create = () => {
   // State for errors
   const [errors, setErrors] = useState({
     email: "",
-    password: "",
     username_kh: "",
   });
 
@@ -52,21 +51,10 @@ const Create = () => {
       [name]: value,
     }));
   };
-  // Handle select dropdown change
-  const handleSelectChange = (e) => {
-    const { value } = e.target;
-    setFormData((prevState) => ({
-      ...prevState,
-      role: value,
-    }));
-  };
   // Form validation (for front-end)
   const validateForm = () => {
     const newErrors = {};
-    // if (!formData.username) newErrors.username = "Name is required";
     if (!formData.email) newErrors.email = "Email is required";
-    if (!formData.password) newErrors.password = "Email is required";
-    // if (!formData.staff_id) newErrors.staff_id = "Email is required";
     if (!formData.username_kh) newErrors.username_kh = "Email is required";
     else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email = "Email address is invalid";
@@ -79,7 +67,7 @@ const Create = () => {
     e.preventDefault();
 
     // Clear previous errors
-    setErrors({ username: "", email: "", password: "" });
+    setErrors({ username_kh: "", email: "" });
     // Validate form before submitting
     const validationErrors = validateForm();
     if (Object.keys(validationErrors).length > 0) {
@@ -203,19 +191,22 @@ const Create = () => {
                   </div>
                   <div className="mt-3">
                     <Input
-                      label="ពាក្យសម្ងាត់"
-                      type="password"
+                      label="ពាក្យសម្ងាត់​(លំនាំដើម)"
+                      type="text"
                       placeholder="បញ្ចូលទិន្នន័យនៅទីនេះ"
+                      id="passwords"
+                      name="passwords"
+                      value="Fmi$2025"
+                      disabled={true}
+                      readOnly
+                    />
+                    <input
+                      type="text"
                       id="password"
                       name="password"
-                      value={formData.password}
-                      onChange={(e) => {
-                        // setPasswordUser(e.target.value);
-                        // validatorEnglish(e, passwordUser);
-                        handleChange(e);
-                      }}
-                      star="true"
-                      classNname={`${errors.password && "border-red-500"}`}
+                      value="Fmi$2025"
+                      readOnly
+                      hidden
                     />
                   </div>
                 </div>
@@ -277,8 +268,9 @@ const Create = () => {
                       name="role"
                       value={formData.role}
                       onChange={(e) => {
-                        handleSelectChange(e);
+                        handleChange(e);
                       }}
+                      star="true"
                     />
                   </div>
                 </div>

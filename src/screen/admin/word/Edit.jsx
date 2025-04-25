@@ -1,13 +1,154 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import HomeIcon from "../../../icons/svg/Home";
 import EditIcon from "../../../icons/svg/Edit";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Input from "../../../style/tailwind/Input";
 import Button from "../../../style/tailwind/Button";
 import TextArea from "../../../style/tailwind/TextArea";
 import DateKhmer from "../../../components/DateKhmer";
+import Select from "../../../style/tailwind/Select";
+import api from "../../../api";
+import Toastify from "../../../components/Toastify";
+const Edit = () => {
+  // Get user id
+  const { id } = useParams();
+  const [user, setUser] = useState([]);
+  // Get token
+  const token = localStorage.getItem("access");
+  // Word class Khmer
+  const wordClassKh = [
+    { label: "នាម", value: "នាម" },
+    { label: "កិរិយាសព្ទ", value: "កិរិយាសព្ទ" },
+    { label: "គុណនាម", value: "គុណនាម" },
+    { label: "គុណកិរិយា", value: "គុណកិរិយា" },
+    { label: "សព្វនាម", value: "សព្វនាម" },
+    { label: "ធ្នាក់", value: "ធ្នាក់" },
+    { label: "ឈ្នាប់", value: "ឈ្នាប់" },
+    { label: "ឧទានសព្ទ", value: "ឧទានសព្ទ" },
+  ];
+  // Word class English
+  const wordClassEn = [
+    { label: "Noun", value: "NOUN" },
+    { label: "Verb", value: "VERB" },
+    { label: "Adjective", value: "ADJECTIVE" },
+    { label: "Adverb", value: "ADVERB" },
+    { label: "Pronoun", value: "PRONOUN" },
+    { label: "Preposition", value: "PREPOSITION" },
+    { label: "Conjunction", value: "CONJUNCTION" },
+    { label: "Interjection", value: "INTERJECTION" },
+  ];
+  // Fetch data from API
+  useEffect(() => {
+    const token = localStorage.getItem("access");
+    const fetchUserDetails = async () => {
+      if (!token || !id) return;
 
-function Edit() {
+      try {
+        const response = await api.get(
+          `/api/dictionary/staging/detail?id=${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        console.log(response.data.data);
+        setUser(response.data.data);
+      } catch (error) {
+        console.error("API fetch error:", error);
+      }
+    };
+    fetchUserDetails();
+  }, [id]);
+  // use state data form
+  const [formData, setFormData] = useState({
+    word_kh: "",
+    word_en: "",
+    word_kh_type: "",
+    word_en_type: "",
+    word_kh_definition: "",
+    word_en_definition: "",
+    example_sentence_en: "",
+    pronunciation_kh: "",
+    pronunciation_en: "",
+    example_sentence_kh: "",
+    example_sentence_en: "",
+  });
+  // State for errors
+  const [errors, setErrors] = useState({
+    word_kh: "",
+    word_en: "",
+    word_kh_type: "",
+    word_en_type: "",
+    word_kh_definition: "",
+    word_en_definition: "",
+    example_sentence_en: "",
+  });
+  //Handle input
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+  // Form validation (for front-end)
+  const validateForm = () => {
+    const newErrors = {};
+    if (!formData.word_kh) newErrors.word_kh = "អ៊ីមែលត្រូវតែបញ្ចូល";
+    if (!formData.word_en) newErrors.word_en = "លេខសម្គាល់តែបញ្ចូល";
+    if (!formData.word_kh_type) newErrors.word_kh_type = "លេខសម្គាល់តែបញ្ចូល";
+    if (!formData.word_en_type) newErrors.word_en_type = "លេខសម្គាល់តែបញ្ចូល";
+    if (!formData.word_kh_definition)
+      newErrors.word_kh_definition = "លេខសម្គាល់តែបញ្ចូល";
+    if (!formData.word_en_definition)
+      newErrors.word_en_definition = "លេខសម្គាល់តែបញ្ចូល";
+
+    return newErrors;
+  };
+  // Submit form
+  const handleClick = async (e) => {
+    e.preventDefault();
+
+    // Clear previous errors
+    setErrors({
+      word_kh: "",
+      word_en: "",
+      word_kh_type: "",
+      word_en_type: "",
+      word_kh_definition: "",
+      word_en_definition: "",
+    });
+    // Validate form before submitting
+    const validationErrors = validateForm();
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      console.log(validationErrors);
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem("access");
+      await api.put(`/api/dictionary/staging/update?id=${id}`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`, // 👈 attach token here
+        },
+      });
+      Toastify("success", "រក្សាទុកដោយជោគជ័យ!");
+      setTimeout(() => {
+        window.location.href = "http://localhost:8012/admin/word-list";
+      }, 3000);
+    } catch (error) {
+      if (error.response) {
+        const backendErrors = error.response.data.data || {};
+        Toastify("warning", "ទិន្នន័យមិនត្រឹមត្រូវ!");
+        setErrors(backendErrors);
+      } else {
+        Toastify("error", "ការរក្សាទុកបានបរាជ័យ!");
+      }
+      console.error("Submission error:", error);
+    }
+  };
   return (
     <>
       <div className=" flex-row">
@@ -60,33 +201,87 @@ function Edit() {
                     label="ពាក្យខ្មែរ"
                     type="text"
                     placeholder="បញ្ចូលទិន្នន័យនៅទីនេះ"
-                    id="user"
-                    name="user"
-                    value="ចន្ទគតិកាល"
-                    // onChange=""
-                    classNname=""
+                    id="word_kh"
+                    name="word_kh"
+                    value={
+                      formData.word_kh || (formData.word_kh = user.word_kh)
+                    }
+                    onChange={(e) => {
+                      handleChange(e);
+                    }}
+                    classNname={`${errors.word_kh && "border-red-500"}`}
+                    star="true"
+                  />
+                </div>
+                <div className="mt-3">
+                  <Select
+                    options={wordClassKh}
+                    label="ថ្នាក់ពាក្យខ្មែរ"
+                    id="word_kh_type"
+                    name="word_kh_type"
+                    value={
+                      formData.word_kh_type ||
+                      (formData.word_kh_type = user.word_kh_type)
+                    }
+                    onChange={(e) => {
+                      handleChange(e);
+                    }}
+                    classNname={`${errors.word_kh_type && "border-red-500"}`}
+                    star="true"
                   />
                 </div>
                 <div className="mt-3">
                   <Input
-                    label="ថ្នាក់ពាក្យខ្មែរ"
+                    label="បញ្ចេញសម្លេងខ្មែរ"
                     type="text"
                     placeholder="បញ្ចូលទិន្នន័យនៅទីនេះ"
-                    id="email"
-                    name="email"
-                    value="នាមសព្ទ"
-                    // onChange=""
+                    id="pronunciation_kh"
+                    name="pronunciation_kh"
+                    value={
+                      formData.pronunciation_kh ||
+                      (formData.pronunciation_kh = user.pronunciation_kh)
+                    }
+                    onChange={(e) => {
+                      handleChange(e);
+                    }}
                     classNname=""
                   />
                 </div>
                 <div className="mt-3">
                   <TextArea
                     label="និយមន័យខ្មែរ"
-                    rows="5"
-                    classNname=""
-                    value="(បា.)កាលរដូវដែលកំណត់តាមដំណើរព្រះចន្ទក្នុងឆ្នាំមួយៗចែកជារដូវមាន ៣ គឺ ហេមន្តៈ រដូវរងា មាន ៤ ខែ រាប់តាំងពីថ្ងៃ ១ រោច​ ខែកត្ដិក ទៅដល់ ថ្ងៃពេញបូណ៌មីខែផល្គុន; គិម្ហៈ រដូវក្ដៅមាន៤ ខែ រាប់ពីថ្ងៃ ១ រោចខែផល្គុន ទៅដល់ថ្ងៃពេញបូណ៌មីខែអាសាឍ; វស្សានៈ។"
-                    // onChange=""
+                    rows="4"
+                    id="word_kh_definition"
+                    name="word_kh_definition"
+                    value={
+                      formData.word_kh_definition ||
+                      (formData.word_kh_definition = user.word_kh_definition)
+                    }
+                    onChange={(e) => {
+                      handleChange(e);
+                    }}
                     placeholder="បញ្ចូលទិន្នន័យនៅទីនេះ ..."
+                    classNname={`${
+                      errors.word_kh_definition && "border-red-500"
+                    }`}
+                    star="true"
+                  />
+                </div>
+                <div className="mt-3">
+                  <TextArea
+                    label="ឧទាហរណ៍ខ្មែរ"
+                    rows="4"
+                    id="example_sentence_kh"
+                    name="example_sentence_kh"
+                    value={
+                      formData.example_sentence_kh ||
+                      (formData.example_sentence_kh = user.example_sentence_kh)
+                    }
+                    onChange={(e) => {
+                      handleChange(e);
+                    }}
+                    placeholder="បញ្ចូលទិន្នន័យនៅទីនេះ ..."
+                    classNname=""
                   />
                 </div>
               </div>
@@ -97,40 +292,94 @@ function Edit() {
                     label="ពាក្យអង់គ្លេស"
                     text="text"
                     placeholder="បញ្ចូលទិន្នន័យនៅទីនេះ"
-                    id="name"
-                    name="name"
-                    value="Lunar calendar"
-                    // onChange=""
-                    classNname=""
+                    id="word_en"
+                    name="word_en"
+                    value={
+                      formData.word_en || (formData.word_en = user.word_en)
+                    }
+                    onChange={(e) => {
+                      handleChange(e);
+                    }}
+                    classNname={`${errors.word_en && "border-red-500"}`}
+                    star="true"
+                  />
+                </div>
+                <div className="mt-3">
+                  <Select
+                    options={wordClassEn}
+                    label="ថ្នាក់ពាក្យអង់គ្លេស"
+                    id="word_en_type"
+                    name="word_en_type"
+                    value={
+                      formData.word_en_type ||
+                      (formData.word_en_type = user.word_en_type)
+                    }
+                    onChange={(e) => {
+                      handleChange(e);
+                    }}
+                    classNname={`${errors.word_en_type && "border-red-500"}`}
+                    star="true"
                   />
                 </div>
                 <div className="mt-3">
                   <Input
-                    label="ថ្នាក់ពាក្យអង់គ្លេស"
-                    text="text"
+                    label="បញ្ចេញសម្លេងអង់គ្លេស"
+                    type="text"
                     placeholder="បញ្ចូលទិន្នន័យនៅទីនេះ"
-                    id="phone"
-                    name="phone"
-                    value="Noun"
-                    // onChange=""
+                    id="pronunciation_en"
+                    name="pronunciation_en"
+                    value={
+                      formData.pronunciation_en ||
+                      (formData.pronunciation_en = user.pronunciation_en)
+                    }
+                    onChange={(e) => {
+                      handleChange(e);
+                    }}
                     classNname=""
                   />
                 </div>
                 <div className="mt-3">
                   <TextArea
                     label="និយមន័យអង់គ្លេស"
-                    rows="5"
-                    classNname=""
-                    value="Any of various systems for measuring the days, weeks, and months of the year that are based on the phases of the moon (= the regular changes in the shape of the moon as it appears to us on earth"
-                    // onChange=""
+                    rows="4"
+                    id="word_en_definition"
+                    name="word_en_definition"
+                    value={
+                      formData.word_en_definition ||
+                      (formData.word_en_definition = user.word_en_definition)
+                    }
+                    onChange={(e) => {
+                      handleChange(e);
+                    }}
                     placeholder="បញ្ចូលទិន្នន័យនៅទីនេះ ..."
+                    classNname={`${
+                      errors.word_en_definition && "border-red-500"
+                    }`}
+                    star="true"
+                  />
+                </div>
+                <div className="mt-3">
+                  <TextArea
+                    label="ឧទាហរណ៍អង់គ្លេស"
+                    rows="4"
+                    id="example_sentence_en"
+                    name="example_sentence_en"
+                    value={
+                      formData.example_sentence_en ||
+                      (formData.example_sentence_en = user.example_sentence_en)
+                    }
+                    onChange={(e) => {
+                      handleChange(e);
+                    }}
+                    placeholder="បញ្ចូលទិន្នន័យនៅទីនេះ ..."
+                    classNname=""
                   />
                 </div>
               </div>
             </div>
           </div>
           {/* button */}
-          <div className=" absolute  sm:col-span-2 text-end right-5 bottom-5">
+          <div className=" flex justify-end  sm:col-span-2 text-end mr-5 mb-5">
             <div className=" flex gap-3">
               {" "}
               <Link to="/admin/word-list">
@@ -139,7 +388,14 @@ function Edit() {
               <div>
                 {" "}
                 <Link to="/admin/word-list">
-                  <Button color="blue" text="រក្សាទុក" className="" />
+                  <Button
+                    color="blue"
+                    text="រក្សាទុក"
+                    className=""
+                    onClick={(e) => {
+                      handleClick(e);
+                    }}
+                  />
                 </Link>
               </div>
             </div>
@@ -148,6 +404,6 @@ function Edit() {
       </div>
     </>
   );
-}
+};
 
 export default Edit;

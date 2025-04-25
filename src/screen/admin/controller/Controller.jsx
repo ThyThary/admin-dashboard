@@ -118,11 +118,10 @@ const Controller = () => {
         if (row.review_status == "PENDING") {
           return (
             <span
-              className=" bg-green-600 px-5.5 py-0.5 rounded-sm"
+              className=" text-green-600 font-bold"
               style={{
                 fontFamily: "Hanuman, sans-serif",
                 textAlign: "center",
-                color: "white",
               }}
             >
               ថ្មី
@@ -131,10 +130,9 @@ const Controller = () => {
         } else if (row.review_status == "APPROVED") {
           return (
             <span
-              className=" bg-blue-600 px-2 py-0.5 rounded-sm"
+              className=" text-blue-600 font-bold"
               style={{
                 fontFamily: "Hanuman, sans-serif",
-                color: "white",
               }}
             >
               អនុម័ត
@@ -143,10 +141,9 @@ const Controller = () => {
         } else {
           return (
             <span
-              className=" bg-red-600 px-1 py-0.5 rounded-sm"
+              className="text-red-600 font-bold "
               style={{
                 fontFamily: "Hanuman, sans-serif",
-                color: "white",
               }}
             >
               បដិសេធ
@@ -206,8 +203,8 @@ const Controller = () => {
         },
       })
       .then((res) => {
-        console.log(res.data);
-        setRecords(res.data);
+        console.log(res.data.data.entries);
+        setRecords(res.data.data.entries);
         setPending(false);
       })
       .catch((err) => {
