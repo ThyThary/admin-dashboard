@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { Link, renderMatches } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import HomeIcon from "../../../icons/svg/Home";
 import ListIcon from "../../../icons/svg/List";
@@ -28,6 +28,8 @@ const customStyles = {
       border: "none",
       fontFamily: "Hanuman, sans-serif",
       minHeight: "8px", // Row height
+      textAlign: "center",
+      justifyContent: "center",
       "&:nth-of-type(odd)": {
         backgroundColor: "#F3F4F6", // Light gray for even rows
       },
@@ -43,6 +45,8 @@ const customStyles = {
       color: "#ffffff",
       fontSize: "14px",
       fontWeight: "bold",
+      textAlign: "center",
+      justifyContent: "center",
       // padding: "0px 10px",
     },
   },
@@ -50,6 +54,8 @@ const customStyles = {
     style: {
       fontSize: "14px",
       padding: "2px 5px",
+      textAlign: "center",
+      justifyContent: "center",
     },
   },
 };
@@ -70,29 +76,21 @@ const UserList = (onSelect) => {
   const [userId, setUserId] = useState(null);
   const [pending, setPending] = useState(true);
 
-  // const handleId = (id) => {
-  //   return id;
-  // };
   // Table header
   const columns = [
     {
       name: "ល.រ",
       width: "60px",
       cell: (row, index) => (
-        <div
-          className="w-10 text-center"
-          style={{ fontFamily: "Hanuman, sans-serif" }}
-        >
-          {index + 1}
-        </div>
+        <div style={{ fontFamily: "Hanuman, sans-serif" }}>{index + 1}</div>
       ),
-      center: true,
+      // center: true,
     },
     {
       name: "លេខសម្គាល់",
       selector: (row) => row.staff_id,
       sortable: true,
-      center: true,
+      // center: true,
     },
     { name: "ឈ្មោះ", selector: (row) => row.username_kh },
     {
@@ -122,12 +120,12 @@ const UserList = (onSelect) => {
     {
       name: "កាលបរិច្ឆេទបង្កើត",
       selector: (row) => row.date_joined,
-      center: true,
+      // center: true,
     },
     {
       name: "សកម្មភាពផ្សេងៗ",
       selector: (row) => row.id,
-      center: true,
+      // center: true,
       cell: (row) => (
         <div className="w-full flex gap-2 text-center !items-center !justify-center *:hover:scale-110">
           <Link to={`/admin/user-edit/${row.id}`}>

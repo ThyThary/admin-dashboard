@@ -41,7 +41,6 @@ const Create = () => {
     email: "",
     password: "",
     username_kh: "",
-    // staff_id: "",
   });
 
   //Handle input
@@ -160,21 +159,6 @@ const Create = () => {
               <div className=" grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 w-full gap-3">
                 {/* Sub content one */}
                 <div className="mr-1">
-                  {/* <div className="">
-                    <Input
-                      label="លេខសម្គាល់"
-                      type="text"
-                      placeholder="បញ្ចូលទិន្នន័យនៅទីនេះ"
-                      id="staff_id"
-                      name="staff_id"
-                      value={formData.staff_id}
-                      onChange={(e) => {
-                        handleChange(e);
-                      }}
-                      classNname={`${errors.staff_id && "border-red-500"}`}
-                      star="true"
-                    />
-                  </div> */}
                   <div className="">
                     <Input
                       label="ឈ្មោះខ្មែរ"
@@ -220,7 +204,7 @@ const Create = () => {
                   <div className="mt-3">
                     <Input
                       label="ពាក្យសម្ងាត់"
-                      type="text"
+                      type="password"
                       placeholder="បញ្ចូលទិន្នន័យនៅទីនេះ"
                       id="password"
                       name="password"

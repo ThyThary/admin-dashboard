@@ -1,17 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, lazy } from "react";
 import { Link } from "react-router-dom";
+const HomeIcon = lazy(() => import("../../../icons/svg/Home"));
+const ListIcon = lazy(() => import("../../../icons/svg/List"));
+const EditIcon = lazy(() => import("../../../icons/svg/Edit"));
+const DetailIcon = lazy(() => import("../../../icons/svg/Detail"));
+const DeleteIcon = lazy(() => import("../../../icons/svg/Delete"));
+const Button = lazy(() => import("../../../style/tailwind/Button"));
+const Input = lazy(() => import("../../../style/tailwind/Input"));
 
-import HomeIcon from "../../../icons/svg/Home";
-import ListIcon from "../../../icons/svg/List";
-import EditIcon from "../../../icons/svg/Edit";
-import DetailIcon from "../../../icons/svg/Detail";
-import DeleteIcon from "../../../icons/svg/Delete";
-import Button from "../../../style/tailwind/Button";
 import DataTable from "react-data-table-component";
-import Input from "../../../style/tailwind/Input";
 import Modal from "../../../components/Modal";
 import DateKhmer from "../../../components/DateKhmer";
-
+import api from "../../../api";
+import "./style/table.css";
 // Custom Styles
 const customStyles = {
   table: {
@@ -24,6 +25,8 @@ const customStyles = {
       border: "none",
       fontFamily: "Hanuman, sans-serif",
       minHeight: "8px", // Row height
+      textAlign: "center",
+      justifyContent: "center",
       "&:nth-of-type(odd)": {
         backgroundColor: "#F3F4F6", // Light gray for even rows
       },
@@ -39,15 +42,27 @@ const customStyles = {
       color: "#ffffff",
       fontSize: "14px",
       fontWeight: "bold",
+      textAlign: "center",
+      justifyContent: "center",
       // padding: "0px 10px",
     },
   },
   cells: {
     style: {
-      fontSize: "12px",
+      fontSize: "14px",
       padding: "2px 5px",
+      textAlign: "center",
+      justifyContent: "center",
     },
   },
+};
+// Pagination
+const paginationOptions = {
+  rowsPerPageText: "កំពុងបង្ហាញ",
+  rangeSeparatorText: "នៃ",
+  selectAllRowsItem: true,
+  selectAllRowsItemText: "All",
+  noRowsPerPage: false,
 };
 
 //  Testing data
@@ -152,65 +167,74 @@ const data = [
     actions: "Testing",
   },
 ];
-
-const paginationOptions = {
-  rowsPerPageText: "កំពុងបង្ហាញ",
-  rangeSeparatorText: "នៃ",
-  selectAllRowsItem: true,
-  selectAllRowsItemText: "All",
-  noRowsPerPage: false,
-};
-
+//Loading
+const CustomLoader = () => (
+  <div style={{ padding: "24px", textAlign: "center" }}>
+    <span
+      style={{
+        fontSize: "24px",
+        color: "#007bff",
+        fontFamily: "Hanuman, sans-serif",
+      }}
+    >
+      កំពុងដំណើរការ... 🔄
+    </span>
+  </div>
+);
 const Word = () => {
   const [value, setValue] = useState("");
-  const [records, setRecords] = useState(data);
+  const [records, setRecords] = useState();
   const [entries, setEntries] = useState(10);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [userId, setUserId] = useState(null);
+  const [pending, setPending] = useState(true);
 
-  // Table columns
+  // Table header
   const columns = [
     {
       name: "ល.រ",
+      width: "60px",
       cell: (row, index) => (
-        <div style={{ fontFamily: "Moul, serif" }} className="">
+        <div style={{ fontFamily: "Hanuman, sans-serif" }} className="">
           {index + 1}
         </div>
       ),
-      center: true,
     },
     {
       name: "ពាក្យ",
-      selector: (row) => row.word,
+      selector: (row) => row.word_kh,
+      cell: (row) => <div className="w-32 truncate">{row.word_kh}</div>,
       sortable: true,
-      center: true,
     },
-    { name: "និយមន័យ", selector: (row) => row.name, center: true },
-    { name: "អ្នកត្រួតពិនិត្យ", selector: (row) => row.positon, center: true },
+    {
+      name: "និយមន័យ",
+      selector: (row) => row.word_kh_definition,
+      cell: (row) => (
+        <div className=" w-40 truncate">{row.word_kh_definition}</div>
+      ),
+    },
     {
       name: "កាលបរិច្ឆេទត្រួតពិនិត្យ",
       selector: (row) => row.email,
       sortable: true,
-      center: true,
     },
     {
       name: "ស្ថានភាព",
       selector: (row) => row.createDate,
       sortable: true,
-      center: true,
     },
     {
       name: "សកម្មភាពផ្សេងៗ",
       selector: (row) => row.actions,
       sortable: true,
-      center: true,
-      cell: () => (
+      cell: (row) => (
         <div className="w-full flex gap-2 !items-center !justify-center *:hover:scale-110">
           <Link to="/admin/word-edit">
             <button title="Edit">
               <EditIcon name="edit" size="20" color="" />
             </button>
           </Link>
-          <Link to="/admin/word-detail">
+          <Link to={`/admin/word-detail/${row.id}`}>
             <button title="Detail">
               <DetailIcon name="detail" size="18" color="" />
             </button>
@@ -224,10 +248,29 @@ const Word = () => {
       ),
     },
   ];
+  // Fetch data from API
+  useEffect(() => {
+    const token = localStorage.getItem("access");
+    api
+      .get("/api/dictionary/list", {
+        headers: {
+          Authorization: `Bearer ${token}`, // 👈 attach token here
+        },
+      })
+      .then((res) => {
+        console.log("Get data: ", res.data);
+        setRecords(res.data);
+        setPending(false);
+      })
+      .catch((err) => {
+        console.error("API fetch error:", err);
+        setPending(false);
+      });
+  }, []);
   // Search data
   const handleFilter = (e) => {
-    const newData = data.filter((row) => {
-      return row.name.toLowerCase().includes(e.target.value.toLowerCase());
+    const newData = records.filter((row) => {
+      return row.position.toLowerCase().includes(e.target.value.toLowerCase());
     });
     setRecords(newData);
   };
@@ -356,9 +399,11 @@ const Word = () => {
                 customStyles={customStyles}
                 fixedHeader
                 pagination
+                progressPending={pending}
                 paginationComponentOptions={paginationOptions}
                 paginationPerPage={entries} // Controlled by state
                 paginationRowsPerPageOptions={[10, 20, 50, 100]}
+                progressComponent={<CustomLoader />}
               />
             </div>
           </div>

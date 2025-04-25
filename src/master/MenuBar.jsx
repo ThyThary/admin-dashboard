@@ -1,6 +1,4 @@
 import { React, lazy } from "react";
-// import UserIcon from "../icons/svg/User";
-// import CheckIcon from "../icons/svg/Check";
 const UserIcon = lazy(() => import("../icons/svg/User"));
 const CheckIcon = lazy(() => import("../icons/svg/Check"));
 const WordIcon = lazy(() => import("../icons/svg/Word"));

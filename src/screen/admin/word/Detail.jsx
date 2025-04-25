@@ -1,10 +1,32 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import HomeIcon from "../../../icons/svg/Home";
 import DetailIcon from "../../../icons/svg/Detail";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Button from "../../../style/tailwind/Button";
 import DateKhmer from "../../../components/DateKhmer";
+import api from "../../../api";
 function Detail() {
+  const { id } = useParams();
+  const [user, setUser] = useState([]);
+  // Fetch data from API
+  useEffect(() => {
+    const token = localStorage.getItem("access");
+    api
+      .get(`/api/dictionary/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // 👈 attach token here
+        },
+      })
+      .then((res) => {
+        console.log("Get data: ", res.data);
+        setUser(res.data);
+      })
+      .catch((err) => {
+        console.error("API fetch error:", err);
+        // setPending(false);
+      });
+  }, []);
+  if (!user) return <div>Loading...</div>;
   return (
     <>
       <div className=" flex-row">
@@ -32,7 +54,7 @@ function Detail() {
               <DateKhmer />
             </div>
           </div>
-
+          {/* Button create */}
           <div className="flex flex-row gap-x-2 items-center mt-7">
             <div>
               <DetailIcon name="detail" size="24" color="#2a4f8a" />
@@ -66,14 +88,14 @@ function Detail() {
                     className="font-bold text-md w-[260px]"
                     style={{ fontFamily: "Hanuman, sans-serif" }}
                   >
-                    ពាក្យ
+                    អ្នកបង្កើត
                   </li>
                   <li className="">:</li>
                   <li
                     className="ml-6 text-md w-full"
                     style={{ fontFamily: "Hanuman, sans-serif" }}
                   >
-                    ធី ថារី
+                    {user.is_parent ?? ""}
                   </li>
                 </ul>
                 <ul className="flex mb-2">
@@ -88,7 +110,7 @@ function Detail() {
                     className="ml-6 text-md w-full"
                     style={{ fontFamily: "Hanuman, sans-serif" }}
                   >
-                    ថ្មី
+                    <span className="text-blue-600">អនុម័ត</span>
                   </li>
                 </ul>
                 <ul className="flex mb-2">
@@ -103,7 +125,7 @@ function Detail() {
                     className="ml-6 text-md w-full"
                     style={{ fontFamily: "Hanuman, sans-serif" }}
                   >
-                    ចន្ទគតិកាល
+                    {user.word_kh ?? ""}
                   </li>
                 </ul>
                 <ul className="flex mb-2">
@@ -118,7 +140,7 @@ function Detail() {
                     className="ml-6 text-md w-full"
                     style={{ fontFamily: "Hanuman, sans-serif" }}
                   >
-                    នាមសព្ទ
+                    {user.word_kh_type ?? ""}
                   </li>
                 </ul>
                 <ul className="flex mb-2">
@@ -133,10 +155,37 @@ function Detail() {
                     className="ml-6 text-md w-full"
                     style={{ fontFamily: "Hanuman, sans-serif" }}
                   >
-                    (បា.)កាលរដូវដែលកំណត់តាមដំណើរព្រះចន្ទក្នុងឆ្នាំមួយៗចែកជារដូវមាន
-                    ៣ គឺ ហេមន្តៈ រដូវរងា មាន ៤ ខែ រាប់តាំងពីថ្ងៃ ១ រោច​ ខែកត្ដិក
-                    ទៅដល់ ថ្ងៃពេញបូណ៌មីខែផល្គុន; គិម្ហៈ រដូវក្ដៅមាន៤ ខែ
-                    រាប់ពីថ្ងៃ ១ រោចខែផល្គុន ទៅដល់ថ្ងៃពេញបូណ៌មីខែអាសាឍ; វស្សានៈ។
+                    {user.word_kh_definition ?? ""}
+                  </li>
+                </ul>
+                <ul className="flex mb-2">
+                  <li
+                    className="font-bold text-md w-[260px]"
+                    style={{ fontFamily: "Hanuman, sans-serif" }}
+                  >
+                    បញ្ចេញសម្លេងខ្មែរ
+                  </li>
+                  <li className="">:</li>
+                  <li
+                    className="ml-6 text-md w-full"
+                    style={{ fontFamily: "Hanuman, sans-serif" }}
+                  >
+                    {user.is_parent ?? ""}
+                  </li>
+                </ul>
+                <ul className="flex mb-2">
+                  <li
+                    className="font-bold text-md w-[260px]"
+                    style={{ fontFamily: "Hanuman, sans-serif" }}
+                  >
+                    ឧទាហរណ៍ខ្មែរ
+                  </li>
+                  <li className="">:</li>
+                  <li
+                    className="ml-6 text-md w-full"
+                    style={{ fontFamily: "Hanuman, sans-serif" }}
+                  >
+                    {user.is_parent ?? ""}
                   </li>
                 </ul>
               </div>
@@ -154,24 +203,10 @@ function Detail() {
                     className="ml-6 text-md w-full"
                     style={{ fontFamily: "Hanuman, sans-serif" }}
                   >
-                    ១៣-មីនា-២០២៥
+                    {user.id ?? ""}
                   </li>
                 </ul>
-                <ul className="flex mb-2">
-                  <li
-                    className="font-bold text-md w-[260px]"
-                    style={{ fontFamily: "Hanuman, sans-serif" }}
-                  >
-                    កាលបរិច្ឆេទត្រួតពិនិត្យ
-                  </li>
-                  <li className="">:</li>
-                  <li
-                    className="ml-6 text-md w-full"
-                    style={{ fontFamily: "Hanuman, sans-serif" }}
-                  >
-                    ១៣-មីនា-២០២៥
-                  </li>
-                </ul>
+
                 <ul className="flex mb-2">
                   <li
                     className="font-bold text-md w-[260px]"
@@ -184,7 +219,7 @@ function Detail() {
                     className="ml-6 text-md w-full"
                     style={{ fontFamily: "Moul, serif" }}
                   >
-                    Lunar calendar
+                    {user.word_en ?? ""}
                   </li>
                 </ul>
                 <ul className="flex mb-2">
@@ -199,7 +234,7 @@ function Detail() {
                     className="ml-6 text-md w-full"
                     style={{ fontFamily: "Moul, serif" }}
                   >
-                    Noun
+                    {user.word_en_type ?? ""}
                   </li>
                 </ul>
                 <ul className="flex mb-2">
@@ -214,10 +249,37 @@ function Detail() {
                     className="ml-6 text-md w-full"
                     style={{ fontFamily: "Moul, serif" }}
                   >
-                    Any of various systems for measuring the days, weeks, and
-                    months of the year that are based on the phases of the moon
-                    (= the regular changes in the shape of the moon as it
-                    appears to us on earth
+                    {user.word_en_definition ?? ""}
+                  </li>
+                </ul>
+                <ul className="flex mb-2">
+                  <li
+                    className="font-bold text-md w-[260px]"
+                    style={{ fontFamily: "Hanuman, sans-serif" }}
+                  >
+                    បញ្ចេញសម្លេងអង់គ្លេស
+                  </li>
+                  <li className="">:</li>
+                  <li
+                    className="ml-6 text-md w-full"
+                    style={{ fontFamily: "Moul, serif" }}
+                  >
+                    {user.is_parent ?? ""}
+                  </li>
+                </ul>
+                <ul className="flex mb-2">
+                  <li
+                    className="font-bold text-md w-[260px]"
+                    style={{ fontFamily: "Hanuman, sans-serif" }}
+                  >
+                    ឧទាហរណ៍អង់គ្លេស
+                  </li>
+                  <li className="">:</li>
+                  <li
+                    className="ml-6 text-md w-full"
+                    style={{ fontFamily: "Moul, serif" }}
+                  >
+                    {user.is_parent ?? ""}
                   </li>
                 </ul>
               </div>

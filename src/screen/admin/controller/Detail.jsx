@@ -1,11 +1,33 @@
-import React, { lazy } from "react";
-import { Link } from "react-router-dom";
+import React, { lazy, useState, useEffect } from "react";
+import { Link, useParams } from "react-router-dom";
 import DateKhmer from "../../../components/DateKhmer";
 const HomeIcon = lazy(() => import("../../../icons/svg/Home"));
 const DetailIcon = lazy(() => import("../../../icons/svg/Detail"));
 const Button = lazy(() => import("../../../style/tailwind/Button"));
-function Detail(id) {
-  console.log(id);
+import api from "../../../api";
+function Detail() {
+  // Get user id
+  const { id } = useParams();
+  const [user, setUser] = useState();
+  // Fetch data from API
+  useEffect(() => {
+    const token = localStorage.getItem("access");
+    api
+      .get(`/api/dictionary/staging/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // 👈 attach token here
+        },
+      })
+      .then((res) => {
+        console.log("Get data: ", res.data);
+        setUser(res.data);
+      })
+      .catch((err) => {
+        console.error("API fetch error:", err);
+        // setPending(false);
+      });
+  }, []);
+  if (!user) return <div>Loading...</div>;
   return (
     <>
       <div className=" flex-row">
@@ -74,7 +96,7 @@ function Detail(id) {
                     className="ml-6 text-md w-full"
                     style={{ fontFamily: "Hanuman, sans-serif" }}
                   >
-                    រិទ្ធិ សុផារ៉ា
+                    {user.created_by}
                   </li>
                 </ul>
                 <ul className="flex mb-2">
@@ -89,7 +111,15 @@ function Detail(id) {
                     className="ml-6 text-md w-full"
                     style={{ fontFamily: "Hanuman, sans-serif" }}
                   >
-                    ថ្មី
+                    {(() => {
+                      if (user.review_status == "PENDING") {
+                        return <span className=" text-green-600">ថ្មី</span>;
+                      } else if (user.review_status == "APPROVED") {
+                        return <span className=" text-blue-600">អនុម័ត</span>;
+                      } else {
+                        return <span className=" text-red-600">បដិសេធ</span>;
+                      }
+                    })()}
                   </li>
                 </ul>
                 <ul className="flex mb-2">
@@ -104,7 +134,7 @@ function Detail(id) {
                     className="ml-6 text-md w-full"
                     style={{ fontFamily: "Hanuman, sans-serif" }}
                   >
-                    ចន្ទគតិកាល
+                    {user.word_kh}
                   </li>
                 </ul>
                 <ul className="flex mb-2">
@@ -119,7 +149,7 @@ function Detail(id) {
                     className="ml-6 text-md w-full"
                     style={{ fontFamily: "Hanuman, sans-serif" }}
                   >
-                    នាមសព្ទ
+                    {user.word_kh_type}
                   </li>
                 </ul>
                 <ul className="flex mb-2">
@@ -134,10 +164,7 @@ function Detail(id) {
                     className="ml-6 text-md w-full"
                     style={{ fontFamily: "Hanuman, sans-serif" }}
                   >
-                    (បា.)កាលរដូវដែលកំណត់តាមដំណើរព្រះចន្ទក្នុងឆ្នាំមួយៗចែកជារដូវមាន
-                    ៣ គឺ ហេមន្តៈ រដូវរងា មាន ៤ ខែ រាប់តាំងពីថ្ងៃ ១ រោច​ ខែកត្ដិក
-                    ទៅដល់ ថ្ងៃពេញបូណ៌មីខែផល្គុន; គិម្ហៈ រដូវក្ដៅមាន៤ ខែ
-                    រាប់ពីថ្ងៃ ១ រោចខែផល្គុន ទៅដល់ថ្ងៃពេញបូណ៌មីខែអាសាឍ; វស្សានៈ។
+                    {user.word_kh_definition}
                   </li>
                 </ul>
               </div>
@@ -155,7 +182,7 @@ function Detail(id) {
                     className="ml-6 text-md w-full"
                     style={{ fontFamily: "Hanuman, sans-serif" }}
                   >
-                    ១៣-មីនា-២០២៥
+                    {user.created_at}
                   </li>
                 </ul>
                 <ul className="flex mb-2">
@@ -170,7 +197,7 @@ function Detail(id) {
                     className="ml-6 text-md w-full"
                     style={{ fontFamily: "Hanuman, sans-serif" }}
                   >
-                    ១៣-មីនា-២០២៥
+                    {user.reviewed_at}
                   </li>
                 </ul>
                 <ul className="flex mb-2">
@@ -185,7 +212,7 @@ function Detail(id) {
                     className="ml-6 text-md w-full"
                     style={{ fontFamily: "Moul, serif" }}
                   >
-                    Lunar calendar
+                    {user.word_en}
                   </li>
                 </ul>
                 <ul className="flex mb-2">
@@ -200,7 +227,7 @@ function Detail(id) {
                     className="ml-6 text-md w-full"
                     style={{ fontFamily: "Moul, serif" }}
                   >
-                    Noun
+                    {user.word_en_type}
                   </li>
                 </ul>
                 <ul className="flex mb-2">
@@ -215,10 +242,7 @@ function Detail(id) {
                     className="ml-6 text-md w-full"
                     style={{ fontFamily: "Moul, serif" }}
                   >
-                    Any of various systems for measuring the days, weeks, and
-                    months of the year that are based on the phases of the moon
-                    (= the regular changes in the shape of the moon as it
-                    appears to us on earth
+                    {user.word_en_definition}
                   </li>
                 </ul>
               </div>
@@ -226,18 +250,21 @@ function Detail(id) {
           </div>
           {/* button */}
           <div className=" absolute  sm:col-span-2 text-end right-5 bottom-5">
-            <div className=" flex gap-3">
-              {" "}
-              <Link to="/admin/controller-list">
-                <Button color="red" text="បដិសេធ" className="" />
-              </Link>
-              <div>
-                {" "}
-                <Link to="/admin/controller-list">
-                  <Button color="blue" text="អនុម័ត" className="" />
-                </Link>
-              </div>
-            </div>
+            {(() => {
+              if (user.review_status == "PENDING") {
+                return (
+                  <div className="flex gap-3">
+                    {" "}
+                    <Link to="/admin/controller-list">
+                      <Button color="red" text="បដិសេធ" className="" />
+                    </Link>
+                    <Link to="/admin/controller-list">
+                      <Button color="blue" text="អនុម័ត" className="" />
+                    </Link>
+                  </div>
+                );
+              }
+            })()}
           </div>
         </div>
       </div>

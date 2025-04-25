@@ -19,13 +19,12 @@ const App = () => {
           <Route path="/admin/user-detail/:id" Component={Master}></Route>
           {/* Controller routes */}
           <Route path="/admin/controller-list" Component={Master}></Route>
-          <Route path="/admin/controller-detail" Component={Master}></Route>
+          <Route path="/admin/controller-detail/:id" Component={Master}></Route>
           {/* Word routes */}
           <Route path="/admin/word-list" Component={Master}></Route>
           <Route path="/admin/word-create" Component={Master}></Route>
-          {/* <Route path="/admin/word-edit" Component={Master}></Route> */}
           <Route path="/admin/word-edit" Component={Master}></Route>
-          <Route path="/admin/word-detail" Component={Master}></Route>
+          <Route path="/admin/word-detail/:id" Component={Master}></Route>
           {/* Password routes */}
           <Route path="/change-password" Component={Master}></Route>
           {/* Normal user */}

@@ -1,16 +1,16 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState, useEffect, lazy } from "react";
 import { Link } from "react-router-dom";
+const HomeIcon = lazy(() => import("../../../icons/svg/Home"));
+const ListIcon = lazy(() => import("../../../icons/svg/List"));
+const DetailIcon = lazy(() => import("../../../icons/svg/Detail"));
+const Button = lazy(() => import("../../../style/tailwind/Button"));
+const Input = lazy(() => import("../../../style/tailwind/Input"));
 
-import HomeIcon from "../../../icons/svg/Home";
-import ListIcon from "../../../icons/svg/List";
-import DetailIcon from "../../../icons/svg/Detail";
-import Button from "../../../style/tailwind/Button";
 import DataTable from "react-data-table-component";
-import Input from "../../../style/tailwind/Input";
 import Modal from "../../../components/Modal";
 import DateKhmer from "../../../components/DateKhmer";
-import Detail from "./Detail";
+import api from "../../../api";
+import "./style/table.css";
 // Custom Styles
 const customStyles = {
   table: {
@@ -38,118 +38,22 @@ const customStyles = {
       color: "#ffffff",
       fontSize: "14px",
       fontWeight: "bold",
+      textAlign: "center",
+      justifyContent: "center",
+      // padding: "0px 10px",
     },
   },
   cells: {
     style: {
-      fontSize: "12px",
-      padding: "3px 5px",
+      fontSize: "14px",
+      padding: "2px 5px",
+      textAlign: "center",
+      justifyContent: "center",
+      fontFamily: "Hanuman, sans-serif",
     },
   },
 };
-
-//  Testing data
-const data = [
-  {
-    index: 1,
-    id: "ចន្ទគតិកាល",
-    name: "(បា.)កាលរដូវដែលកំណត់តាមដំណើរព្រះចន្ទក្នុងឆ្នាំ",
-    positon: "រិទ្ធិ សុផារ៉ា",
-    email: "ថ្មី",
-    createDate: "១៣-មីនា-២០២៥",
-    actions: "Testing",
-  },
-  {
-    index: 2,
-    id: "ចន្ទគតិកាល",
-    name: "(បា.)កាលរដូវដែលកំណត់តាមដំណើរព្រះចន្ទក្នុងឆ្នាំ",
-    positon: "រិទ្ធិ សុផារ៉ា",
-    email: "ថ្មី",
-    createDate: "១៣-មីនា-២០២៥",
-    actions: "Testing",
-  },
-  {
-    index: 3,
-    id: "ចន្ទគតិកាល",
-    name: "(បា.)កាលរដូវដែលកំណត់តាមដំណើរព្រះចន្ទក្នុងឆ្នាំ",
-    positon: "រិទ្ធិ សុផារ៉ា",
-    email: "ថ្មី",
-    createDate: "១៣-មីនា-២០២៥",
-    actions: "Testing",
-  },
-  {
-    index: 4,
-    id: "ចន្ទគតិកាល",
-    name: "(បា.)កាលរដូវដែលកំណត់តាមដំណើរព្រះចន្ទក្នុងឆ្នាំ",
-    positon: "រិទ្ធិ សុផារ៉ា",
-    email: "ថ្មី",
-    createDate: "១៣-មីនា-២០២៥",
-    actions: "Testing",
-  },
-  {
-    index: 5,
-    id: "ចន្ទគតិកាល",
-    name: "(បា.)កាលរដូវដែលកំណត់តាមដំណើរព្រះចន្ទក្នុងឆ្នាំ",
-    positon: "រិទ្ធិ សុផារ៉ា",
-    email: "ថ្មី",
-    createDate: "១៣-មីនា-២០២៥",
-    actions: "Testing",
-  },
-  {
-    index: 6,
-    id: "ចន្ទគតិកាល",
-    name: "(បា.)កាលរដូវដែលកំណត់តាមដំណើរព្រះចន្ទក្នុងឆ្នាំ",
-    positon: "រិទ្ធិ សុផារ៉ា",
-    email: "ថ្មី",
-    createDate: "១៣-មីនា-២០២៥",
-    actions: "Testing",
-  },
-  {
-    index: 7,
-    id: "ចន្ទគតិកាល",
-    name: "(បា.)កាលរដូវដែលកំណត់តាមដំណើរព្រះចន្ទក្នុងឆ្នាំ",
-    positon: "រិទ្ធិ សុផារ៉ា",
-    email: "ថ្មី",
-    createDate: "១៣-មីនា-២០២៥",
-    actions: "Testing",
-  },
-  {
-    index: 8,
-    id: "ចន្ទគតិកាល",
-    name: "(បា.)កាលរដូវដែលកំណត់តាមដំណើរព្រះចន្ទក្នុងឆ្នាំ",
-    positon: "រិទ្ធិ សុផារ៉ា",
-    email: "ថ្មី",
-    createDate: "១៣-មីនា-២០២៥",
-    actions: "Testing",
-  },
-  {
-    index: 9,
-    id: "ចន្ទគតិកាល",
-    name: "(បា.)កាលរដូវដែលកំណត់តាមដំណើរព្រះចន្ទក្នុងឆ្នាំ",
-    positon: "រិទ្ធិ សុផារ៉ា",
-    email: "ថ្មី",
-    createDate: "១៣-មីនា-២០២៥",
-    actions: "Testing",
-  },
-  {
-    index: 10,
-    id: "ចន្ទគតិកាល",
-    name: "(បា.)កាលរដូវដែលកំណត់តាមដំណើរព្រះចន្ទក្នុងឆ្នាំ",
-    positon: "រិទ្ធិ សុផារ៉ា",
-    email: "ថ្មី",
-    createDate: "១៣-មីនា-២០២៥",
-    actions: "Testing",
-  },
-  {
-    index: 11,
-    id: "ចន្ទគតិកាល",
-    name: "(បា.)កាលរដូវដែលកំណត់តាមដំណើរព្រះចន្ទក្នុងឆ្នាំ",
-    positon: "រិទ្ធិ សុផារ៉ា",
-    email: "ថ្មី",
-    createDate: "១៣-មីនា-២០២៥",
-    actions: "Testing",
-  },
-];
+// Pagination
 const paginationOptions = {
   rowsPerPageText: "កំពុងបង្ហាញ",
   rangeSeparatorText: "នៃ",
@@ -157,44 +61,114 @@ const paginationOptions = {
   selectAllRowsItemText: "All",
   noRowsPerPage: false,
 };
+
 const Controller = () => {
   const [value, setValue] = useState("");
-  const [records, setRecords] = useState(data);
+  const [records, setRecords] = useState();
   const [entries, setEntries] = useState(10);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [userId, setUserId] = useState(null);
-
-  // Table columns
+  const [pending, setPending] = useState(true);
+  // Table header
   const columns = [
-    { name: "ល.រ", selector: (row) => row.index, sortable: true, center: true },
+    {
+      name: "ល.រ",
+      width: "80px",
+      selector: (row) => row.index,
+      cell: (row, index) => (
+        <div
+          className="w-10 text-center"
+          style={{ fontFamily: "Hanuman, sans-serif" }}
+        >
+          {index + 1}
+        </div>
+      ),
+      sortable: true,
+    },
     {
       name: "ពាក្យ",
-      selector: (row) => row.id,
+      selector: (row) => row.word_kh,
+      cell: (row) => (
+        <div
+          className="w-32 truncate"
+          style={{ fontFamily: "Hanuman, sans-serif", textAlign: "left" }}
+        >
+          {row.word_kh}
+        </div>
+      ),
       sortable: true,
-      center: true,
     },
-    { name: "និយមន័យ", selector: (row) => row.name, center: true },
-    { name: "អ្នកស្នើសុំ", selector: (row) => row.positon, center: true },
+    {
+      name: "និយមន័យ",
+      selector: (row) => row.word_kh_definition,
+      cell: (row) => (
+        <div
+          className=" w-40 truncate"
+          style={{ fontFamily: "Hanuman, sans-serif", textAlign: "left" }}
+        >
+          {row.word_kh_definition}
+        </div>
+      ),
+    },
+    { name: "អ្នកស្នើសុំ", selector: (row) => row.created_by },
     {
       name: "ស្ថានភាព",
-      selector: (row) => row.email,
+      selector: (row) => row.review_status,
+      cell: (row) => {
+        if (row.review_status == "PENDING") {
+          return (
+            <span
+              className=" bg-green-600 px-5.5 py-0.5 rounded-sm"
+              style={{
+                fontFamily: "Hanuman, sans-serif",
+                textAlign: "center",
+                color: "white",
+              }}
+            >
+              ថ្មី
+            </span>
+          );
+        } else if (row.review_status == "APPROVED") {
+          return (
+            <span
+              className=" bg-blue-600 px-2 py-0.5 rounded-sm"
+              style={{
+                fontFamily: "Hanuman, sans-serif",
+                color: "white",
+              }}
+            >
+              អនុម័ត
+            </span>
+          );
+        } else {
+          return (
+            <span
+              className=" bg-red-600 px-1 py-0.5 rounded-sm"
+              style={{
+                fontFamily: "Hanuman, sans-serif",
+                color: "white",
+              }}
+            >
+              បដិសេធ
+            </span>
+          );
+        }
+      },
+
       sortable: true,
-      center: true,
     },
     {
       name: "កាលបរិច្ឆេទបង្កើត",
-      selector: (row) => row.createDate,
+      selector: (row) => row.created_at,
       sortable: true,
-      center: true,
     },
     {
       name: "សកម្មភាពផ្សេងៗ",
       selector: (row) => row.actions,
-      sortable: true,
-      center: true,
-      cell: () => (
+
+      cell: (row) => (
         <div className="w-full flex gap-2 !items-center !justify-center *:hover:scale-110">
-          <Link to="/admin/controller-detail">
+          <Link to={`/admin/controller-detail/${row.id}`}>
             <button
               title="Detail"
               onClick={(e) => {
@@ -202,17 +176,49 @@ const Controller = () => {
               }}
             >
               <DetailIcon name="detail" size="18" color="" />
-              {/* <Detail getId={userId} /> */}
             </button>
           </Link>
         </div>
       ),
     },
   ];
+  //Loading
+  const CustomLoader = () => (
+    <div style={{ padding: "24px", textAlign: "center" }}>
+      <span
+        style={{
+          fontSize: "24px",
+          color: "#007bff",
+          fontFamily: "Hanuman, sans-serif",
+        }}
+      >
+        កំពុងដំណើរការ... 🔄
+      </span>
+    </div>
+  );
+  // Fetch data from API
+  useEffect(() => {
+    const token = localStorage.getItem("access");
+    api
+      .get("/api/dictionary/staging/list", {
+        headers: {
+          Authorization: `Bearer ${token}`, // 👈 attach token here
+        },
+      })
+      .then((res) => {
+        console.log(res.data);
+        setRecords(res.data);
+        setPending(false);
+      })
+      .catch((err) => {
+        console.error("API fetch error:", err);
+        setPending(false);
+      });
+  }, []);
   // Search data
   const handleFilter = (e) => {
     const newData = data.filter((row) => {
-      return row.name.toLowerCase().includes(e.target.value.toLowerCase());
+      return row.word_kh.toLowerCase().includes(e.target.value.toLowerCase());
     });
     setRecords(newData);
   };
@@ -232,10 +238,6 @@ const Controller = () => {
           }
           btnOk={<Button color="blue" text="យល់ព្រម" className="" />}
         />
-        <div hidden>
-          {" "}
-          <Detail id={userId} />;
-        </div>
       </div>
       <div className=" flex-row">
         <div className="flex flex-col min-h-28 max-h-28 px-5 pt-5">
@@ -322,11 +324,12 @@ const Controller = () => {
                 </label>
               </div>
             </div>
-
-            <div className="">
+            {/* Invoke table */}
+            <div>
               <DataTable
                 columns={columns}
                 data={records}
+                //No data
                 noDataComponent={
                   <div
                     style={{
@@ -340,9 +343,11 @@ const Controller = () => {
                 customStyles={customStyles}
                 fixedHeader
                 pagination
+                progressPending={pending}
                 paginationComponentOptions={paginationOptions}
                 paginationPerPage={entries} // Controlled by state
                 paginationRowsPerPageOptions={[10, 20, 50, 100]}
+                progressComponent={<CustomLoader />}
               />
             </div>
           </div>

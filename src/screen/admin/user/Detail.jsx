@@ -8,7 +8,7 @@ import api from "../../../api";
 export default function Detail() {
   // Get user id
   const { id } = useParams();
-  const [userDetail, setUserDetail] = useState();
+  const [user, setUser] = useState();
   // Fetch data from API
   useEffect(() => {
     const token = localStorage.getItem("access");
@@ -20,21 +20,16 @@ export default function Detail() {
       })
       .then((res) => {
         // console.log("Get data: ", res.data.data);
-        setUserDetail(res.data.data);
+        setUser(res.data.data);
       })
       .catch((err) => {
         console.error("API fetch error:", err);
         // setPending(false);
       });
   }, []);
-  if (!userDetail) return <div>Loading...</div>;
+  if (!user) return <div>Loading...</div>;
   return (
     <>
-      {/* <ul>
-        {userDetail.map((user) => (
-          <li>{user.email}</li> // 🧠 using response data here
-        ))}
-      </ul> */}
       <div className=" flex-row">
         <div className="flex flex-col min-h-28 max-h-28 px-5 pt-5">
           {/* Breakcrabe */}
@@ -103,7 +98,7 @@ export default function Detail() {
                     className="ml-6 text-md w-full"
                     style={{ fontFamily: "Hanuman, sans-serif" }}
                   >
-                    {userDetail.staff_id ?? ""}
+                    {user.staff_id ?? ""}
                   </li>
                 </ul>
                 <ul className="flex mb-2">
@@ -120,7 +115,7 @@ export default function Detail() {
                     className="ml-6 text-md w-full"
                     style={{ fontFamily: "Hanuman, sans-serif" }}
                   >
-                    {userDetail.username_kh ?? ""}
+                    {user.username_kh ?? ""}
                   </li>
                 </ul>
                 <ul className="flex mb-2">
@@ -137,7 +132,7 @@ export default function Detail() {
                     className="ml-6 text-md w-full"
                     style={{ fontFamily: "Hanuman, sans-serif" }}
                   >
-                    {userDetail.sex == "MALE" ? "ប្រុស" : "ស្រី"}
+                    {user.sex == "MALE" ? "ប្រុស" : "ស្រី"}
                   </li>
                 </ul>
                 <ul className="flex mb-2">
@@ -154,7 +149,7 @@ export default function Detail() {
                     className="ml-6 text-md w-full"
                     style={{ fontFamily: "Hanuman, sans-serif" }}
                   >
-                    {userDetail.phone_number ?? ""}
+                    {user.phone_number ?? ""}
                   </li>
                 </ul>
               </div>
@@ -174,7 +169,7 @@ export default function Detail() {
                     className="ml-6 text-md w-full"
                     style={{ fontFamily: "Hanuman, sans-serif" }}
                   >
-                    {userDetail.email ?? ""}
+                    {user.email ?? ""}
                   </li>
                 </ul>
                 <ul className="flex mb-2">
@@ -191,7 +186,7 @@ export default function Detail() {
                     className="ml-6 text-md w-full"
                     style={{ fontFamily: "Hanuman, sans-serif" }}
                   >
-                    {userDetail.position ?? ""}
+                    {user.position ?? ""}
                   </li>
                 </ul>
                 <ul className="flex mb-2">
@@ -208,7 +203,7 @@ export default function Detail() {
                     className="ml-6 text-md w-full"
                     style={{ fontFamily: "Hanuman, sans-serif" }}
                   >
-                    {userDetail.date_joined ?? ""}
+                    {user.date_joined ?? ""}
                   </li>
                 </ul>
                 <ul className="flex mb-2">
@@ -225,9 +220,7 @@ export default function Detail() {
                     className="ml-6 text-md w-full"
                     style={{ fontFamily: "Hanuman, sans-serif" }}
                   >
-                    {userDetail.role == "ADMIN"
-                      ? "អ្នកគ្រប់គ្រង"
-                      : "អ្នកប្រើប្រាស់"}
+                    {user.role == "ADMIN" ? "អ្នកគ្រប់គ្រង" : "អ្នកប្រើប្រាស់"}
                   </li>
                 </ul>
               </div>

@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect, lazy } from "react";
 import { useLocation } from "react-router-dom";
 import logo from "../assets/logo/logo-fmis-3d-for-web-1.png";
-import profileImg from "../assets/profile/Thy_Thary.jpg";
 import profileDefault from "../assets/profile/profile-default.jpg";
 import { ToastContainer } from "react-toastify";
 
@@ -81,7 +80,7 @@ const Master = ({ color = "#2a4f8a" }) => {
         btnOk={<Button color="blue" text="បាទ" className=" px-3" />}
         id={userId}
       /> */}
-      <ToastContainer position="top-right" autoClose={3000} />
+      <ToastContainer position="top-right" autoClose={2000} />
       <div className={` flex flex-cols-2 h-full `}>
         <div
           className={`max-w-56 min-w-56 min-h-screen transform transition-all duration-300 ease-in-out bg-[${color}] ${
@@ -92,7 +91,7 @@ const Master = ({ color = "#2a4f8a" }) => {
             <div className="flex w-full justify-center  p-3">
               <img
                 src={logo}
-                alt=""
+                alt="Logo"
                 width="204px"
                 height="120px"
                 loading="lazy"
@@ -180,7 +179,7 @@ const Master = ({ color = "#2a4f8a" }) => {
               <ControllerList />
             </div>
           )}
-          {route === "/admin/controller-detail" && (
+          {route === `/admin/controller-detail/${routeId}` && (
             <div className=" h-auto">
               <ControllerDetail />
             </div>
@@ -201,7 +200,7 @@ const Master = ({ color = "#2a4f8a" }) => {
               <AdminWordEdit />
             </div>
           )}
-          {route === "/admin/word-detail" && (
+          {route === `/admin/word-detail/${routeId}` && (
             <div className=" h-auto">
               <AdminWordDetail />
             </div>
