@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
+import { Link, useParams } from "react-router-dom";
 import HomeIcon from "../../../icons/svg/Home";
 import EditIcon from "../../../icons/svg/Edit";
-import { Link, useParams } from "react-router-dom";
 import Input from "../../../style/tailwind/Input";
 import Button from "../../../style/tailwind/Button";
 import TextArea from "../../../style/tailwind/TextArea";
@@ -129,7 +129,7 @@ const Edit = () => {
 
     try {
       const token = localStorage.getItem("access");
-      await api.put(`/api/dictionary/staging/update?id=${id}`, formData, {
+      await api.patch(`/api/dictionary/staging/update?id=${id}`, formData, {
         headers: {
           Authorization: `Bearer ${token}`, // 👈 attach token here
         },

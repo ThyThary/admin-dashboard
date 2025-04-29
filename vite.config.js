@@ -8,4 +8,7 @@ export default defineConfig({
     host: true,
     port: 8012, //change this to whatever port to 8012
   },
+  build: {
+    sourcemap: true,
+  },
 });

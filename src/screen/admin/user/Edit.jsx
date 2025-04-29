@@ -81,7 +81,7 @@ const Edit = () => {
 
     try {
       const token = localStorage.getItem("access");
-      await api.put(`/api/users/update?id=${id}`, formData, {
+      await api.patch(`/api/users/update?id=${id}`, formData, {
         headers: {
           Authorization: `Bearer ${token}`, // 👈 attach token here
         },

@@ -9,7 +9,7 @@ const email = async (e, valueOne, valueTwo, errorOne, errorTwo, errorThree) => {
 
   // User name validation
   if (valueOne == "") {
-    errorOne("បញ្ចូលទិន្នន័យ");
+    errorOne("ត្រូវការឈ្មោះអ្នកប្រើប្រាស់");
   } else if (validator.isEmail(valueOne)) {
     errorOne("");
     try {
@@ -31,17 +31,16 @@ const email = async (e, valueOne, valueTwo, errorOne, errorTwo, errorThree) => {
         .then((res) => {
           localStorage.setItem("access", res.data.data.access);
           localStorage.setItem("user", JSON.stringify(res.data.data.user));
-          console.log(res);
-
           if (res.data.data.user.role == "USER") {
             window.location.href = "http://localhost:8012/word-list";
-          } else {
+          } else if (res.data.data.user.role == "ADMIN") {
             window.location.href = "http://localhost:8012/admin/user-list";
+          } else {
           }
         })
         .catch((err) => {
           if (err.status === 401) {
-            errorThree("Invalid Username or Password");
+            errorThree("ឈ្មោះអ្នកប្រើប្រាស់ ​ឬ ពាក្យសម្ងាត់មិនត្រឹមត្រូវ");
           } else {
             errorThree("");
           }
@@ -54,26 +53,25 @@ const email = async (e, valueOne, valueTwo, errorOne, errorTwo, errorThree) => {
   } else {
     errorOne("Invalid User Name");
   }
-
-  //   Password validation
+  //  Strong password
   switch (true) {
     case valueTwo == "":
-      errorTwo("បញ្ចូលទិន្នន័យ");
+      errorTwo("ត្រូវការពាក្យសម្ងាត់");
       break;
     case valueTwo.length < 8:
-      errorTwo("Password at least 8 characters");
+      errorTwo("ពាក្យសម្ងាត់ត្រូវមាន៨ខ្ទង់យ៉ាងតិច");
       break;
     case !/[0-9]/.test(valueTwo):
-      errorTwo("Password at least one contain number");
+      errorTwo("ពាក្យសម្ងាត់ត្រូវមានលេខយ៉ាងតិចមួយ");
       break;
     case lower.test(valueTwo) != true:
-      errorTwo("Password at least one lower character");
+      errorTwo("ពាក្យសម្ងាត់ត្រូវមានអក្សរតូចយ៉ាងតិចមួយ");
       break;
     case upper.test(valueTwo) != true:
-      errorTwo("Password at least one UPPER character ");
+      errorTwo("ពាក្យសម្ងាត់ត្រូវមានអក្សរធំយ៉ាងតិចមួយ");
       break;
     case !/[!@#$%^&*\]]/.test(valueTwo):
-      errorTwo("Password at least one special character");
+      errorTwo("ពាក្យសម្ងាត់ត្រូវមានសញ្ញាយ៉ាងតិចមួយ");
       break;
     default:
       errorTwo("");

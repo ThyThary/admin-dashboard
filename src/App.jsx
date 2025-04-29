@@ -31,8 +31,8 @@ const App = () => {
           {/* Word route */}
           <Route path="/word-list" Component={Master}></Route>
           <Route path="/word-create" Component={Master}></Route>
-          <Route path="/word-edit" Component={Master}></Route>
-          <Route path="/word-detail" Component={Master}></Route>
+          <Route path="/word-edit/:id" Component={Master}></Route>
+          <Route path="/word-detail/:id" Component={Master}></Route>
           {/* Catch-all route for 404 */}
           <Route
             path="*"

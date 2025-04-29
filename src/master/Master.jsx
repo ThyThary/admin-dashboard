@@ -33,8 +33,6 @@ const Profile = lazy(() => import("../components/Profile"));
 const ChangePassword = lazy(() =>
   import("../screen/change_password/ChangePassword")
 );
-import Button from "../style/tailwind/Button";
-// const ModalChangePassword = lazy(() => import("../components/ChangePasword"));
 const user = JSON.parse(localStorage.getItem("user"));
 
 const Master = ({ color = "#2a4f8a" }) => {
@@ -64,23 +62,8 @@ const Master = ({ color = "#2a4f8a" }) => {
 
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [showProfile]);
-  // const [isModalOpenPWD, setIsModalOpenPWD] = useState(false);
-  // const [userId, setUserId] = useState(null);
   return (
     <>
-      {/* <ModalChangePassword
-        isOpen={isModalOpenPWD}
-        btnNo={
-          <Button
-            color="red"
-            text="ទេ"
-            onClick={() => setIsModalOpenPWD(false)}
-            className="!px-4.5"
-          />
-        }
-        btnOk={<Button color="blue" text="បាទ" className=" px-3" />}
-        id={userId}
-      /> */}
       <ToastContainer position="top-right" autoClose={2000} />
       <div className={` flex flex-cols-2 h-full `}>
         <div
@@ -90,13 +73,7 @@ const Master = ({ color = "#2a4f8a" }) => {
         >
           <div className="w-full min-h-[11.111vh]">
             <div className="flex w-full justify-center  p-3">
-              <img
-                src={logo}
-                alt="Logo"
-                width="204px"
-                height="120px"
-                loading="lazy"
-              />
+              <img src={logo} alt="Logo" width={204} height={120} />
             </div>
             <div className=" border border-b-white shadow-lg mb-3"></div>
             {/* Menu bar */}
@@ -218,12 +195,12 @@ const Master = ({ color = "#2a4f8a" }) => {
               <WordCreate />
             </div>
           )}
-          {route === "/word-edit" && (
+          {route === `/word-edit/${routeId}` && (
             <div className=" h-auto">
               <WordEdit />
             </div>
           )}
-          {route === "/word-detail" && (
+          {route === `/word-detail/${routeId}` && (
             <div className=" h-auto">
               <WordDetail />
             </div>

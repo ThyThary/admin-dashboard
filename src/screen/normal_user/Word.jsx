@@ -1,19 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, lazy } from "react";
 import { Link } from "react-router-dom";
 
-import HomeIcon from "../../icons/svg/Home";
-import ListIcon from "../../icons/svg/List";
-import EditIcon from "../../icons/svg/Edit";
-import DetailIcon from "../../icons/svg/Detail";
-import DeleteIcon from "../../icons/svg/Delete";
-import Button from "../../style/tailwind/Button";
+const HomeIcon = lazy(() => import("../../icons/svg/Home"));
+const ListIcon = lazy(() => import("../../icons/svg/List"));
+const EditIcon = lazy(() => import("../../icons/svg/Edit"));
+const DetailIcon = lazy(() => import("../../icons/svg/Detail"));
+const DeleteIcon = lazy(() => import("../../icons/svg/Delete"));
+const Button = lazy(() => import("../../style/tailwind/Button"));
+const Input = lazy(() => import("../../style/tailwind/Input"));
+
 import DataTable from "react-data-table-component";
-import Input from "../../style/tailwind/Input";
 import Modal from "../../components/Modal";
 import DateKhmer from "../../components/DateKhmer";
-
 import "../admin/user/style/table.css";
-
+import api from "../../api";
 // Custom Styles
 const customStyles = {
   table: {
@@ -26,6 +26,8 @@ const customStyles = {
       border: "none",
       fontFamily: "Hanuman, sans-serif",
       minHeight: "8px", // Row height
+      textAlign: "center",
+      justifyContent: "center",
       "&:nth-of-type(odd)": {
         backgroundColor: "#F3F4F6", // Light gray for even rows
       },
@@ -41,120 +43,21 @@ const customStyles = {
       color: "#ffffff",
       fontSize: "14px",
       fontWeight: "bold",
+      textAlign: "center",
+      justifyContent: "center",
       // padding: "0px 10px",
     },
   },
   cells: {
     style: {
-      fontSize: "12px",
+      fontSize: "14px",
       padding: "2px 5px",
+      textAlign: "center",
+      justifyContent: "center",
     },
   },
 };
-
-//  Testing data
-const data = [
-  {
-    index: 1,
-    word: "ចន្ទគតិកាល",
-    name: "(បា.)កាលរដូវដែលកំណត់តាមដំណើរព្រះចន្ទក្នុងឆ្នាំ",
-    positon: "ធី​ ថារី",
-    email: "១៣-មីនា-២០២៥",
-    createDate: "ថ្មី​",
-    actions: "Testing",
-  },
-  {
-    index: 1,
-    word: "ចន្ទគតិកាល",
-    name: "(បា.)កាលរដូវដែលកំណត់តាមដំណើរព្រះចន្ទក្នុងឆ្នាំ",
-    positon: "ធី​ ថារី",
-    email: "១៣-មីនា-២០២៥",
-    createDate: "ថ្មី​",
-    actions: "Testing",
-  },
-  {
-    index: 1,
-    word: "ចន្ទគតិកាល",
-    name: "(បា.)កាលរដូវដែលកំណត់តាមដំណើរព្រះចន្ទក្នុងឆ្នាំ",
-    positon: "ធី​ ថារី",
-    email: "១៣-មីនា-២០២៥",
-    createDate: "ថ្មី​",
-    actions: "Testing",
-  },
-  {
-    index: 1,
-    word: "ចន្ទគតិកាល",
-    name: "(បា.)កាលរដូវដែលកំណត់តាមដំណើរព្រះចន្ទក្នុងឆ្នាំ",
-    positon: "ធី​ ថារី",
-    email: "១៣-មីនា-២០២៥",
-    createDate: "ថ្មី​",
-    actions: "Testing",
-  },
-  {
-    index: 1,
-    word: "ចន្ទគតិកាល",
-    name: "(បា.)កាលរដូវដែលកំណត់តាមដំណើរព្រះចន្ទក្នុងឆ្នាំ",
-    positon: "ធី​ ថារី",
-    email: "១៣-មីនា-២០២៥",
-    createDate: "ថ្មី​",
-    actions: "Testing",
-  },
-  {
-    index: 1,
-    word: "ចន្ទគតិកាល",
-    name: "(បា.)កាលរដូវដែលកំណត់តាមដំណើរព្រះចន្ទក្នុងឆ្នាំ",
-    positon: "ធី​ ថារី",
-    email: "១៣-មីនា-២០២៥",
-    createDate: "ថ្មី​",
-    actions: "Testing",
-  },
-  {
-    index: 1,
-    word: "ចន្ទគតិកាល",
-    name: "(បា.)កាលរដូវដែលកំណត់តាមដំណើរព្រះចន្ទក្នុងឆ្នាំ",
-    positon: "ធី​ ថារី",
-    email: "១៣-មីនា-២០២៥",
-    createDate: "ថ្មី​",
-    actions: "Testing",
-  },
-  {
-    index: 1,
-    word: "ចន្ទគតិកាល",
-    name: "(បា.)កាលរដូវដែលកំណត់តាមដំណើរព្រះចន្ទក្នុងឆ្នាំ",
-    positon: "ធី​ ថារី",
-    email: "១៣-មីនា-២០២៥",
-    createDate: "ថ្មី​",
-    actions: "Testing",
-  },
-  {
-    index: 1,
-    word: "ចន្ទគតិកាល",
-    name: "(បា.)កាលរដូវដែលកំណត់តាមដំណើរព្រះចន្ទក្នុងឆ្នាំ",
-    positon: "ធី​ ថារី",
-    email: "១៣-មីនា-២០២៥",
-    createDate: "ថ្មី​",
-    actions: "Testing",
-  },
-  {
-    index: 1,
-    word: "ចន្ទគតិកាល",
-    name: "(បា.)កាលរដូវដែលកំណត់តាមដំណើរព្រះចន្ទក្នុងឆ្នាំ",
-    positon: "ធី​ ថារី",
-    email: "១៣-មីនា-២០២៥",
-    createDate: "ថ្មី​",
-    actions: "Testing",
-  },
-  {
-    index: 1,
-    word: "ចន្ទគតិកាល",
-    name: "(បា.)កាលរដូវដែលកំណត់តាមដំណើរព្រះចន្ទក្នុងឆ្នាំ",
-    positon: "ធី​ ថារី",
-    email: "១៣-មីនា-២០២៥",
-    createDate: "ថ្មី​",
-    actions: "Testing",
-  },
-];
-
+// Pagination
 const paginationOptions = {
   rowsPerPageText: "កំពុងបង្ហាញ",
   rangeSeparatorText: "នៃ",
@@ -163,54 +66,141 @@ const paginationOptions = {
   noRowsPerPage: false,
 };
 
+//Loading
+const CustomLoader = () => (
+  <div style={{ padding: "24px", textAlign: "center" }}>
+    <span
+      style={{
+        fontSize: "24px",
+        color: "#007bff",
+        fontFamily: "Hanuman, sans-serif",
+      }}
+    >
+      កំពុងដំណើរការ... 🔄
+    </span>
+  </div>
+);
 const Word = () => {
   const [value, setValue] = useState("");
-  const [records, setRecords] = useState(data);
+  const [records, setRecords] = useState();
   const [entries, setEntries] = useState(10);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [userId, setUserId] = useState(null);
+  const [pending, setPending] = useState(true);
 
-  // Table columns
+  // Table header
   const columns = [
-    { name: "ល.រ", selector: (row) => row.index, sortable: true, center: true },
     {
-      name: "ពាក្យ",
-      selector: (row) => row.word,
-      sortable: true,
-      center: true,
+      name: "ល.រ",
+      width: "60px",
+      cell: (row, index) => (
+        <div style={{ fontFamily: "Hanuman, sans-serif" }} className="">
+          {index + 1}
+        </div>
+      ),
     },
-    { name: "និយមន័យ", selector: (row) => row.name, center: true },
-    { name: "អ្នកត្រួតពិនិត្យ", selector: (row) => row.positon, center: true },
     {
-      name: "កាលបរិច្ឆេទត្រួតពិនិត្យ",
-      selector: (row) => row.email,
+      name: "ពាក្យខ្មែរ",
+      selector: (row) => row.word_kh,
+      cell: (row) => <div className="w-32 truncate">{row.word_kh}</div>,
       sortable: true,
-      center: true,
+    },
+    {
+      name: "និយមន័យខ្មែរ",
+      selector: (row) => row.word_kh_definition,
+      cell: (row) => (
+        <div className=" w-40 truncate">{row.word_kh_definition}</div>
+      ),
+    },
+    {
+      name: "ពាក្យអង់គ្លេស",
+      selector: (row) => row.word_en,
+      cell: (row) => <div className="w-32 truncate">{row.word_en}</div>,
+      sortable: true,
+    },
+    {
+      name: "និយមន័យអង់គ្លេស",
+      selector: (row) => row.word_en_definition,
+      cell: (row) => (
+        <div className=" w-40 truncate">{row.word_en_definition}</div>
+      ),
     },
     {
       name: "ស្ថានភាព",
-      selector: (row) => row.createDate,
+      selector: (row) => row.review_status,
+      cell: (row) => {
+        if (row.review_status == "PENDING") {
+          return (
+            <span
+              className=" text-green-600 font-bold"
+              style={{
+                fontFamily: "Hanuman, sans-serif",
+                textAlign: "center",
+              }}
+            >
+              ថ្មី
+            </span>
+          );
+        } else if (row.review_status == "APPROVED") {
+          return (
+            <span
+              className=" text-blue-600 font-bold"
+              style={{
+                fontFamily: "Hanuman, sans-serif",
+              }}
+            >
+              អនុម័ត
+            </span>
+          );
+        } else {
+          return (
+            <span
+              className="text-red-600 font-bold "
+              style={{
+                fontFamily: "Hanuman, sans-serif",
+              }}
+            >
+              បដិសេធ
+            </span>
+          );
+        }
+      },
+
       sortable: true,
-      center: true,
+    },
+    {
+      name: "កាលបរិច្ឆេទត្រួតពិនិត្យ",
+      selector: (row) => row.created_at,
+      sortable: true,
     },
     {
       name: "សកម្មភាពផ្សេងៗ",
       selector: (row) => row.actions,
       sortable: true,
-      center: true,
-      cell: () => (
-        <div className="w-full flex gap-1 !items-center !justify-center *:hover:scale-110">
-          <Link to="/word-edit">
-            <button title="Edit">
-              <EditIcon name="edit" size="20" color="" />
-            </button>
-          </Link>
-          <Link to="/word-detail">
-            <button title="Detail">
-              <DetailIcon name="detail" size="18" color="" />
-            </button>
-          </Link>
-          <div className="">
-            <button title="Delete" onClick={() => setIsModalOpen(true)}>
+      cell: (row) => (
+        <div className="w-full flex gap-2 !items-center !justify-center *:hover:scale-110">
+          <div className={`${row.review_status != "PENDING" ? "hidden" : ""}`}>
+            <Link to={`/word-edit/${row.id}`}>
+              <button title="Edit">
+                <EditIcon name="edit" size="20" color="" />
+              </button>
+            </Link>
+          </div>
+          <div className={`${row.review_status != "PENDING" ? "pl-1" : ""}`}>
+            <Link to={`/word-detail/${row.id}`}>
+              <button title="Detail">
+                <DetailIcon name="detail" size="18" color="" />
+              </button>
+            </Link>
+          </div>
+          <div className={`${row.review_status != "PENDING" ? "hidden" : ""}`}>
+            <button
+              title="Delete"
+              onClick={() => {
+                setIsModalOpen(true);
+                setUserId(row.id);
+              }}
+            >
               <DeleteIcon name="delete" size="18" color="" />
             </button>
           </div>
@@ -218,10 +208,31 @@ const Word = () => {
       ),
     },
   ];
+  // Fetch data from API
+  useEffect(() => {
+    const token = localStorage.getItem("access");
+    const userId = JSON.parse(localStorage.getItem("user"));
+
+    api
+      .get(`/api/dictionary/staging/list?id=${userId.id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // 👈 attach token here
+        },
+      })
+      .then((res) => {
+        console.log("Get data: ", res.data.data);
+        setRecords(res.data.data.entries);
+        setPending(false);
+      })
+      .catch((err) => {
+        console.error("API fetch error:", err);
+        setPending(false);
+      });
+  }, []);
   // Search data
   const handleFilter = (e) => {
-    const newData = data.filter((row) => {
-      return row.name.toLowerCase().includes(e.target.value.toLowerCase());
+    const newData = records.filter((row) => {
+      return row.position.toLowerCase().includes(e.target.value.toLowerCase());
     });
     setRecords(newData);
   };
@@ -240,6 +251,11 @@ const Word = () => {
             />
           }
           btnOk={<Button color="blue" text="បាទ" className="px-3" />}
+          routeWeb="/word-list"
+          routeAPIType="delete"
+          routeAPI="/api/dictionary/staging/drop?id="
+          id={userId}
+          text="លុប"
         />
       </div>
       <div className=" flex-row ">
@@ -350,9 +366,11 @@ const Word = () => {
                 customStyles={customStyles}
                 fixedHeader
                 pagination
+                progressPending={pending}
                 paginationComponentOptions={paginationOptions}
                 paginationPerPage={entries} // Controlled by state
                 paginationRowsPerPageOptions={[10, 20, 50, 100]}
+                progressComponent={<CustomLoader />}
               />
             </div>
           </div>

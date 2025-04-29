@@ -1,13 +1,122 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import api from "../../api";
 import HomeIcon from "../../icons/svg/Home";
 import CreateIcon from "../../icons/svg/Create";
-import { Link } from "react-router-dom";
 import Input from "../../style/tailwind/Input";
+import Select from "../../style/tailwind/Select";
 import Button from "../../style/tailwind/Button";
 import TextArea from "../../style/tailwind/TextArea";
 import DateKhmer from "../../components/DateKhmer";
+import Toastify from "../../components/Toastify";
 
-function Create() {
+const Create = () => {
+  const wordClassKh = [
+    { label: "នាម", value: "នាម" },
+    { label: "កិរិយាសព្ទ", value: "កិរិយាសព្ទ" },
+    { label: "គុណនាម", value: "គុណនាម" },
+    { label: "គុណកិរិយា", value: "គុណកិរិយា" },
+    { label: "សព្វនាម", value: "សព្វនាម" },
+    { label: "ធ្នាក់", value: "ធ្នាក់" },
+    { label: "ឈ្នាប់", value: "ឈ្នាប់" },
+    { label: "ឧទានសព្ទ", value: "ឧទានសព្ទ" },
+  ];
+  const wordClassEn = [
+    { label: "Noun", value: "NOUN" },
+    { label: "Verb", value: "VERB" },
+    { label: "Adjective", value: "ADJECTIVE" },
+    { label: "Adverb", value: "ADVERB" },
+    { label: "Pronoun", value: "PRONOUN" },
+    { label: "Preposition", value: "PREPOSITION" },
+    { label: "Conjunction", value: "CONJUNCTION" },
+    { label: "Interjection", value: "INTERJECTION" },
+  ];
+  // use state data form
+  const [formData, setFormData] = useState({
+    word_kh: "",
+    word_kh_type: "",
+    word_kh_definition: "",
+    word_en: "",
+    word_en_type: "",
+    word_en_definition: "",
+    pronunciation_kh: "",
+    pronunciation_en: "",
+    example_sentence_kh: "",
+    example_sentence_en: "",
+  });
+  // State for errors
+  const [errors, setErrors] = useState({
+    word_kh: "",
+    word_kh_type: "",
+    word_kh_definition: "",
+    word_en: "",
+    word_en_type: "",
+    word_en_definition: "",
+  });
+
+  //Handle input
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    console.log(value);
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  // Form validation (for front-end)
+  const validateForm = () => {
+    const newErrors = {};
+    if (!formData.word_kh) newErrors.word_kh = "Error";
+    if (!formData.word_kh_type) newErrors.word_kh_type = "Error";
+    if (!formData.word_kh_definition) newErrors.word_kh_definition = "Error";
+    if (!formData.word_en) newErrors.word_en = "Error";
+    if (!formData.word_en_type) newErrors.word_en_type = "Error";
+    if (!formData.word_en_definition) newErrors.word_en_definition = "Error";
+
+    return newErrors;
+  };
+  // Submit form
+  const handleClick = async (e) => {
+    e.preventDefault();
+    // Clear previous errors
+    setErrors({
+      word_kh: "",
+      word_kh_type: "",
+      word_kh_definition: "",
+      word_en: "",
+      word_en_type: "",
+      word_en_definition: "",
+    });
+    // Validate form before submitting
+    const validationErrors = validateForm();
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem("access");
+      await api.post("/api/dictionary/staging/create/", formData, {
+        headers: {
+          Authorization: `Bearer ${token}`, // 👈 attach token here
+        },
+      });
+      Toastify("success", "រក្សាទុកដោយជោគជ័យ!");
+      setTimeout(() => {
+        window.location.href = "http://localhost:8012/word-list";
+      }, 2000);
+    } catch (error) {
+      if (error.response) {
+        const backendErrors = error.response.data.data || {};
+        Toastify("warning", "ទិន្នន័យមិនត្រឹមត្រូវ!");
+        setErrors(backendErrors);
+      } else {
+        Toastify("error", "ការរក្សាទុកបានបរាជ័យ!");
+      }
+      console.error("Submission error:", error);
+    }
+  };
   return (
     <>
       <div className=" flex-row">
@@ -31,11 +140,11 @@ function Create() {
                 / បង្កើត
               </label>
             </Link>
-            <div className="flex ml-auto">
+            <div className="hidden sm:block ml-auto">
               <DateKhmer />
             </div>
           </div>
-
+          {/* Button create */}
           <div className="flex flex-row gap-x-2 items-center mt-7">
             <div>
               <CreateIcon name="create" size="24" color="#2a4f8a" />
@@ -60,33 +169,73 @@ function Create() {
                     label="ពាក្យខ្មែរ"
                     type="text"
                     placeholder="បញ្ចូលទិន្នន័យនៅទីនេះ"
-                    id="user"
-                    name="user"
-                    // value="Testing"
-                    // onChange=""
-                    classNname=""
+                    id="word_kh"
+                    name="word_kh"
+                    value={formData.word_kh}
+                    onChange={(e) => {
+                      handleChange(e);
+                    }}
+                    classNname={`${errors.word_kh && "border-red-500"}`}
+                    star="true"
+                  />
+                </div>
+                <div className="mt-3">
+                  <Select
+                    options={wordClassKh}
+                    label="ថ្នាក់ពាក្យខ្មែរ"
+                    id="word_kh_type"
+                    name="word_kh_type"
+                    value={formData.word_kh_type}
+                    onChange={(e) => {
+                      handleChange(e);
+                    }}
+                    classNname={`${errors.word_kh_type && "border-red-500"}`}
+                    star="true"
                   />
                 </div>
                 <div className="mt-3">
                   <Input
-                    label="ថ្នាក់ពាក្យខ្មែរ"
+                    label="បញ្ចេញសម្លេងខ្មែរ"
                     type="text"
                     placeholder="បញ្ចូលទិន្នន័យនៅទីនេះ"
-                    id="email"
-                    name="email"
-                    // value="Testing"
-                    // onChange=""
+                    id="pronunciation_kh"
+                    name="pronunciation_kh"
+                    value={formData.pronunciation_kh}
+                    onChange={(e) => {
+                      handleChange(e);
+                    }}
                     classNname=""
                   />
                 </div>
                 <div className="mt-3">
                   <TextArea
                     label="និយមន័យខ្មែរ"
-                    rows="5"
-                    classNname=""
-                    // value=""
-                    // onChange=""
+                    rows="4"
+                    id="word_kh_definition"
+                    name="word_kh_definition"
+                    value={formData.word_kh_definition}
+                    onChange={(e) => {
+                      handleChange(e);
+                    }}
                     placeholder="បញ្ចូលទិន្នន័យនៅទីនេះ ..."
+                    classNname={`${
+                      errors.word_kh_definition && "border-red-500"
+                    }`}
+                    star="true"
+                  />
+                </div>
+                <div className="mt-3">
+                  <TextArea
+                    label="ឧទាហរណ៍ខ្មែរ"
+                    rows="4"
+                    id="example_sentence_kh"
+                    name="example_sentence_kh"
+                    value={formData.example_sentence_kh}
+                    onChange={(e) => {
+                      handleChange(e);
+                    }}
+                    placeholder="បញ្ចូលទិន្នន័យនៅទីនេះ ..."
+                    classNname=""
                   />
                 </div>
               </div>
@@ -97,58 +246,101 @@ function Create() {
                     label="ពាក្យអង់គ្លេស"
                     text="text"
                     placeholder="បញ្ចូលទិន្នន័យនៅទីនេះ"
-                    id="name"
-                    name="name"
-                    // value="Testing"
-                    // onChange=""
-                    classNname=""
+                    id="word_en"
+                    name="word_en"
+                    value={formData.word_en}
+                    onChange={(e) => {
+                      handleChange(e);
+                    }}
+                    classNname={`${errors.word_en && "border-red-500"}`}
+                    star="true"
+                  />
+                </div>
+                <div className="mt-3">
+                  <Select
+                    options={wordClassEn}
+                    label="ថ្នាក់ពាក្យអង់គ្លេស"
+                    id="word_en_type"
+                    name="word_en_type"
+                    value={formData.word_en_type}
+                    onChange={(e) => {
+                      handleChange(e);
+                    }}
+                    classNname={`${errors.word_en_type && "border-red-500"}`}
+                    star="true"
                   />
                 </div>
                 <div className="mt-3">
                   <Input
-                    label="ថ្នាក់ពាក្យអង់គ្លេស"
-                    text="text"
+                    label="បញ្ចេញសម្លេងអង់គ្លេស"
+                    type="text"
                     placeholder="បញ្ចូលទិន្នន័យនៅទីនេះ"
-                    id="phone"
-                    name="phone"
-                    // value="Testing"
-                    // onChange=""
+                    id="pronunciation_en"
+                    name="pronunciation_en"
+                    value={formData.pronunciation_en}
+                    onChange={(e) => {
+                      handleChange(e);
+                    }}
                     classNname=""
                   />
                 </div>
                 <div className="mt-3">
                   <TextArea
                     label="និយមន័យអង់គ្លេស"
-                    rows="5"
-                    classNname=""
-                    // value=""
-                    // onChange=""
+                    rows="4"
+                    id="word_en_definition"
+                    name="word_en_definition"
+                    value={formData.word_en_definition}
+                    onChange={(e) => {
+                      handleChange(e);
+                    }}
                     placeholder="បញ្ចូលទិន្នន័យនៅទីនេះ ..."
+                    classNname={`${
+                      errors.word_en_definition && "border-red-500"
+                    }`}
+                    star="true"
+                  />
+                </div>
+                <div className="mt-3">
+                  <TextArea
+                    label="ឧទាហរណ៍អង់គ្លេស"
+                    rows="4"
+                    id="example_sentence_en"
+                    name="example_sentence_en"
+                    value={formData.example_sentence_en}
+                    onChange={(e) => {
+                      handleChange(e);
+                    }}
+                    placeholder="បញ្ចូលទិន្នន័យនៅទីនេះ ..."
+                    classNname=""
                   />
                 </div>
               </div>
             </div>
           </div>
           {/* button */}
-          <div className=" absolute  sm:col-span-2 text-end right-5 bottom-5">
+          <div className=" flex justify-end  sm:col-span-2 text-end mr-5 mb-5">
             <div className=" flex gap-3">
               {" "}
               <Link to="/word-list">
                 <Button color="red" text="បោះបង់" className="" />
               </Link>
               <div>
-                {" "}
-                <Link to="/word-list">
-                  <Button color="blue" text="រក្សាទុក" className="" />
-                </Link>
+                <Button
+                  color="blue"
+                  text="រក្សាទុក"
+                  className=""
+                  onClick={(e) => {
+                    handleClick(e);
+                  }}
+                />
               </div>
             </div>
           </div>
         </div>
       </div>
-      ;
     </>
   );
-}
+};
 
 export default Create;
