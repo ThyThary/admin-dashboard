@@ -279,8 +279,7 @@ const Create = () => {
             </form>
           </div>
           {/* button */}
-          <div className=" absolute sm:col-span-2 text-end right-5 bottom-5 ">
-            {/* <div className="flex sm:col-span-2 ml-auto justify-end mr-5 mb-5"> */}
+          <div className="md:absolute md:bottom-5 md:right-5 flex mr-5 mb-5 md:mr-0 md:mb-0 justify-end sm:col-span-2 text-end">
             <div className=" flex gap-3">
               {" "}
               <Link to="/admin/user-list">

@@ -52,7 +52,8 @@ function Detail() {
                 / លម្អិត
               </label>
             </Link>
-            <div className="flex ml-auto">
+            <div className="hidden sm:block ml-auto">
+              {" "}
               <DateKhmer />
             </div>
           </div>
@@ -71,7 +72,7 @@ function Detail() {
             </div>
           </div>
         </div>
-        <div className=" relative bg-white overflow-y-auto m-5 shadow-md rounded-md min-h-[72vh]">
+        <div className="relative bg-white overflow-y-auto m-5 shadow-md rounded-md min-h-[72vh] max-h-[72vh]">
           <div className="">
             <div className="px-5 py-2">
               <label
@@ -288,7 +289,7 @@ function Detail() {
             </div>
           </div>
           {/* button */}
-          <div className=" absolute  sm:col-span-2 text-end right-5 bottom-5">
+          <div className="md:absolute md:bottom-5 md:right-5 flex mr-5 mb-5 md:mr-0 md:mb-0 justify-end sm:col-span-2 text-end">
             <div className=" flex gap-3">
               <div>
                 {" "}

@@ -25,7 +25,15 @@ const Edit = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-        setUser(response.data.data);
+        setFormData({
+          username_kh: response.data.data.username_kh || "",
+          email: response.data.data.email || "",
+          role: response.data.data.role || "",
+          sex: response.data.data.sex || "",
+          staff_id: response.data.data.staff_id || "",
+          position: response.data.data.position || "",
+          phone_number: response.data.data.phone_number || "",
+        });
       } catch (error) {
         console.error("API fetch error:", error);
       }
@@ -132,7 +140,20 @@ const Edit = () => {
     { label: "អ្នកប្រើប្រាស់", value: "USER" },
   ];
 
-  if (!user) return <div>Loading...</div>;
+  if (!user)
+    return (
+      <div style={{ padding: "24px", textAlign: "center" }}>
+        <span
+          style={{
+            fontSize: "24px",
+            color: "#007bff",
+            fontFamily: "Hanuman, sans-serif",
+          }}
+        >
+          កំពុងដំណើរការ... 🔄
+        </span>
+      </div>
+    );
   return (
     <>
       {user ? (
@@ -176,7 +197,7 @@ const Edit = () => {
               </div>
             </div>
           </div>
-          <div className=" relative bg-white overflow-y-auto m-5 shadow-md rounded-md min-h-[72vh]">
+          <div className="relative bg-white overflow-y-auto m-5 shadow-md rounded-md min-h-[72vh] max-h-[72vh]">
             <div className="p-5">
               <div className=" grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 w-full gap-3">
                 {/* Sub content one */}
@@ -186,9 +207,7 @@ const Edit = () => {
                       type="text"
                       name="staff_id"
                       id="staff_id"
-                      value={
-                        formData.staff_id || (formData.staff_id = user.staff_id)
-                      }
+                      value={formData.staff_id}
                       hidden
                     />
                     <Input
@@ -197,9 +216,7 @@ const Edit = () => {
                       placeholder="បញ្ចូលទិន្នន័យនៅទីនេះ"
                       id="staff_ids"
                       name="staff_ids"
-                      value={
-                        formData.staff_id || (formData.staff_id = user.staff_id)
-                      }
+                      value={formData.staff_id}
                       star="true"
                       disabled={true}
                     />
@@ -211,9 +228,7 @@ const Edit = () => {
                       placeholder="បញ្ចូលទិន្នន័យនៅទីនេះ"
                       id="position"
                       name="position"
-                      value={
-                        formData.position || (formData.position = user.position)
-                      }
+                      value={formData.position}
                       onChange={(e) => {
                         handleChange(e);
                       }}
@@ -227,7 +242,7 @@ const Edit = () => {
                       label="ភេទ"
                       id="sex"
                       name="sex"
-                      value={formData.sex || (formData.sex = user.sex)}
+                      value={formData.sex}
                       onChange={(e) => {
                         handleChange(e);
                       }}
@@ -239,7 +254,7 @@ const Edit = () => {
                       label="តួនាទី"
                       id="role"
                       name="role"
-                      value={formData.role || (formData.role = user.role)}
+                      value={formData.role}
                       onChange={(e) => {
                         handleChange(e);
                       }}
@@ -257,10 +272,7 @@ const Edit = () => {
                       placeholder="បញ្ចូលទិន្នន័យនៅទីនេះ"
                       id="username_kh"
                       name="username_kh"
-                      value={
-                        formData.username_kh ||
-                        (formData.username_kh = user.username_kh)
-                      }
+                      value={formData.username_kh}
                       onChange={(e) => {
                         handleChange(e);
                       }}
@@ -273,10 +285,7 @@ const Edit = () => {
                       placeholder="បញ្ចូលទិន្នន័យនៅទីនេះ"
                       id="phone_number"
                       name="phone_number"
-                      value={
-                        formData.phone_number ||
-                        (formData.phone_number = user.phone_number)
-                      }
+                      value={formData.phone_number}
                       onChange={(e) => {
                         handleChange(e);
                       }}
@@ -289,7 +298,7 @@ const Edit = () => {
                       placeholder="បញ្ចូលទិន្នន័យនៅទីនេះ"
                       id="email"
                       name="email"
-                      value={formData.email || (formData.email = user.email)}
+                      value={formData.email}
                       onChange={(e) => {
                         handleChange(e);
                       }}
@@ -302,10 +311,11 @@ const Edit = () => {
               </div>
             </div>
             {/* button */}
-            <div className=" absolute  sm:col-span-2 text-end right-5 bottom-5">
+            <div className="md:absolute md:bottom-5 md:right-5 flex mr-5 mb-5 md:mr-0 md:mb-0 justify-end sm:col-span-2 text-end">
+              {" "}
               <div className=" flex gap-3">
                 {" "}
-                <Link to="/admin/word-list">
+                <Link to="/admin/user-list">
                   <Button color="red" text="បោះបង់" className="" />
                 </Link>
                 <div>

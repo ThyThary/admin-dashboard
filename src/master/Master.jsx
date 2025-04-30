@@ -65,7 +65,7 @@ const Master = ({ color = "#2a4f8a" }) => {
       <ToastContainer position="top-right" autoClose={2000} />
       <div className={` flex flex-cols-2 h-full `}>
         <div
-          className={`max-w-56 min-w-56 min-h-screen transform transition-all duration-300 ease-in-out bg-[${color}] ${
+          className={` max-w-56 min-w-56 min-h-screen transform transition-all duration-300 ease-in-out bg-[${color}] ${
             sidebarOpen ? "hidden" : ""
           } `}
         >

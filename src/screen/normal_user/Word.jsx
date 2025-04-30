@@ -12,8 +12,17 @@ const Input = lazy(() => import("../../style/tailwind/Input"));
 import DataTable from "react-data-table-component";
 import Modal from "../../components/Modal";
 import DateKhmer from "../../components/DateKhmer";
+import LoadingPage from "../../components/LoadingPage";
 import "../admin/user/style/table.css";
 import api from "../../api";
+// Remove bottom
+const rbs = {
+  tableWrapper: {
+    style: {
+      borderBottom: "none", // Removes the bottom border
+    },
+  },
+};
 // Custom Styles
 const customStyles = {
   table: {
@@ -66,20 +75,6 @@ const paginationOptions = {
   noRowsPerPage: false,
 };
 
-//Loading
-const CustomLoader = () => (
-  <div style={{ padding: "24px", textAlign: "center" }}>
-    <span
-      style={{
-        fontSize: "24px",
-        color: "#007bff",
-        fontFamily: "Hanuman, sans-serif",
-      }}
-    >
-      កំពុងដំណើរការ... 🔄
-    </span>
-  </div>
-);
 const Word = () => {
   const [value, setValue] = useState("");
   const [records, setRecords] = useState();
@@ -279,7 +274,8 @@ const Word = () => {
                 / បញ្ជី
               </label>
             </Link>
-            <div className="flex ml-auto">
+            <div className="hidden sm:block ml-auto">
+              {" "}
               <DateKhmer />
             </div>
           </div>
@@ -308,18 +304,22 @@ const Word = () => {
         <div className=" bg-white overflow-y-auto m-5 shadow-md rounded-md min-h-[72vh] max-h-[72vh]">
           <div className="px-5 pt-5">
             <div className="pb-5 flex w-full">
-              <div className=" text-left">
-                <Input
-                  label=""
-                  placeholder="ស្វែងរក..."
-                  classNname="w-40"
-                  value={value}
-                  onChange={(e) => {
-                    setValue(e.target.value);
-                    handleFilter(e);
-                  }}
-                />
-              </div>
+              {records ? (
+                <div className=" text-left">
+                  <Input
+                    label=""
+                    placeholder="ស្វែងរក..."
+                    classNname="w-40"
+                    value={value}
+                    onChange={(e) => {
+                      setValue(e.target.value);
+                      handleFilter(e);
+                    }}
+                  />
+                </div>
+              ) : (
+                ""
+              )}
               <div className="text-right ml-auto items-center hidden">
                 <label
                   style={{ fontFamily: "Hanuman, sans-serif" }}
@@ -363,14 +363,14 @@ const Word = () => {
                     គ្មានទិន្នន័យសម្រាប់បង្ហាញ
                   </div>
                 }
-                customStyles={customStyles}
+                customStyles={records ? customStyles : rbs}
                 fixedHeader={false}
                 pagination
                 progressPending={pending}
                 paginationComponentOptions={paginationOptions}
                 paginationPerPage={entries} // Controlled by state
                 paginationRowsPerPageOptions={[10, 20, 50, 100]}
-                progressComponent={<CustomLoader />}
+                progressComponent={<LoadingPage />}
               />
             </div>
           </div>

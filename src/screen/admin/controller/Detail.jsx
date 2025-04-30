@@ -109,7 +109,8 @@ function Detail() {
                 / លម្អិត
               </label>
             </Link>
-            <div className="flex ml-auto">
+            <div className="hidden sm:block ml-auto">
+              {" "}
               <DateKhmer />
             </div>
           </div>
@@ -128,7 +129,7 @@ function Detail() {
             </div>
           </div>
         </div>
-        <div className=" relative bg-white overflow-y-auto m-5 shadow-md rounded-md min-h-[72vh]">
+        <div className="relative bg-white overflow-y-auto m-5 shadow-md rounded-md min-h-[72vh] max-h-[72vh]">
           <div className="">
             <div className="px-5 py-2">
               <label
@@ -313,16 +314,9 @@ function Detail() {
                 return (
                   <div className="flex gap-3">
                     {" "}
-                    <div>
-                      <Button
-                        color="red"
-                        text="បដិសេធ"
-                        className=""
-                        onClick={() => {
-                          setIsModalReject(true);
-                        }}
-                      />
-                    </div>
+                    <Link to="/admin/controller-list">
+                      <Button color="red" text="បដិសេធ" className="" />
+                    </Link>
                     <div>
                       <Button
                         color="blue"
@@ -340,7 +334,6 @@ function Detail() {
           </div>
         </div>
       </div>
-      ;
     </>
   );
 }

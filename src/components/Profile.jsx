@@ -126,15 +126,16 @@ function Profile({ img, name, email, id, position, phone }) {
                   <LogOutIcon name="logout" size="20" color="#6B7280" />
                 </div>
                 <div>
-                  <Link to="/log-in">
-                    <label
-                      htmlFor=""
-                      className=" text-xs font-bold cursor-pointer hover:text-[#375883]"
-                      style={{ fontFamily: "Hanuman, sans-serif" }}
-                    >
-                      ចាកចេញ
-                    </label>
-                  </Link>
+                  <button
+                    onClick={() => {
+                      localStorage.removeItem("access");
+                      window.location.href = "http://localhost:8012/log-in";
+                    }}
+                    className=" text-xs font-bold cursor-pointer hover:text-[#375883]"
+                    style={{ fontFamily: "Hanuman, sans-serif" }}
+                  >
+                    ចាកចេញ
+                  </button>
                 </div>
               </div>
             </div>

@@ -159,7 +159,7 @@ const Create = () => {
             </div>
           </div>
         </div>
-        <div className=" relative bg-white overflow-y-auto m-5 shadow-md rounded-md min-h-[72vh]">
+        <div className="relative bg-white overflow-y-auto m-5 shadow-md rounded-md min-h-[72vh] max-h-[72vh]">
           <div className="p-5">
             <div className=" grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 w-full gap-3">
               {/* Sub content one */}

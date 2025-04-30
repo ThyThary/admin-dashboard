@@ -36,7 +36,7 @@ const ModalReject = ({
   // Form validation (for front-end)
   const validateForm = () => {
     const newErrors = {};
-    if (!formData.reason) newErrors.reason = "Email is required";
+    if (!formData.reason) newErrors.reason = "ត្រូវការមូលហេតុ";
     return newErrors;
   };
   // Submit form
@@ -106,9 +106,11 @@ const ModalReject = ({
               star="true"
             />
           </div>
+          <p className=" !text-red-500 text-left tracking-[1px] !text-xs font-hanuman mt-1">
+            {errors.reason}
+          </p>
         </div>
-        <div className="flex w-full gap-3 justify-center mt-3">
-          {" "}
+        <div className="flex w-full gap-3 justify-center mt-7">
           <div>{btnNo}</div>
           <button onClick={(e) => handleClick(e)}>
             <div>{btnOk}</div>

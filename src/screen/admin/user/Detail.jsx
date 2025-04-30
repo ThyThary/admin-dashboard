@@ -70,7 +70,7 @@ export default function Detail() {
             </div>
           </div>
         </div>
-        <div className=" relative bg-white overflow-y-auto m-5 shadow-md rounded-md min-h-[72vh]">
+        <div className="relative bg-white overflow-y-auto m-5 shadow-md rounded-md min-h-[72vh] max-h-[72vh]">
           <div className="">
             <div className="px-5 py-2">
               <label

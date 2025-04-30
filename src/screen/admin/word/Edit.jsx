@@ -13,8 +13,6 @@ const Edit = () => {
   // Get user id
   const { id } = useParams();
   const [user, setUser] = useState([]);
-  // Get token
-  const token = localStorage.getItem("access");
   // Word class Khmer
   const wordClassKh = [
     { label: "នាម", value: "នាម" },
@@ -52,8 +50,19 @@ const Edit = () => {
             },
           }
         );
-        console.log(response.data.data);
         setUser(response.data.data);
+        setFormData({
+          word_kh: response.data.data.word_kh || "",
+          word_en: response.data.data.word_en || "",
+          word_kh_type: response.data.data.word_kh_type || "",
+          word_en_type: response.data.data.word_en_type || "",
+          word_kh_definition: response.data.data.word_kh_definition || "",
+          word_en_definition: response.data.data.word_en_definition || "",
+          pronunciation_kh: response.data.data.pronunciation_kh || "",
+          pronunciation_en: response.data.data.pronunciation_en || "",
+          example_sentence_kh: response.data.data.example_sentence_kh || "",
+          example_sentence_en: response.data.data.example_sentence_en || "",
+        });
       } catch (error) {
         console.error("API fetch error:", error);
       }
@@ -68,7 +77,6 @@ const Edit = () => {
     word_en_type: "",
     word_kh_definition: "",
     word_en_definition: "",
-    example_sentence_en: "",
     pronunciation_kh: "",
     pronunciation_en: "",
     example_sentence_kh: "",
@@ -82,7 +90,6 @@ const Edit = () => {
     word_en_type: "",
     word_kh_definition: "",
     word_en_definition: "",
-    example_sentence_en: "",
   });
   //Handle input
   const handleChange = (e) => {
@@ -149,6 +156,21 @@ const Edit = () => {
       console.error("Submission error:", error);
     }
   };
+  if (!user) {
+    return (
+      <div style={{ padding: "24px", textAlign: "center" }}>
+        <span
+          style={{
+            fontSize: "24px",
+            color: "#007bff",
+            fontFamily: "Hanuman, sans-serif",
+          }}
+        >
+          កំពុងដំណើរការ... 🔄
+        </span>
+      </div>
+    );
+  }
   return (
     <>
       <div className=" flex-row">
@@ -172,7 +194,8 @@ const Edit = () => {
                 / កែប្រែ
               </label>
             </Link>
-            <div className="flex ml-auto">
+            <div className="hidden sm:block ml-auto">
+              {" "}
               <DateKhmer />
             </div>
           </div>
@@ -191,7 +214,7 @@ const Edit = () => {
             </div>
           </div>
         </div>
-        <div className=" relative bg-white overflow-y-auto m-5 shadow-md rounded-md min-h-[72vh]">
+        <div className="relative bg-white overflow-y-auto m-5 shadow-md rounded-md min-h-[72vh] max-h-[72vh]">
           <div className="p-5">
             <div className=" grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 w-full gap-3">
               {/* Sub content one */}
@@ -203,9 +226,7 @@ const Edit = () => {
                     placeholder="បញ្ចូលទិន្នន័យនៅទីនេះ"
                     id="word_kh"
                     name="word_kh"
-                    value={
-                      formData.word_kh || (formData.word_kh = user.word_kh)
-                    }
+                    value={formData.word_kh}
                     onChange={(e) => {
                       handleChange(e);
                     }}
@@ -219,10 +240,7 @@ const Edit = () => {
                     label="ថ្នាក់ពាក្យខ្មែរ"
                     id="word_kh_type"
                     name="word_kh_type"
-                    value={
-                      formData.word_kh_type ||
-                      (formData.word_kh_type = user.word_kh_type)
-                    }
+                    value={formData.word_kh_type}
                     onChange={(e) => {
                       handleChange(e);
                     }}
@@ -237,10 +255,7 @@ const Edit = () => {
                     placeholder="បញ្ចូលទិន្នន័យនៅទីនេះ"
                     id="pronunciation_kh"
                     name="pronunciation_kh"
-                    value={
-                      formData.pronunciation_kh ||
-                      (formData.pronunciation_kh = user.pronunciation_kh)
-                    }
+                    value={formData.pronunciation_kh}
                     onChange={(e) => {
                       handleChange(e);
                     }}
@@ -253,10 +268,7 @@ const Edit = () => {
                     rows="4"
                     id="word_kh_definition"
                     name="word_kh_definition"
-                    value={
-                      formData.word_kh_definition ||
-                      (formData.word_kh_definition = user.word_kh_definition)
-                    }
+                    value={formData.word_kh_definition}
                     onChange={(e) => {
                       handleChange(e);
                     }}
@@ -273,10 +285,7 @@ const Edit = () => {
                     rows="4"
                     id="example_sentence_kh"
                     name="example_sentence_kh"
-                    value={
-                      formData.example_sentence_kh ||
-                      (formData.example_sentence_kh = user.example_sentence_kh)
-                    }
+                    value={formData.example_sentence_kh}
                     onChange={(e) => {
                       handleChange(e);
                     }}
@@ -294,9 +303,7 @@ const Edit = () => {
                     placeholder="បញ្ចូលទិន្នន័យនៅទីនេះ"
                     id="word_en"
                     name="word_en"
-                    value={
-                      formData.word_en || (formData.word_en = user.word_en)
-                    }
+                    value={formData.word_en}
                     onChange={(e) => {
                       handleChange(e);
                     }}
@@ -310,10 +317,7 @@ const Edit = () => {
                     label="ថ្នាក់ពាក្យអង់គ្លេស"
                     id="word_en_type"
                     name="word_en_type"
-                    value={
-                      formData.word_en_type ||
-                      (formData.word_en_type = user.word_en_type)
-                    }
+                    value={formData.word_en_type}
                     onChange={(e) => {
                       handleChange(e);
                     }}
@@ -328,10 +332,7 @@ const Edit = () => {
                     placeholder="បញ្ចូលទិន្នន័យនៅទីនេះ"
                     id="pronunciation_en"
                     name="pronunciation_en"
-                    value={
-                      formData.pronunciation_en ||
-                      (formData.pronunciation_en = user.pronunciation_en)
-                    }
+                    value={formData.pronunciation_en}
                     onChange={(e) => {
                       handleChange(e);
                     }}
@@ -344,10 +345,7 @@ const Edit = () => {
                     rows="4"
                     id="word_en_definition"
                     name="word_en_definition"
-                    value={
-                      formData.word_en_definition ||
-                      (formData.word_en_definition = user.word_en_definition)
-                    }
+                    value={formData.word_en_definition}
                     onChange={(e) => {
                       handleChange(e);
                     }}
@@ -364,10 +362,7 @@ const Edit = () => {
                     rows="4"
                     id="example_sentence_en"
                     name="example_sentence_en"
-                    value={
-                      formData.example_sentence_en ||
-                      (formData.example_sentence_en = user.example_sentence_en)
-                    }
+                    value={formData.example_sentence_en}
                     onChange={(e) => {
                       handleChange(e);
                     }}
