@@ -4,6 +4,7 @@ import DetailIcon from "../../icons/svg/Detail";
 import { Link, useParams } from "react-router-dom";
 import Button from "../../style/tailwind/Button";
 import DateKhmer from "../../components/DateKhmer";
+import capitalizeFirst from "../../validate/capitalizeFirst";
 import api from "../../api";
 const Detail = () => {
   const { id } = useParams();
@@ -219,7 +220,7 @@ const Detail = () => {
                     className="ml-6 text-md w-full"
                     style={{ fontFamily: "Moul, serif" }}
                   >
-                    {user.word_en_type ?? ""}
+                    {capitalizeFirst(user.word_en_type)}
                   </li>
                 </ul>
                 <ul className="flex mb-2">

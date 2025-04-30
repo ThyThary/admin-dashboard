@@ -7,15 +7,13 @@ import Button from "../../style/tailwind/Button";
 import TextArea from "../../style/tailwind/TextArea";
 import DateKhmer from "../../components/DateKhmer";
 import Select from "../../style/tailwind/Select";
-import api from "../../api";
 import Toastify from "../../components/Toastify";
+import api from "../../api";
 
 const Edit = () => {
   // Get user id
   const { id } = useParams();
   const [user, setUser] = useState([]);
-  // Get token
-  const token = localStorage.getItem("access");
   // Word class Khmer
   const wordClassKh = [
     { label: "នាម", value: "នាម" },
@@ -130,7 +128,7 @@ const Edit = () => {
 
     try {
       const token = localStorage.getItem("access");
-      await api.patch(`/api/dictionary/staging/update?id=${id}`, formData, {
+      await api.put(`/api/dictionary/staging/update?id=${id}`, formData, {
         headers: {
           Authorization: `Bearer ${token}`, // 👈 attach token here
         },

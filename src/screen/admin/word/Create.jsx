@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, lazy } from "react";
 import { Link } from "react-router-dom";
 import api from "../../../api";
-import HomeIcon from "../../../icons/svg/Home";
-import CreateIcon from "../../../icons/svg/Create";
-import Input from "../../../style/tailwind/Input";
-import Select from "../../../style/tailwind/Select";
-import Button from "../../../style/tailwind/Button";
-import TextArea from "../../../style/tailwind/TextArea";
+const HomeIcon = lazy(() => import("../../../icons/svg/Home"));
+const CreateIcon = lazy(() => import("../../../icons/svg/Create"));
+const Input = lazy(() => import("../../../style/tailwind/Input"));
+const Select = lazy(() => import("../../../style/tailwind/Select"));
+const Button = lazy(() => import("../../../style/tailwind/Button"));
+const TextArea = lazy(() => import("../../../style/tailwind/TextArea"));
 import DateKhmer from "../../../components/DateKhmer";
 import Toastify from "../../../components/Toastify";
 

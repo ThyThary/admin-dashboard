@@ -129,7 +129,7 @@ const Edit = () => {
 
     try {
       const token = localStorage.getItem("access");
-      await api.patch(`/api/dictionary/staging/update?id=${id}`, formData, {
+      await api.put(`/api/dictionary/staging/update?id=${id}`, formData, {
         headers: {
           Authorization: `Bearer ${token}`, // 👈 attach token here
         },

@@ -4,6 +4,7 @@ import DateKhmer from "../../../components/DateKhmer";
 const HomeIcon = lazy(() => import("../../../icons/svg/Home"));
 const DetailIcon = lazy(() => import("../../../icons/svg/Detail"));
 const Button = lazy(() => import("../../../style/tailwind/Button"));
+import capitalizeFirst from "../../../validate/capitalizeFirst";
 import Modal from "../../../components/Modal";
 import ModalReject from "./ModalReject";
 import api from "../../../api";
@@ -284,7 +285,7 @@ function Detail() {
                     className="ml-6 text-md w-full"
                     style={{ fontFamily: "Moul, serif" }}
                   >
-                    {user.word_en_type}
+                    {capitalizeFirst(user.word_en_type)}
                   </li>
                 </ul>
                 <ul className="flex mb-2">

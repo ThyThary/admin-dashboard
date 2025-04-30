@@ -316,7 +316,7 @@ const Word = () => {
                   </div>
                 }
                 customStyles={customStyles}
-                fixedHeader
+                fixedHeader={false}
                 pagination
                 progressPending={pending}
                 paginationComponentOptions={paginationOptions}

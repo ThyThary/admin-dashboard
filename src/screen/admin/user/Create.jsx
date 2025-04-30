@@ -32,7 +32,6 @@ const Create = () => {
     role: "",
     sex: "",
     username_kh: "",
-    // staff_id: "",
     position: "",
     phone_number: "",
   });
@@ -40,6 +39,7 @@ const Create = () => {
   const [errors, setErrors] = useState({
     email: "",
     username_kh: "",
+    role: "",
   });
 
   //Handle input
@@ -53,13 +53,26 @@ const Create = () => {
   };
   // Form validation (for front-end)
   const validateForm = () => {
+    const fmisMatch = formData.email.search("@fmis.gov.kh");
     const newErrors = {};
     if (!formData.email) newErrors.email = "Email is required";
     if (!formData.username_kh) newErrors.username_kh = "Email is required";
-    else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Email address is invalid";
+    if (!formData.role) newErrors.role = "Email is required";
+    if (formData.email != null && fmisMatch == -1) {
+      newErrors.email = "Email is required";
     }
-
+    // alert
+    if (!formData.email || !formData.username_kh || !formData.role) {
+      Toastify("warning", "បញ្ចូលទិន្នន័យ");
+    }
+    if (
+      formData.username_kh != "" &&
+      formData.role != "" &&
+      formData.email != "" &&
+      fmisMatch == -1
+    ) {
+      Toastify("warning", "អ៊ីមែលត្រូវតែជា FMIS អ៊ីមែល");
+    }
     return newErrors;
   };
   // Submit form
@@ -67,7 +80,7 @@ const Create = () => {
     e.preventDefault();
 
     // Clear previous errors
-    setErrors({ username_kh: "", email: "" });
+    setErrors({ username_kh: "", email: "", role: "" });
     // Validate form before submitting
     const validationErrors = validateForm();
     if (Object.keys(validationErrors).length > 0) {
@@ -89,7 +102,13 @@ const Create = () => {
     } catch (error) {
       if (error.response) {
         const backendErrors = error.response.data.data || {};
-        Toastify("warning", "ទិន្នន័យមិនត្រឹមត្រូវ!");
+        console.log("Error:", error.response.data.data);
+
+        if (error.response.data.data.email[0] != null) {
+          Toastify("warning", "អ៊ីមែលមានរួចហើយ");
+        } else {
+          Toastify("warning", "ទិន្នន័យមិនត្រឹមត្រូវ!");
+        }
         setErrors(backendErrors);
       } else {
         Toastify("error", "ការរក្សាទុកបានបរាជ័យ!");
@@ -212,23 +231,6 @@ const Create = () => {
                 </div>
                 {/* Sub content two */}
                 <div className="ml-1">
-                  {/* <div className="">
-                    <Input
-                      label="ឈ្មោះអង់គ្លេស "
-                      text="text"
-                      placeholder="បញ្ចូលទិន្នន័យនៅទីនេះ"
-                      id="username"
-                      name="username"
-                      value={formData.username}
-                      onChange={(e) => {
-                        // setNameEnUser(e.target.value);
-                        // validatorEnglish(e, setNameEnUser);
-                        handleChange(e);
-                      }}
-                      classNname={`${errors.username && "border-red-500"}`}
-                      star="true"
-                    />
-                  </div> */}
                   <div className="">
                     <Input
                       label="លេខទូរស័ព្ទ"
@@ -252,8 +254,6 @@ const Create = () => {
                       name="email"
                       value={formData.email}
                       onChange={(e) => {
-                        // setEmailUser(e.target.value);
-                        // validatorEnglish(e, setEmailUser);
                         handleChange(e);
                       }}
                       star="true"
@@ -267,6 +267,7 @@ const Create = () => {
                       id="role"
                       name="role"
                       value={formData.role}
+                      classNname={`${errors.role && "border-red-500"}`}
                       onChange={(e) => {
                         handleChange(e);
                       }}

@@ -30,9 +30,7 @@ const WordEdit = lazy(() => import("../screen/normal_user/Edit"));
 const WordDetail = lazy(() => import("../screen/normal_user/Detail"));
 
 const Profile = lazy(() => import("../components/Profile"));
-const ChangePassword = lazy(() =>
-  import("../screen/change_password/ChangePassword")
-);
+
 const user = JSON.parse(localStorage.getItem("user"));
 
 const Master = ({ color = "#2a4f8a" }) => {

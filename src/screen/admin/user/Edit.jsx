@@ -58,11 +58,25 @@ const Edit = () => {
   };
   // Form validation (for front-end)
   const validateForm = () => {
+    const fmisMatch = formData.email.search("@fmis.gov.kh");
     const newErrors = {};
-    if (!formData.email) newErrors.email = "អ៊ីមែលត្រូវតែបញ្ចូល";
-    if (!formData.role) newErrors.role = "លេខសម្គាល់តែបញ្ចូល";
-    else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "អ៊ីមែលមិនត្រឹមត្រូវ";
+    if (!formData.email) newErrors.email = "Email is required";
+    if (!formData.username_kh) newErrors.username_kh = "Email is required";
+    if (!formData.role) newErrors.role = "Email is required";
+    if (formData.email != null && fmisMatch == -1) {
+      newErrors.email = "Email is required";
+    }
+    // alert
+    if (!formData.email || !formData.username_kh || !formData.role) {
+      Toastify("warning", "បញ្ចូលទិន្នន័យ");
+    }
+    if (
+      formData.username_kh != "" &&
+      formData.role != "" &&
+      formData.email != "" &&
+      fmisMatch == -1
+    ) {
+      Toastify("warning", "អ៊ីមែលត្រូវតែជា FMIS អ៊ីមែល");
     }
     return newErrors;
   };
@@ -93,7 +107,13 @@ const Edit = () => {
     } catch (error) {
       if (error.response) {
         const backendErrors = error.response.data.data || {};
-        Toastify("warning", "ទិន្នន័យមិនត្រឹមត្រូវ!");
+        console.log("Error:", error.response.data.data);
+
+        if (error.response.data.data.email[0] != null) {
+          Toastify("warning", "អ៊ីមែលមានរួចហើយ");
+        } else {
+          Toastify("warning", "ទិន្នន័យមិនត្រឹមត្រូវ!");
+        }
         setErrors(backendErrors);
       } else {
         Toastify("error", "ការរក្សាទុកបានបរាជ័យ!");
@@ -223,7 +243,7 @@ const Edit = () => {
                       onChange={(e) => {
                         handleChange(e);
                       }}
-                      classNname={`${errors.sex && "border-red-500"}`}
+                      classNname={`${errors.role && "border-red-500"}`}
                       star="true"
                     />
                   </div>
@@ -274,8 +294,8 @@ const Edit = () => {
                         handleChange(e);
                       }}
                       style={{ fontFamily: "Hanuman, sans-serif" }}
-                      star="true"
                       classNname={`${errors.email && "border-red-500"}`}
+                      star="true"
                     />
                   </div>
                 </div>

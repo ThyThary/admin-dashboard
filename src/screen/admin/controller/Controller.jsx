@@ -338,7 +338,7 @@ const Controller = () => {
                   </div>
                 }
                 customStyles={customStyles}
-                fixedHeader
+                fixedHeader={false}
                 pagination
                 progressPending={pending}
                 paginationComponentOptions={paginationOptions}
