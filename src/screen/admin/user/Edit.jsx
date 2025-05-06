@@ -13,7 +13,7 @@ const Edit = () => {
   const { id } = useParams();
   const [user, setUser] = useState([]);
   const token = localStorage.getItem("access");
-
+  const userRole = JSON.parse(localStorage.getItem("user"));
   // Fetch data from API
   useEffect(() => {
     const fetchUserDetails = async () => {
@@ -59,10 +59,24 @@ const Edit = () => {
   //Handle input
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    const englishOnlyRegex = /^[A-Za-z0-9.@!@#$%^&*+=_-\s]*$/;
+    const khmerOnlyRegex = /^[\u1780-\u17FF\s]+$/;
+    const numberOnlyRegex = /^[0-9]*$/;
+    if (name === "email" && !englishOnlyRegex.test(value)) {
+      return;
+    } else if (name === "phone_number" && !numberOnlyRegex.test(value)) {
+      return;
+    } else if (
+      (name === "username_kh" || name === "position") &&
+      !khmerOnlyRegex.test(value)
+    ) {
+      return;
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
   };
   // Form validation (for front-end)
   const validateForm = () => {
@@ -133,11 +147,6 @@ const Edit = () => {
   const genderOptions = [
     { label: "ប្រុស", value: "MALE" },
     { label: "ស្រី", value: "FEMALE" },
-  ];
-  //Role
-  const roleOptions = [
-    { label: "អ្នកគ្រប់គ្រង", value: "ADMIN" },
-    { label: "អ្នកប្រើប្រាស់", value: "USER" },
   ];
 
   if (!user)
@@ -249,18 +258,51 @@ const Edit = () => {
                     />
                   </div>
                   <div className=" mt-3">
-                    <Select
-                      options={roleOptions}
-                      label="តួនាទី"
-                      id="role"
-                      name="role"
-                      value={formData.role}
-                      onChange={(e) => {
-                        handleChange(e);
-                      }}
-                      classNname={`${errors.role && "border-red-500"}`}
-                      star="true"
-                    />
+                    {(() => {
+                      if (userRole.role === "SUPERUSER") {
+                        const roleOptions = [
+                          { label: "អ្នកប្រើប្រាស់", value: "USER" },
+                          { label: "អ្នកគ្រប់គ្រង", value: "ADMIN" },
+                          {
+                            label: "អ្នកគ្រប់គ្រងជាន់ខ្ពស់",
+                            value: "SUPERUSER",
+                          },
+                        ];
+                        return (
+                          <Select
+                            options={roleOptions}
+                            label="តួនាទី"
+                            id="role"
+                            name="role"
+                            value={formData.role}
+                            onChange={(e) => {
+                              handleChange(e);
+                            }}
+                            classNname={`${errors.role && "border-red-500"}`}
+                            star="true"
+                          />
+                        );
+                      } else {
+                        const roleOptions = [
+                          { label: "អ្នកប្រើប្រាស់", value: "USER" },
+                          { label: "អ្នកគ្រប់គ្រង", value: "ADMIN" },
+                        ];
+                        return (
+                          <Select
+                            options={roleOptions}
+                            label="តួនាទី"
+                            id="role"
+                            name="role"
+                            value={formData.role}
+                            onChange={(e) => {
+                              handleChange(e);
+                            }}
+                            classNname={`${errors.role && "border-red-500"}`}
+                            star="true"
+                          />
+                        );
+                      }
+                    })()}
                   </div>
                 </div>
                 {/* Sub content two */}

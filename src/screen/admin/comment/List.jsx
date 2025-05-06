@@ -1,20 +1,14 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect, lazy } from "react";
 import { Link } from "react-router-dom";
+const HomeIcon = lazy(() => import("../../../icons/svg/Home"));
+const ListIcon = lazy(() => import("../../../icons/svg/List"));
+const Input = lazy(() => import("../../../style/tailwind/Input"));
 
-import HomeIcon from "../../../icons/svg/Home";
-import ListIcon from "../../../icons/svg/List";
-import EditIcon from "../../../icons/svg/Edit";
-import DetailIcon from "../../../icons/svg/Detail";
-import DeleteIcon from "../../../icons/svg/Delete";
-import Button from "../../../style/tailwind/Button";
 import DataTable from "react-data-table-component";
-import Input from "../../../style/tailwind/Input";
-import Modal from "../../../components/Modal";
 import DateKhmer from "../../../components/DateKhmer";
 import LoadingPage from "../../../components/LoadingPage";
 import api from "../../../api";
-import "./style/table.css";
+import "../user/style/table.css";
 // Remove bottom
 const rbs = {
   tableWrapper: {
@@ -35,8 +29,6 @@ const customStyles = {
       border: "none",
       fontFamily: "Hanuman, sans-serif",
       minHeight: "8px", // Row height
-      textAlign: "center",
-      justifyContent: "center",
       "&:nth-of-type(odd)": {
         backgroundColor: "#F3F4F6", // Light gray for even rows
       },
@@ -63,6 +55,7 @@ const customStyles = {
       padding: "2px 5px",
       textAlign: "center",
       justifyContent: "center",
+      fontFamily: "Hanuman, sans-serif",
     },
   },
 };
@@ -75,103 +68,67 @@ const paginationOptions = {
   noRowsPerPage: false,
 };
 
-const UserList = () => {
+const List = () => {
   const [value, setValue] = useState("");
   const [records, setRecords] = useState();
+  const [originalData, setOriginalData] = useState();
   const [entries, setEntries] = useState(10);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [userId, setUserId] = useState(null);
   const [pending, setPending] = useState(true);
-
   // Table header
   const columns = [
     {
       name: "ល.រ",
-      width: "60px",
+      width: "80px",
+      selector: (row) => row.index,
       cell: (row, index) => (
-        <div style={{ fontFamily: "Hanuman, sans-serif" }}>{index + 1}</div>
+        <div
+          className="w-10 text-center"
+          style={{ fontFamily: "Hanuman, sans-serif" }}
+        >
+          {index + 1}
+        </div>
       ),
-      // center: true,
+      // sortable: true,
     },
     {
-      name: "លេខសម្គាល់",
-      selector: (row) => row.staff_id,
+      name: "លេខសម្គាល់ឧបករណ៍",
+      width: "170px",
+      selector: (row) => row.device_id,
+      cell: (row) => (
+        <div style={{ fontFamily: "Moul,serif" }}>{row.device_id}</div>
+      ),
       sortable: true,
-      // center: true,
-    },
-    { name: "ឈ្មោះ", selector: (row) => row.username_kh },
-    {
-      name: "មុខតំណែង",
-      selector: (row) => row.position,
-      cell: (row) => (
-        <div
-          className="truncate w-60"
-          style={{ fontFamily: "Hanuman, sans-serif", fontSize: "14px" }}
-        >
-          {row.position}
-        </div>
-      ),
     },
     {
-      name: "អ៊ីមែល",
-      selector: (row) => row.email,
-      cell: (row) => (
-        <div
-          className="truncate w-60"
-          style={{ fontFamily: "Hanuman, sans-serif", fontSize: "14px" }}
-        >
-          {row.email}
-        </div>
-      ),
+      name: "មតិអ្នកប្រើប្រាស់",
+      selector: (row) => row.detail,
+      cell: (row) => <div>{row.detail}</div>,
+      sortable: true,
     },
     {
       name: "កាលបរិច្ឆេទបង្កើត",
-      selector: (row) => row.date_joined,
-      // center: true,
-    },
-    {
-      name: "សកម្មភាពផ្សេងៗ",
-      selector: (row) => row.id,
-      // center: true,
       cell: (row) => (
-        <div className="w-full flex gap-2 text-center !items-center !justify-center *:hover:scale-110">
-          <Link to={`/admin/user-edit/${row.id}`}>
-            <button title="Edit">
-              <EditIcon name="edit" size="20" color="" />
-            </button>
-          </Link>
-          <Link to={`/admin/user-detail/${row.id}`}>
-            <button title="Detail">
-              <DetailIcon name="detail" size="18" color="" />
-            </button>
-          </Link>
-          <div className="">
-            <button
-              title="Delete"
-              onClick={() => {
-                setIsModalOpen(true);
-                setUserId(row.id);
-              }}
-            >
-              <DeleteIcon name="delete" size="18" color="" />
-            </button>
-          </div>
+        <div style={{ fontFamily: "Hanuman, sans-serif" }}>
+          {row.created_at}
         </div>
       ),
+      sortable: true,
     },
   ];
+
   // Fetch data from API
   useEffect(() => {
     const token = localStorage.getItem("access");
     api
-      .get("/api/users/list", {
+      .get("/api/users/comment/", {
         headers: {
           Authorization: `Bearer ${token}`, // 👈 attach token here
         },
       })
       .then((res) => {
-        console.log("Get data: ", res);
-        setRecords(res.data.data.users);
+        console.log(res.data.data.comments);
+        setRecords(res.data.data.comments);
+        setOriginalData(res.data.data.comments);
         setPending(false);
       })
       .catch((err) => {
@@ -181,37 +138,30 @@ const UserList = () => {
   }, []);
   // Search data
   const handleFilter = (e) => {
-    const newData = records.filter((row) => {
-      return row.position.toLowerCase().includes(e.target.value.toLowerCase());
-    });
-    setRecords(newData);
+    const searchValue = e.target.value.normalize("NFC").toLowerCase();
+    console.log(searchValue);
+    if (searchValue === "") {
+      setRecords(originalData); // Reset to originalData data when input is cleared
+    } else {
+      const newData = records.filter((row) => {
+        const kh = row.detail?.normalize("NFC") || "";
+        const en = row.detail?.toLowerCase() || "";
+        const deId = row.device_id?.toLowerCase() || "";
+        return (
+          kh.includes(searchValue) ||
+          en.includes(searchValue) ||
+          deId.includes(searchValue)
+        );
+      });
+      setRecords(newData);
+    }
   };
 
   return (
     <>
-      {/* Modal Delete */}
-      <div className="overflow-hidden">
-        <Modal
-          isOpen={isModalOpen}
-          btnNo={
-            <Button
-              color="red"
-              text="ទេ"
-              onClick={() => setIsModalOpen(false)}
-              className="!px-4.5"
-            />
-          }
-          btnOk={<Button color="blue" text="បាទ" className=" px-3" />}
-          routeWeb="/admin/user-list"
-          routeAPIType="delete"
-          routeAPI="/api/users/drop?id="
-          id={userId}
-          text="លុប"
-        />
-      </div>
       <div className=" flex-row">
         <div className="flex flex-col min-h-28 max-h-28 px-5 pt-5">
-          {/* breadcrumb */}
+          {/* Breakcrabe */}
           <div className="flex flex-row items-center cursor-pointer text-gray-500 gap-x-2">
             <HomeIcon name="home" size="15" color="#6B7280" />
             <Link to="">
@@ -219,7 +169,7 @@ const UserList = () => {
                 className="text-sm cursor-pointer"
                 style={{ fontFamily: "Hanuman, sans-serif" }}
               >
-                / អ្នកប្រើប្រាស់
+                / មតិយោបល់
               </label>
             </Link>
             <Link to="">
@@ -231,10 +181,11 @@ const UserList = () => {
               </label>
             </Link>
             <div className="hidden sm:block ml-auto">
+              {" "}
               <DateKhmer />
             </div>
           </div>
-          {/* Spicify icon */}
+
           <div className="flex flex-row gap-x-2 items-center mt-5">
             <div>
               <ListIcon name="list" size="" color="" />
@@ -247,11 +198,6 @@ const UserList = () => {
                 បញ្ជី
               </label>
             </div>
-            <div className=" ml-auto text-right">
-              <Link to="/admin/user-create">
-                <Button color="blue" text="បង្កើត" className="px-3" />
-              </Link>
-            </div>
           </div>
         </div>
 
@@ -259,7 +205,6 @@ const UserList = () => {
         <div className=" bg-white overflow-y-auto m-5 shadow-md rounded-md min-h-[72vh] max-h-[72vh]">
           <div className="px-5 pt-5">
             <div className="pb-5 flex w-full">
-              {/* Search box */}
               {records ? (
                 <div className=" text-left">
                   <Input
@@ -276,7 +221,7 @@ const UserList = () => {
               ) : (
                 ""
               )}
-              {/* Data entries */}
+
               <div className="text-right ml-auto items-center hidden">
                 <label
                   style={{ fontFamily: "Hanuman, sans-serif" }}
@@ -338,4 +283,4 @@ const UserList = () => {
   );
 };
 
-export default UserList;
+export default List;

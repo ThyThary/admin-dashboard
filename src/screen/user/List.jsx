@@ -6,9 +6,11 @@ const ListIcon = lazy(() => import("../../icons/svg/List"));
 const EditIcon = lazy(() => import("../../icons/svg/Edit"));
 const DetailIcon = lazy(() => import("../../icons/svg/Detail"));
 const DeleteIcon = lazy(() => import("../../icons/svg/Delete"));
+const ExcelIcon = lazy(() => import("../../icons/svg/Excel"));
 const Button = lazy(() => import("../../style/tailwind/Button"));
 const Input = lazy(() => import("../../style/tailwind/Input"));
 
+import ModalImportExcel from "../admin/word/ModalImportExcel";
 import DataTable from "react-data-table-component";
 import Modal from "../../components/Modal";
 import DateKhmer from "../../components/DateKhmer";
@@ -75,13 +77,16 @@ const paginationOptions = {
   noRowsPerPage: false,
 };
 
-const Word = () => {
+const List = () => {
   const [value, setValue] = useState("");
   const [records, setRecords] = useState();
+  const [originalData, setOriginalData] = useState();
   const [entries, setEntries] = useState(10);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [userId, setUserId] = useState(null);
   const [pending, setPending] = useState(true);
+  const [isModalOpenImportExcel, setIsModalOpenImportExcel] = useState(false);
+  const [search, setSearch] = useState("");
 
   // Table header
   const columns = [
@@ -175,14 +180,14 @@ const Word = () => {
       cell: (row) => (
         <div className="w-full flex gap-2 !items-center !justify-center *:hover:scale-110">
           <div className={`${row.review_status != "PENDING" ? "hidden" : ""}`}>
-            <Link to={`/word-edit/${row.id}`}>
+            <Link to={`/user/word-edit/${row.id}`}>
               <button title="Edit">
                 <EditIcon name="edit" size="20" color="" />
               </button>
             </Link>
           </div>
           <div className={`${row.review_status != "PENDING" ? "pl-1" : ""}`}>
-            <Link to={`/word-detail/${row.id}`}>
+            <Link to={`/user/word-detail/${row.id}`}>
               <button title="Detail">
                 <DetailIcon name="detail" size="18" color="" />
               </button>
@@ -217,6 +222,7 @@ const Word = () => {
       .then((res) => {
         console.log("Get data: ", res.data.data);
         setRecords(res.data.data.entries);
+        setOriginalData(res.data.data.entries);
         setPending(false);
       })
       .catch((err) => {
@@ -226,15 +232,35 @@ const Word = () => {
   }, []);
   // Search data
   const handleFilter = (e) => {
-    const newData = records.filter((row) => {
-      return row.position.toLowerCase().includes(e.target.value.toLowerCase());
-    });
-    setRecords(newData);
+    const searchValue = e.target.value.normalize("NFC").toLowerCase();
+    console.log(searchValue);
+    if (searchValue === "") {
+      setRecords(originalData); // Reset to originalData data when input is cleared
+    } else {
+      const newData = records.filter((row) => {
+        const kh = row.word_kh?.normalize("NFC") || "";
+        const en = row.word_en?.toLowerCase() || "";
+        return kh.includes(searchValue) || en.includes(searchValue);
+      });
+      setRecords(newData);
+    }
   };
 
   return (
     <>
       <div className="overflow-hidden">
+        <ModalImportExcel
+          isOpen={isModalOpenImportExcel}
+          btnNo={
+            <Button
+              color="red"
+              text="បោះបង់"
+              onClick={() => setIsModalOpenImportExcel(false)}
+              className="px-2"
+            />
+          }
+          btnOk={<Button color="blue" text="រក្សាទុក" className="px-2" />}
+        />
         <Modal
           isOpen={isModalOpen}
           btnNo={
@@ -246,7 +272,7 @@ const Word = () => {
             />
           }
           btnOk={<Button color="blue" text="បាទ" className="px-3" />}
-          routeWeb="/word-list"
+          routeWeb="/user/word-list"
           routeAPIType="delete"
           routeAPI="/api/dictionary/staging/drop?id="
           id={userId}
@@ -258,7 +284,7 @@ const Word = () => {
           {/* Breakcrabe */}
           <div className="flex flex-row items-center cursor-pointer text-gray-500 gap-x-2 w-full">
             <HomeIcon name="home" size="15" color="#6B7280" />
-            <Link to="/word-list">
+            <Link to="/user/word-list">
               <label
                 className="text-sm cursor-pointer"
                 style={{ fontFamily: "Hanuman, sans-serif" }}
@@ -292,10 +318,21 @@ const Word = () => {
                 បញ្ជី
               </label>
             </div>
-            <div className=" ml-auto text-right">
-              <Link to="/word-create">
-                <Button color="blue" text="បង្កើត" className="px-3" />
-              </Link>
+            <div className=" flex items-center ml-auto text-right gap-x-3">
+              <div className="px-1.5 bg-green-100 rounded-lg border border-green-600 pt-1.5">
+                <button
+                  onClick={() => {
+                    setIsModalOpenImportExcel(true);
+                  }}
+                >
+                  <ExcelIcon name="excel" size="24" color="#2a4f8a" />
+                </button>
+              </div>
+              <div>
+                <Link to="/user/word-create">
+                  <Button color="blue" text="បង្កើត" className="px-3" />
+                </Link>
+              </div>
             </div>
           </div>
         </div>
@@ -380,4 +417,4 @@ const Word = () => {
   );
 };
 
-export default Word;
+export default List;

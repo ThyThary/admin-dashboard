@@ -31,9 +31,13 @@ const email = async (e, valueOne, valueTwo, errorOne, errorTwo, errorThree) => {
         .then((res) => {
           localStorage.setItem("access", res.data.data.access);
           localStorage.setItem("user", JSON.stringify(res.data.data.user));
-          if (res.data.data.user.role == "USER") {
-            window.location.href = "http://localhost:8012/word-list";
-          } else if (res.data.data.user.role == "ADMIN") {
+          console.log(res.data.data.user.role);
+          if (res.data.data.user.role === "USER") {
+            window.location.href = "http://localhost:8012/user/word-list";
+          } else if (
+            res.data.data.user.role === "ADMIN" ||
+            res.data.data.user.role === "SUPERUSER"
+          ) {
             window.location.href = "http://localhost:8012/admin/user-list";
           } else {
           }

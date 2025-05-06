@@ -1,5 +1,5 @@
 import React, { useState, lazy } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import api from "../../../api";
 const HomeIcon = lazy(() => import("../../../icons/svg/Home"));
 const CreateIcon = lazy(() => import("../../../icons/svg/Create"));
@@ -11,6 +11,12 @@ import DateKhmer from "../../../components/DateKhmer";
 import Toastify from "../../../components/Toastify";
 
 const Create = () => {
+  // path name
+  const location = useLocation();
+  const textRoute = location.pathname;
+  const wordRotue = textRoute.split("-");
+  const seperateRoute = wordRotue[1];
+  const sidebarRoute = wordRotue[0];
   const wordClassKh = [
     { label: "នាម", value: "នាម" },
     { label: "កិរិយាសព្ទ", value: "កិរិយាសព្ទ" },
@@ -53,15 +59,35 @@ const Create = () => {
     word_en_type: "",
     word_en_definition: "",
   });
-
   //Handle input
   const handleChange = (e) => {
     const { name, value } = e.target;
-    console.log(value);
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    const englishOnlyRegex = /^[A-Za-z0-9.@!@#$%^&*+=_-\s]*$/;
+    const khmerOnlyRegex = /^[\u1780-\u17FF\s]+$/;
+    if (
+      (name === "word_en" ||
+        name === "word_en_type" ||
+        name === "word_en_definition" ||
+        name === "pronunciation_en" ||
+        name === "example_sentence_en") &&
+      !englishOnlyRegex.test(value)
+    ) {
+      return;
+    } else if (
+      (name === "word_kh" ||
+        name === "word_kh_type" ||
+        name === "word_kh_definition" ||
+        name === "pronunciation_kh" ||
+        name === "example_sentence_kh") &&
+      !khmerOnlyRegex.test(value)
+    ) {
+      return;
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
   };
 
   // Form validation (for front-end)
@@ -160,6 +186,46 @@ const Create = () => {
           </div>
         </div>
         <div className="relative bg-white overflow-y-auto m-5 shadow-md rounded-md min-h-[72vh] max-h-[72vh]">
+          {/* <div className=" flex flex-row pl-5">
+            <Link
+              to="/admin/word-list"
+              className={` px-5 mt-2 text-white  ${
+                location.pathname === `/admin/word-${seperateRoute}`
+                  ? " border-green-500 border-b-2"
+                  : " hover:bg-blue-950"
+              }`}
+            >
+              <div className=" flex cursor-pointer py-1 hover:scale-110">
+                <div>
+                  <label
+                    className=" text-md !text-black"
+                    style={{ fontFamily: "Hanuman, sans-serif" }}
+                  >
+                    បង្កើត
+                  </label>
+                </div>
+              </div>
+            </Link>
+            <Link
+              to="/admin/word-list"
+              className={` px-5 mt-2 text-white  ${
+                location.pathname === `/admin-${seperateRoute}`
+                  ? "bg-teal-700 shadow-md"
+                  : " hover:bg-blue-950"
+              }`}
+            >
+              <div className=" flex w-full cursor-pointer py-1 hover:scale-110">
+                <div>
+                  <label
+                    className=" text-md ml-3"
+                    style={{ fontFamily: "Hanuman, sans-serif" }}
+                  >
+                    នាំឯកសារ Excel ចូល
+                  </label>
+                </div>
+              </div>
+            </Link>
+          </div> */}
           <div className="p-5">
             <div className=" grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 w-full gap-3">
               {/* Sub content one */}

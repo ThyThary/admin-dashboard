@@ -2,7 +2,9 @@ import React, { useState, useEffect, lazy } from "react";
 import { Link } from "react-router-dom";
 const HomeIcon = lazy(() => import("../../../icons/svg/Home"));
 const ListIcon = lazy(() => import("../../../icons/svg/List"));
+const EditIcon = lazy(() => import("../../../icons/svg/Edit"));
 const DetailIcon = lazy(() => import("../../../icons/svg/Detail"));
+const DeleteIcon = lazy(() => import("../../../icons/svg/Delete"));
 const Button = lazy(() => import("../../../style/tailwind/Button"));
 const Input = lazy(() => import("../../../style/tailwind/Input"));
 
@@ -11,7 +13,7 @@ import Modal from "../../../components/Modal";
 import DateKhmer from "../../../components/DateKhmer";
 import LoadingPage from "../../../components/LoadingPage";
 import api from "../../../api";
-import "./style/table.css";
+import "../../admin/controller/style/table.css";
 // Remove bottom
 const rbs = {
   tableWrapper: {
@@ -32,6 +34,8 @@ const customStyles = {
       border: "none",
       fontFamily: "Hanuman, sans-serif",
       minHeight: "8px", // Row height
+      textAlign: "center",
+      justifyContent: "center",
       "&:nth-of-type(odd)": {
         backgroundColor: "#F3F4F6", // Light gray for even rows
       },
@@ -58,7 +62,6 @@ const customStyles = {
       padding: "2px 5px",
       textAlign: "center",
       justifyContent: "center",
-      fontFamily: "Hanuman, sans-serif",
     },
   },
 };
@@ -71,136 +74,106 @@ const paginationOptions = {
   noRowsPerPage: false,
 };
 
-const Controller = () => {
+const List = () => {
   const [value, setValue] = useState("");
   const [records, setRecords] = useState();
+  const [originalData, setOriginalData] = useState();
   const [entries, setEntries] = useState(10);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [userId, setUserId] = useState(null);
   const [pending, setPending] = useState(true);
+  const user = JSON.parse(localStorage.getItem("user"));
+
   // Table header
   const columns = [
     {
       name: "ល.រ",
-      width: "80px",
-      selector: (row) => row.index,
+      width: "60px",
       cell: (row, index) => (
-        <div
-          className="w-10 text-center"
-          style={{ fontFamily: "Hanuman, sans-serif" }}
-        >
+        <div style={{ fontFamily: "Hanuman, sans-serif" }} className="">
           {index + 1}
         </div>
       ),
-      sortable: true,
     },
     {
-      name: "ពាក្យ",
+      name: "ពាក្យខ្មែរ",
       selector: (row) => row.word_kh,
-      cell: (row) => (
-        <div
-          className="w-32 truncate"
-          style={{ fontFamily: "Hanuman, sans-serif", textAlign: "left" }}
-        >
-          {row.word_kh}
-        </div>
-      ),
+      cell: (row) => <div className="w-32 truncate">{row.word_kh}</div>,
       sortable: true,
     },
     {
-      name: "និយមន័យ",
+      name: "និយមន័យខ្មែរ",
       selector: (row) => row.word_kh_definition,
       cell: (row) => (
-        <div
-          className=" w-40 truncate"
-          style={{ fontFamily: "Hanuman, sans-serif", textAlign: "left" }}
-        >
-          {row.word_kh_definition}
-        </div>
+        <div className=" w-40 truncate">{row.word_kh_definition}</div>
       ),
     },
-    { name: "អ្នកស្នើសុំ", selector: (row) => row.created_by },
     {
-      name: "ស្ថានភាព",
-      selector: (row) => row.review_status,
-      cell: (row) => {
-        if (row.review_status == "PENDING") {
-          return (
-            <span
-              className=" text-green-600 font-bold"
-              style={{
-                fontFamily: "Hanuman, sans-serif",
-                textAlign: "center",
-              }}
-            >
-              ថ្មី
-            </span>
-          );
-        } else if (row.review_status == "APPROVED") {
-          return (
-            <span
-              className=" text-blue-600 font-bold"
-              style={{
-                fontFamily: "Hanuman, sans-serif",
-              }}
-            >
-              អនុម័ត
-            </span>
-          );
-        } else {
-          return (
-            <span
-              className="text-red-600 font-bold "
-              style={{
-                fontFamily: "Hanuman, sans-serif",
-              }}
-            >
-              បដិសេធ
-            </span>
-          );
-        }
-      },
-
+      name: "ពាក្យអង់គ្លេស",
+      selector: (row) => row.word_en,
+      cell: (row) => (
+        <div className="w-32 truncate" style={{ fontFamily: "Moul,serif" }}>
+          {row.word_en}
+        </div>
+      ),
       sortable: true,
     },
     {
-      name: "កាលបរិច្ឆេទបង្កើត",
-      selector: (row) => row.created_at,
-      sortable: true,
+      name: "និយមន័យអង់គ្លេស",
+      selector: (row) => row.word_en_definition,
+      cell: (row) => (
+        <div className=" w-40 truncate" style={{ fontFamily: "Moul,serif" }}>
+          {row.word_en_definition}
+        </div>
+      ),
     },
     {
       name: "សកម្មភាពផ្សេងៗ",
       selector: (row) => row.actions,
-
+      sortable: true,
       cell: (row) => (
         <div className="w-full flex gap-2 !items-center !justify-center *:hover:scale-110">
-          <Link to={`/admin/controller-detail/${row.id}`}>
-            <button
-              title="Detail"
-              onClick={(e) => {
-                setUserId(1);
-              }}
-            >
+          <Link
+            to={`/admin/dictionary-edit/${row.id}`}
+            className={`${user.role !== "SUPERUSER" ? "hidden" : ""}`}
+          >
+            <button title="Edit">
+              <EditIcon name="edit" size="20" color="" />
+            </button>
+          </Link>
+          <Link to={`/admin/dictionary-detail/${row.id}`}>
+            <button title="Detail">
               <DetailIcon name="detail" size="18" color="" />
             </button>
           </Link>
+          <div className={`${user.role !== "SUPERUSER" ? "hidden" : ""}`}>
+            <button
+              title="Delete"
+              onClick={() => {
+                setIsModalOpen(true);
+                setUserId(row.id);
+              }}
+            >
+              <DeleteIcon name="delete" size="18" color="" />
+            </button>
+          </div>
         </div>
       ),
     },
   ];
-
   // Fetch data from API
   useEffect(() => {
     const token = localStorage.getItem("access");
     api
-      .get("/api/dictionary/staging/list", {
+      .get(`/api/dictionary/list`, {
         headers: {
           Authorization: `Bearer ${token}`, // 👈 attach token here
         },
       })
       .then((res) => {
-        console.log(res.data.data.entries);
+        console.log("Get data: ", res.data.data);
         setRecords(res.data.data.entries);
+        setOriginalData(res.data.data.entries);
         setPending(false);
       })
       .catch((err) => {
@@ -210,10 +183,18 @@ const Controller = () => {
   }, []);
   // Search data
   const handleFilter = (e) => {
-    const newData = data.filter((row) => {
-      return row.word_kh.toLowerCase().includes(e.target.value.toLowerCase());
-    });
-    setRecords(newData);
+    const searchValue = e.target.value.normalize("NFC").toLowerCase();
+    console.log(searchValue);
+    if (searchValue === "") {
+      setRecords(originalData); // Reset to originalData data when input is cleared
+    } else {
+      const newData = records.filter((row) => {
+        const kh = row.word_kh?.normalize("NFC") || "";
+        const en = row.word_en?.toLowerCase() || "";
+        return kh.includes(searchValue) || en.includes(searchValue);
+      });
+      setRecords(newData);
+    }
   };
 
   return (
@@ -224,25 +205,30 @@ const Controller = () => {
           btnNo={
             <Button
               color="red"
-              text="បដិសេធ"
+              text="ទេ"
               onClick={() => setIsModalOpen(false)}
-              className=""
+              className="px-4.5"
             />
           }
-          btnOk={<Button color="blue" text="យល់ព្រម" className="" />}
+          btnOk={<Button color="blue" text="បាទ" className="px-3" />}
+          routeWeb="/admin/dictionary-list"
+          routeAPIType="delete"
+          routeAPI="/api/dictionary/drop?id="
+          id={userId}
+          text="លុប"
         />
       </div>
-      <div className=" flex-row">
-        <div className="flex flex-col min-h-28 max-h-28 px-5 pt-5">
+      <div className=" flex-row ">
+        <div className="flex flex-col min-h-28 max-h-28 px-5 pt-5 ">
           {/* Breakcrabe */}
-          <div className="flex flex-row items-center cursor-pointer text-gray-500 gap-x-2">
+          <div className="flex flex-row items-center cursor-pointer text-gray-500 gap-x-2 w-full">
             <HomeIcon name="home" size="15" color="#6B7280" />
-            <Link to="">
+            <Link to="/admin/dictionary-list">
               <label
                 className="text-sm cursor-pointer"
                 style={{ fontFamily: "Hanuman, sans-serif" }}
               >
-                / ត្រួតពិនិត្យសំណើរ
+                / វចនានុក្រម
               </label>
             </Link>
             <Link to="">
@@ -294,7 +280,6 @@ const Controller = () => {
               ) : (
                 ""
               )}
-
               <div className="text-right ml-auto items-center hidden">
                 <label
                   style={{ fontFamily: "Hanuman, sans-serif" }}
@@ -323,12 +308,11 @@ const Controller = () => {
                 </label>
               </div>
             </div>
-            {/* Invoke table */}
-            <div>
+
+            <div className="">
               <DataTable
                 columns={columns}
                 data={records}
-                //No data
                 noDataComponent={
                   <div
                     style={{
@@ -356,4 +340,4 @@ const Controller = () => {
   );
 };
 
-export default Controller;
+export default List;

@@ -34,10 +34,7 @@ function Detail() {
   }, []);
   if (!user)
     return (
-      <div
-        className=" flex justify-center items-center text-center "
-        style={{ padding: "24px", textAlign: "center" }}
-      >
+      <div style={{ padding: "24px", textAlign: "center" }}>
         <span
           style={{
             fontSize: "24px",
@@ -136,7 +133,7 @@ function Detail() {
                 style={{ fontFamily: "Hanuman, sans-serif" }}
                 className="font-bold text-lg text-[#2a4f8a]"
               >
-                លម្អិតត្រួតពិនិត្យសំណើរ
+                លម្អិតត្រួតពិនិត្យសំណើ
               </label>
             </div>
             <div className="col-span-2 !border-b-1 border-[#2f7447]"></div>
@@ -314,9 +311,15 @@ function Detail() {
                 return (
                   <div className="flex gap-3">
                     {" "}
-                    <Link to="/admin/controller-list">
-                      <Button color="red" text="បដិសេធ" className="" />
-                    </Link>
+                    {/* <Link to="/admin/controller-list"> */}
+                    {/* <Button color="red" text="បដិសេធ" className="" /> */}
+                    <Button
+                      color="red"
+                      text="បដិសេធ"
+                      className=""
+                      onClick={() => setIsModalReject(true)}
+                    />
+                    {/* </Link> */}
                     <div>
                       <Button
                         color="blue"

@@ -7,28 +7,33 @@ import { ToastContainer } from "react-toastify";
 const MenuIcon = lazy(() => import("../icons/svg/Menu"));
 const MenuBar = lazy(() => import("./MenuBar"));
 // User component
-const UserList = lazy(() => import("../screen/admin/user/UserList"));
+const UserList = lazy(() => import("../screen/admin/user/List"));
 const UserCreate = lazy(() => import("../screen/admin/user/Create"));
 const UserEdit = lazy(() => import("../screen/admin/user/Edit"));
 const UserDetail = lazy(() => import("../screen/admin/user/Detail"));
 // Word component
-const AdminWordList = lazy(() => import("../screen/admin/word/Word"));
+const AdminWordList = lazy(() => import("../screen/admin/word/List"));
 const AdminWordCreate = lazy(() => import("../screen/admin/word/Create"));
 const AdminWordEdit = lazy(() => import("../screen/admin/word/Edit"));
 const AdminWordDetail = lazy(() => import("../screen/admin/word/Detail"));
 // Controller component
-const ControllerList = lazy(() =>
-  import("../screen/admin/controller/Controller")
-);
+const ControllerList = lazy(() => import("../screen/admin/controller/List"));
 const ControllerDetail = lazy(() =>
   import("../screen/admin/controller/Detail")
 );
 // Word component
-const WordList = lazy(() => import("../screen/normal_user/Word"));
-const WordCreate = lazy(() => import("../screen/normal_user/Create"));
-const WordEdit = lazy(() => import("../screen/normal_user/Edit"));
-const WordDetail = lazy(() => import("../screen/normal_user/Detail"));
-
+const WordList = lazy(() => import("../screen/user/List"));
+const WordCreate = lazy(() => import("../screen/user/Create"));
+const WordEdit = lazy(() => import("../screen/user/Edit"));
+const WordDetail = lazy(() => import("../screen/user/Detail"));
+//Dictionary component
+const DictionaryList = lazy(() => import("../screen/admin/dictionary/List"));
+const DictionaryDetail = lazy(() =>
+  import("../screen/admin/dictionary/Detail")
+);
+const DictionaryEdit = lazy(() => import("../screen/admin/dictionary/Edit"));
+//Comment component
+const CommentList = lazy(() => import("../screen/admin/comment/List"));
 const Profile = lazy(() => import("../components/Profile"));
 
 const user = JSON.parse(localStorage.getItem("user"));
@@ -181,34 +186,56 @@ const Master = ({ color = "#2a4f8a" }) => {
               <AdminWordDetail />
             </div>
           )}
+          {/* Admin Dictionary routes */}
+          {route === "/admin/dictionary-list" && (
+            <div className=" h-auto">
+              <DictionaryList />
+            </div>
+          )}
+          {route === `/admin/dictionary-detail/${routeId}` && (
+            <div className=" h-auto">
+              <DictionaryDetail />
+            </div>
+          )}
+          {route === `/admin/dictionary-edit/${routeId}` && (
+            <div className=" h-auto">
+              <DictionaryEdit />
+            </div>
+          )}
+          {/* Admin Comment routes */}
+          {route === "/admin/comment-list" && (
+            <div className=" h-auto">
+              <CommentList />
+            </div>
+          )}
           {/* Normal user */}
           {/* Word routes */}
-          {route === "/word-list" && (
+          {route === "/user/word-list" && (
             <div className=" h-auto">
               <WordList />
             </div>
           )}
-          {route === "/word-create" && (
+          {route === "/user/word-create" && (
             <div className=" h-auto">
               <WordCreate />
             </div>
           )}
-          {route === `/word-edit/${routeId}` && (
+          {route === `/user/word-edit/${routeId}` && (
             <div className=" h-auto">
               <WordEdit />
             </div>
           )}
-          {route === `/word-detail/${routeId}` && (
+          {route === `/user/word-detail/${routeId}` && (
             <div className=" h-auto">
               <WordDetail />
             </div>
           )}
           {/* Password routes */}
-          {route === "/change-password" && (
+          {/* {route === "/change-password" && (
             <div className=" h-auto">
               <ChangePassword />
             </div>
-          )}
+          )} */}
         </div>
       </div>
     </>

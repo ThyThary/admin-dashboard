@@ -25,14 +25,20 @@ const App = () => {
           <Route path="/admin/word-create" Component={Master}></Route>
           <Route path="/admin/word-edit/:id" Component={Master}></Route>
           <Route path="/admin/word-detail/:id" Component={Master}></Route>
+          {/* Dictionary routes */}
+          <Route path="/admin/dictionary-list" Component={Master}></Route>
+          <Route path="/admin/dictionary-detail/:id" Component={Master}></Route>
+          <Route path="/admin/dictionary-edit/:id" Component={Master}></Route>
+          {/* Comment routes */}
+          <Route path="/admin/comment-list" Component={Master}></Route>
           {/* Password routes */}
-          <Route path="/change-password" Component={Master}></Route>
+          {/* <Route path="/change-password" Component={Master}></Route> */}
           {/* Normal user */}
           {/* Word route */}
-          <Route path="/word-list" Component={Master}></Route>
-          <Route path="/word-create" Component={Master}></Route>
-          <Route path="/word-edit/:id" Component={Master}></Route>
-          <Route path="/word-detail/:id" Component={Master}></Route>
+          <Route path="/user/word-list" Component={Master}></Route>
+          <Route path="/user/word-create" Component={Master}></Route>
+          <Route path="/user/word-edit/:id" Component={Master}></Route>
+          <Route path="/user/word-detail/:id" Component={Master}></Route>
           {/* Catch-all route for 404 */}
           <Route
             path="*"

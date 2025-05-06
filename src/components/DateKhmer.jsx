@@ -67,7 +67,7 @@ const DateKhmer = () => {
       dayKh = "៥";
       break;
     case "6":
-      dayKh = "៥";
+      dayKh = "៦";
       break;
     case "7":
       dayKh = "៧";

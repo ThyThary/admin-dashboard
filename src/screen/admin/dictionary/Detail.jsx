@@ -1,25 +1,26 @@
 import React, { useState, useEffect } from "react";
-import HomeIcon from "../../icons/svg/Home";
-import DetailIcon from "../../icons/svg/Detail";
+import HomeIcon from "../../../icons/svg/Home";
+import DetailIcon from "../../../icons/svg/Detail";
 import { Link, useParams } from "react-router-dom";
-import Button from "../../style/tailwind/Button";
-import DateKhmer from "../../components/DateKhmer";
-import capitalizeFirst from "../../validate/capitalizeFirst";
-import api from "../../api";
-const Detail = () => {
+import Button from "../../../style/tailwind/Button";
+import DateKhmer from "../../../components/DateKhmer";
+import capitalizeFirst from "../../../validate/capitalizeFirst";
+import api from "../../../api";
+function Detail() {
   const { id } = useParams();
   const [user, setUser] = useState([]);
   // Fetch data from API
   useEffect(() => {
     const token = localStorage.getItem("access");
     api
-      .get(`/api/dictionary/staging/detail?id=${id}`, {
+      .get(`/api/dictionary/detail?id=${id}`, {
         headers: {
           Authorization: `Bearer ${token}`, // 👈 attach token here
         },
       })
       .then((res) => {
         console.log("Get data: ", res.data.data);
+
         setUser(res.data.data);
       })
       .catch((err) => {
@@ -27,7 +28,20 @@ const Detail = () => {
         // setPending(false);
       });
   }, []);
-  if (!user) return <div>Loading...</div>;
+  if (!user)
+    return (
+      <div style={{ padding: "24px", textAlign: "center" }}>
+        <span
+          style={{
+            fontSize: "24px",
+            color: "#007bff",
+            fontFamily: "Hanuman, sans-serif",
+          }}
+        >
+          កំពុងដំណើរការ... 🔄
+        </span>
+      </div>
+    );
   return (
     <>
       <div className=" flex-row">
@@ -35,12 +49,12 @@ const Detail = () => {
           {/* Breakcrabe */}
           <div className="flex flex-row items-center cursor-pointer text-gray-500 gap-x-2">
             <HomeIcon name="home" size="15" />
-            <Link to="/word-list">
+            <Link to="/admin/dictionary-list">
               <label
                 className="text-sm cursor-pointer"
                 style={{ fontFamily: "Hanuman, sans-serif" }}
               >
-                / ពាក្យ
+                / វចនានុក្រម
               </label>
             </Link>
             <Link to="">
@@ -90,17 +104,16 @@ const Detail = () => {
                     className="font-bold text-md w-[260px]"
                     style={{ fontFamily: "Hanuman, sans-serif" }}
                   >
-                    អ្នកត្រួតពិនិត្យ
+                    ស្ថានភាព
                   </li>
                   <li className="">:</li>
                   <li
                     className="ml-6 text-md w-full"
                     style={{ fontFamily: "Hanuman, sans-serif" }}
                   >
-                    {user.reviewed_by ?? ""}
+                    <span className="text-blue-600">អនុម័ត</span>
                   </li>
                 </ul>
-
                 <ul className="flex mb-2">
                   <li
                     className="font-bold text-md w-[260px]"
@@ -174,21 +187,6 @@ const Detail = () => {
                     style={{ fontFamily: "Hanuman, sans-serif" }}
                   >
                     {user.example_sentence_kh ?? ""}
-                  </li>
-                </ul>
-                <ul className="flex mb-2">
-                  <li
-                    className="font-bold text-md w-[260px]"
-                    style={{ fontFamily: "Hanuman, sans-serif" }}
-                  >
-                    កាលបរិច្ឆេទបង្កើត
-                  </li>
-                  <li className="">:</li>
-                  <li
-                    className="ml-6 text-md w-full"
-                    style={{ fontFamily: "Hanuman, sans-serif" }}
-                  >
-                    {user.created_at ?? ""}
                   </li>
                 </ul>
               </div>
@@ -269,74 +267,6 @@ const Detail = () => {
                     {user.example_sentence_en ?? ""}
                   </li>
                 </ul>
-                <ul className="flex mb-2">
-                  <li
-                    className="font-bold text-md w-[260px]"
-                    style={{ fontFamily: "Hanuman, sans-serif" }}
-                  >
-                    ស្ថានភាព
-                  </li>
-                  <li className="">:</li>
-                  <li
-                    className="ml-6 text-md w-full"
-                    style={{ fontFamily: "Hanuman, sans-serif" }}
-                  >
-                    {(() => {
-                      if (user.review_status == "PENDING") {
-                        return (
-                          <span
-                            className=" text-green-600 font-bold"
-                            style={{
-                              fontFamily: "Hanuman, sans-serif",
-                              textAlign: "center",
-                            }}
-                          >
-                            ថ្មី
-                          </span>
-                        );
-                      } else if (user.review_status == "APPROVED") {
-                        return (
-                          <span
-                            className=" text-blue-600 font-bold"
-                            style={{
-                              fontFamily: "Hanuman, sans-serif",
-                            }}
-                          >
-                            អនុម័ត
-                          </span>
-                        );
-                      } else {
-                        return (
-                          <span
-                            className="text-red-600 font-bold "
-                            style={{
-                              fontFamily: "Hanuman, sans-serif",
-                            }}
-                          >
-                            បដិសេធ
-                          </span>
-                        );
-                      }
-                    })()}
-                  </li>
-                </ul>
-                <ul
-                  className={`flex mb-2 ${user.rejection_reason ?? "hidden"}`}
-                >
-                  <li
-                    className="font-bold text-md w-[260px]"
-                    style={{ fontFamily: "Hanuman, sans-serif" }}
-                  >
-                    មូលហេតុ
-                  </li>
-                  <li className="">:</li>
-                  <li
-                    className="ml-6 text-md w-full"
-                    style={{ fontFamily: "Hanuman, sans-serif" }}
-                  >
-                    {user.rejection_reason ?? ""}
-                  </li>
-                </ul>
               </div>
             </div>
           </div>
@@ -345,7 +275,7 @@ const Detail = () => {
             <div className=" flex gap-3">
               <div>
                 {" "}
-                <Link to="/word-list">
+                <Link to="/admin/dictionary-list">
                   <Button color="slate" text="ត្រលប់ក្រោយ" className="" />
                 </Link>
               </div>
@@ -355,6 +285,6 @@ const Detail = () => {
       </div>
     </>
   );
-};
+}
 
 export default Detail;

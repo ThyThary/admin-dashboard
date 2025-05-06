@@ -28,7 +28,20 @@ function Detail() {
         // setPending(false);
       });
   }, []);
-  if (!user) return <div>Loading...</div>;
+  if (!user)
+    return (
+      <div style={{ padding: "24px", textAlign: "center" }}>
+        <span
+          style={{
+            fontSize: "24px",
+            color: "#007bff",
+            fontFamily: "Hanuman, sans-serif",
+          }}
+        >
+          កំពុងដំណើរការ... 🔄
+        </span>
+      </div>
+    );
   return (
     <>
       <div className=" flex-row">

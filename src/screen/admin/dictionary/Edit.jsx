@@ -42,14 +42,11 @@ const Edit = () => {
       if (!token || !id) return;
 
       try {
-        const response = await api.get(
-          `/api/dictionary/staging/detail?id=${id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await api.get(`/api/dictionary/detail?id=${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setUser(response.data.data);
         setFormData({
           word_kh: response.data.data.word_kh || "",
@@ -122,7 +119,14 @@ const Edit = () => {
       }));
     }
   };
-
+  // //Handle input
+  // const handleChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setFormData((prev) => ({
+  //     ...prev,
+  //     [name]: value,
+  //   }));
+  // };
   // Form validation (for front-end)
   const validateForm = () => {
     const newErrors = {};
@@ -160,14 +164,14 @@ const Edit = () => {
 
     try {
       const token = localStorage.getItem("access");
-      await api.put(`/api/dictionary/staging/update?id=${id}`, formData, {
+      await api.put(`/api/dictionary/update?id=${id}`, formData, {
         headers: {
           Authorization: `Bearer ${token}`, // 👈 attach token here
         },
       });
       Toastify("success", "រក្សាទុកដោយជោគជ័យ!");
       setTimeout(() => {
-        window.location.href = "http://localhost:8012/admin/word-list";
+        window.location.href = "http://localhost:8012/admin/dictionary-list";
       }, 3000);
     } catch (error) {
       if (error.response) {
@@ -201,7 +205,7 @@ const Edit = () => {
           {/* Breakcrabe */}
           <div className="flex flex-row items-center cursor-pointer text-gray-500 gap-x-2">
             <HomeIcon name="home" size="15" />
-            <Link to="/admin/word-list">
+            <Link to="/admin/dictionary-list">
               <label
                 className="text-sm cursor-pointer"
                 style={{ fontFamily: "Hanuman, sans-serif" }}
@@ -400,12 +404,12 @@ const Edit = () => {
           <div className=" flex justify-end  sm:col-span-2 text-end mr-5 mb-5">
             <div className=" flex gap-3">
               {" "}
-              <Link to="/admin/word-list">
+              <Link to="/admin/dictionary-list">
                 <Button color="red" text="បោះបង់" className="" />
               </Link>
               <div>
                 {" "}
-                <Link to="/admin/word-list">
+                <Link to="/admin/dictionary-list">
                   <Button
                     color="blue"
                     text="រក្សាទុក"

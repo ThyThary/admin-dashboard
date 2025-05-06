@@ -11,7 +11,6 @@ const Modal = ({
   id,
   text,
 }) => {
-  console.log(id);
   if (!isOpen) return null;
 
   return (

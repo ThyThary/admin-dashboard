@@ -1,25 +1,25 @@
 import React, { useState, useEffect } from "react";
-import HomeIcon from "../../../icons/svg/Home";
-import DetailIcon from "../../../icons/svg/Detail";
+import HomeIcon from "../../icons/svg/Home";
+import DetailIcon from "../../icons/svg/Detail";
 import { Link, useParams } from "react-router-dom";
-import Button from "../../../style/tailwind/Button";
-import DateKhmer from "../../../components/DateKhmer";
-import api from "../../../api";
-export default function Detail() {
-  // Get user id
+import Button from "../../style/tailwind/Button";
+import DateKhmer from "../../components/DateKhmer";
+import capitalizeFirst from "../../validate/capitalizeFirst";
+import api from "../../api";
+const Detail = () => {
   const { id } = useParams();
-  const [user, setUser] = useState();
+  const [user, setUser] = useState([]);
   // Fetch data from API
   useEffect(() => {
     const token = localStorage.getItem("access");
     api
-      .get(`/api/users/detail?id=${id}`, {
+      .get(`/api/dictionary/staging/detail?id=${id}`, {
         headers: {
           Authorization: `Bearer ${token}`, // 👈 attach token here
         },
       })
       .then((res) => {
-        // console.log("Get data: ", res.data.data);
+        console.log("Get data: ", res.data.data);
         setUser(res.data.data);
       })
       .catch((err) => {
@@ -27,20 +27,6 @@ export default function Detail() {
         // setPending(false);
       });
   }, []);
-  if (!user)
-    return (
-      <div style={{ padding: "24px", textAlign: "center" }}>
-        <span
-          style={{
-            fontSize: "24px",
-            color: "#007bff",
-            fontFamily: "Hanuman, sans-serif",
-          }}
-        >
-          កំពុងដំណើរការ... 🔄
-        </span>
-      </div>
-    );
   return (
     <>
       <div className=" flex-row">
@@ -48,12 +34,12 @@ export default function Detail() {
           {/* Breakcrabe */}
           <div className="flex flex-row items-center cursor-pointer text-gray-500 gap-x-2">
             <HomeIcon name="home" size="15" />
-            <Link to="/admin/user-list">
+            <Link to="/user/word-list">
               <label
                 className="text-sm cursor-pointer"
                 style={{ fontFamily: "Hanuman, sans-serif" }}
               >
-                / អ្នកប្រើប្រាស់
+                / ពាក្យ
               </label>
             </Link>
             <Link to="">
@@ -65,10 +51,11 @@ export default function Detail() {
               </label>
             </Link>
             <div className="hidden sm:block ml-auto">
+              {" "}
               <DateKhmer />
             </div>
           </div>
-
+          {/* Button create */}
           <div className="flex flex-row gap-x-2 items-center mt-7">
             <div>
               <DetailIcon name="detail" size="24" color="#2a4f8a" />
@@ -90,7 +77,7 @@ export default function Detail() {
                 style={{ fontFamily: "Hanuman, sans-serif" }}
                 className="font-bold text-lg text-[#2a4f8a]"
               >
-                លម្អិតអ្នកប្រើប្រាស់
+                លម្អិតពាក្យ
               </label>
             </div>
             <div className="col-span-2 !border-b-1 border-[#2f7447]"></div>
@@ -102,16 +89,30 @@ export default function Detail() {
                     className="font-bold text-md w-[260px]"
                     style={{ fontFamily: "Hanuman, sans-serif" }}
                   >
-                    <div data-column-id="2" class="sc-cXrvCr kSanMI">
-                      លេខសម្គាល់
-                    </div>
+                    អ្នកត្រួតពិនិត្យ
                   </li>
                   <li className="">:</li>
                   <li
                     className="ml-6 text-md w-full"
                     style={{ fontFamily: "Hanuman, sans-serif" }}
                   >
-                    {user.staff_id ?? ""}
+                    {user.reviewed_by ?? ""}
+                  </li>
+                </ul>
+
+                <ul className="flex mb-2">
+                  <li
+                    className="font-bold text-md w-[260px]"
+                    style={{ fontFamily: "Hanuman, sans-serif" }}
+                  >
+                    ពាក្យខ្មែរ
+                  </li>
+                  <li className="">:</li>
+                  <li
+                    className="ml-6 text-md w-full"
+                    style={{ fontFamily: "Hanuman, sans-serif" }}
+                  >
+                    {user.word_kh ?? ""}
                   </li>
                 </ul>
                 <ul className="flex mb-2">
@@ -119,16 +120,14 @@ export default function Detail() {
                     className="font-bold text-md w-[260px]"
                     style={{ fontFamily: "Hanuman, sans-serif" }}
                   >
-                    <div data-column-id="2" class="sc-cXrvCr kSanMI">
-                      ឈ្មោះ
-                    </div>
+                    ថ្នាក់ពាក្យខ្មែរ
                   </li>
                   <li className="">:</li>
                   <li
                     className="ml-6 text-md w-full"
                     style={{ fontFamily: "Hanuman, sans-serif" }}
                   >
-                    {user.username_kh ?? ""}
+                    {user.word_kh_type ?? ""}
                   </li>
                 </ul>
                 <ul className="flex mb-2">
@@ -136,16 +135,14 @@ export default function Detail() {
                     className="font-bold text-md w-[260px]"
                     style={{ fontFamily: "Hanuman, sans-serif" }}
                   >
-                    <div data-column-id="2" class="sc-cXrvCr kSanMI">
-                      ភេទ
-                    </div>
+                    និយមន័យខ្មែរ
                   </li>
                   <li className="">:</li>
                   <li
                     className="ml-6 text-md w-full"
                     style={{ fontFamily: "Hanuman, sans-serif" }}
                   >
-                    {user.sex == "MALE" ? "ប្រុស" : "ស្រី"}
+                    {user.word_kh_definition ?? ""}
                   </li>
                 </ul>
                 <ul className="flex mb-2">
@@ -153,16 +150,44 @@ export default function Detail() {
                     className="font-bold text-md w-[260px]"
                     style={{ fontFamily: "Hanuman, sans-serif" }}
                   >
-                    <div data-column-id="2" class="sc-cXrvCr kSanMI">
-                      លេខទូរស័ព្ទ
-                    </div>
+                    បញ្ចេញសម្លេងខ្មែរ
                   </li>
                   <li className="">:</li>
                   <li
                     className="ml-6 text-md w-full"
                     style={{ fontFamily: "Hanuman, sans-serif" }}
                   >
-                    {user.phone_number ?? ""}
+                    {user.pronunciation_kh ?? ""}
+                  </li>
+                </ul>
+                <ul className="flex mb-2">
+                  <li
+                    className="font-bold text-md w-[260px]"
+                    style={{ fontFamily: "Hanuman, sans-serif" }}
+                  >
+                    ឧទាហរណ៍ខ្មែរ
+                  </li>
+                  <li className="">:</li>
+                  <li
+                    className="ml-6 text-md w-full"
+                    style={{ fontFamily: "Hanuman, sans-serif" }}
+                  >
+                    {user.example_sentence_kh ?? ""}
+                  </li>
+                </ul>
+                <ul className="flex mb-2">
+                  <li
+                    className="font-bold text-md w-[260px]"
+                    style={{ fontFamily: "Hanuman, sans-serif" }}
+                  >
+                    កាលបរិច្ឆេទបង្កើត
+                  </li>
+                  <li className="">:</li>
+                  <li
+                    className="ml-6 text-md w-full"
+                    style={{ fontFamily: "Hanuman, sans-serif" }}
+                  >
+                    {user.created_at ?? ""}
                   </li>
                 </ul>
               </div>
@@ -173,16 +198,14 @@ export default function Detail() {
                     className="font-bold text-md w-[260px]"
                     style={{ fontFamily: "Hanuman, sans-serif" }}
                   >
-                    <div data-column-id="2" class="sc-cXrvCr kSanMI">
-                      អ៊ីមែល
-                    </div>
+                    ពាក្យអង់គ្លេស
                   </li>
                   <li className="">:</li>
                   <li
                     className="ml-6 text-md w-full"
-                    style={{ fontFamily: "Moul,serif" }}
+                    style={{ fontFamily: "Moul, serif" }}
                   >
-                    {user.email ?? ""}
+                    {user.word_en ?? ""}
                   </li>
                 </ul>
                 <ul className="flex mb-2">
@@ -190,16 +213,14 @@ export default function Detail() {
                     className="font-bold text-md w-[260px]"
                     style={{ fontFamily: "Hanuman, sans-serif" }}
                   >
-                    <div data-column-id="2" class="sc-cXrvCr kSanMI">
-                      មុខតំណែង
-                    </div>
+                    ថ្នាក់ពាក្យអង់គ្លេស
                   </li>
                   <li className="">:</li>
                   <li
                     className="ml-6 text-md w-full"
-                    style={{ fontFamily: "Hanuman, sans-serif" }}
+                    style={{ fontFamily: "Moul, serif" }}
                   >
-                    {user.position ?? ""}
+                    {capitalizeFirst(user.word_en_type)}
                   </li>
                 </ul>
                 <ul className="flex mb-2">
@@ -207,16 +228,14 @@ export default function Detail() {
                     className="font-bold text-md w-[260px]"
                     style={{ fontFamily: "Hanuman, sans-serif" }}
                   >
-                    <div data-column-id="2" class="sc-cXrvCr kSanMI">
-                      កាលបរិច្ឆេទបង្កើត
-                    </div>
+                    និយមន័យអង់គ្លេស
                   </li>
                   <li className="">:</li>
                   <li
                     className="ml-6 text-md w-full"
-                    style={{ fontFamily: "Hanuman, sans-serif" }}
+                    style={{ fontFamily: "Moul, serif" }}
                   >
-                    {user.date_joined ?? ""}
+                    {user.word_en_definition ?? ""}
                   </li>
                 </ul>
                 <ul className="flex mb-2">
@@ -224,9 +243,37 @@ export default function Detail() {
                     className="font-bold text-md w-[260px]"
                     style={{ fontFamily: "Hanuman, sans-serif" }}
                   >
-                    <div data-column-id="2" class="sc-cXrvCr kSanMI">
-                      តួនាទី
-                    </div>
+                    បញ្ចេញសម្លេងអង់គ្លេស
+                  </li>
+                  <li className="">:</li>
+                  <li
+                    className="ml-6 text-md w-full"
+                    style={{ fontFamily: "Moul, serif" }}
+                  >
+                    {user.pronunciation_en ?? ""}
+                  </li>
+                </ul>
+                <ul className="flex mb-2">
+                  <li
+                    className="font-bold text-md w-[260px]"
+                    style={{ fontFamily: "Hanuman, sans-serif" }}
+                  >
+                    ឧទាហរណ៍អង់គ្លេស
+                  </li>
+                  <li className="">:</li>
+                  <li
+                    className="ml-6 text-md w-full"
+                    style={{ fontFamily: "Moul, serif" }}
+                  >
+                    {user.example_sentence_en ?? ""}
+                  </li>
+                </ul>
+                <ul className="flex mb-2">
+                  <li
+                    className="font-bold text-md w-[260px]"
+                    style={{ fontFamily: "Hanuman, sans-serif" }}
+                  >
+                    ស្ថានភាព
                   </li>
                   <li className="">:</li>
                   <li
@@ -234,25 +281,70 @@ export default function Detail() {
                     style={{ fontFamily: "Hanuman, sans-serif" }}
                   >
                     {(() => {
-                      if (user.role === "SUPERUSER") {
-                        return "អ្នកគ្រប់គ្រងជាន់ខ្ពស់";
-                      } else if (user.role === "ADMIN") {
-                        return "អ្នកគ្រប់គ្រង";
+                      if (user.review_status == "PENDING") {
+                        return (
+                          <span
+                            className=" text-green-600 font-bold"
+                            style={{
+                              fontFamily: "Hanuman, sans-serif",
+                              textAlign: "center",
+                            }}
+                          >
+                            ថ្មី
+                          </span>
+                        );
+                      } else if (user.review_status == "APPROVED") {
+                        return (
+                          <span
+                            className=" text-blue-600 font-bold"
+                            style={{
+                              fontFamily: "Hanuman, sans-serif",
+                            }}
+                          >
+                            អនុម័ត
+                          </span>
+                        );
                       } else {
-                        return "អ្នកប្រើប្រាស់";
+                        return (
+                          <span
+                            className="text-red-600 font-bold "
+                            style={{
+                              fontFamily: "Hanuman, sans-serif",
+                            }}
+                          >
+                            បដិសេធ
+                          </span>
+                        );
                       }
                     })()}
+                  </li>
+                </ul>
+                <ul
+                  className={`flex mb-2 ${user.rejection_reason ?? "hidden"}`}
+                >
+                  <li
+                    className="font-bold text-md w-[260px]"
+                    style={{ fontFamily: "Hanuman, sans-serif" }}
+                  >
+                    មូលហេតុ
+                  </li>
+                  <li className="">:</li>
+                  <li
+                    className="ml-6 text-md w-full"
+                    style={{ fontFamily: "Hanuman, sans-serif" }}
+                  >
+                    {user.rejection_reason ?? ""}
                   </li>
                 </ul>
               </div>
             </div>
           </div>
           {/* button */}
-          <div className=" absolute  sm:col-span-2 text-end right-5 bottom-5">
+          <div className="md:absolute md:bottom-5 md:right-5 flex mr-5 mb-5 md:mr-0 md:mb-0 justify-end sm:col-span-2 text-end">
             <div className=" flex gap-3">
               <div>
                 {" "}
-                <Link to="/admin/user-list">
+                <Link to="/user/word-list">
                   <Button color="slate" text="ត្រលប់ក្រោយ" className="" />
                 </Link>
               </div>
@@ -262,4 +354,6 @@ export default function Detail() {
       </div>
     </>
   );
-}
+};
+
+export default Detail;

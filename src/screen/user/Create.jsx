@@ -104,7 +104,7 @@ const Create = () => {
       });
       Toastify("success", "រក្សាទុកដោយជោគជ័យ!");
       setTimeout(() => {
-        window.location.href = "http://localhost:8012/word-list";
+        window.location.href = "http://localhost:8012/user/word-list";
       }, 2000);
     } catch (error) {
       if (error.response) {
@@ -124,7 +124,7 @@ const Create = () => {
           {/* Breakcrabe */}
           <div className="flex flex-row items-center cursor-pointer text-gray-500 gap-x-2">
             <HomeIcon name="home" size="15" />
-            <Link to="/word-list">
+            <Link to="/user/word-list">
               <label
                 className="text-sm cursor-pointer"
                 style={{ fontFamily: "Hanuman, sans-serif" }}
@@ -322,7 +322,7 @@ const Create = () => {
           <div className=" flex justify-end  sm:col-span-2 text-end mr-5 mb-5">
             <div className=" flex gap-3">
               {" "}
-              <Link to="/word-list">
+              <Link to="/user/word-list">
                 <Button color="red" text="បោះបង់" className="" />
               </Link>
               <div>

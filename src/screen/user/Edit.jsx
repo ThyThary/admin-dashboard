@@ -144,7 +144,7 @@ const Edit = () => {
       });
       Toastify("success", "រក្សាទុកដោយជោគជ័យ!");
       setTimeout(() => {
-        window.location.href = "http://localhost:8012/word-list";
+        window.location.href = "http://localhost:8012/user/word-list";
       }, 2000);
     } catch (error) {
       if (error.response) {
@@ -157,20 +157,7 @@ const Edit = () => {
       console.error("Submission error:", error);
     }
   };
-  if (!user)
-    return (
-      <div style={{ padding: "24px", textAlign: "center" }}>
-        <span
-          style={{
-            fontSize: "24px",
-            color: "#007bff",
-            fontFamily: "Hanuman, sans-serif",
-          }}
-        >
-          កំពុងដំណើរការ... 🔄
-        </span>
-      </div>
-    );
+
   return (
     <>
       <div className=" flex-row">
@@ -178,7 +165,7 @@ const Edit = () => {
           {/* Breakcrabe */}
           <div className="flex flex-row items-center cursor-pointer text-gray-500 gap-x-2">
             <HomeIcon name="home" size="15" />
-            <Link to="/word-list">
+            <Link to="/user/word-list">
               <label
                 className="text-sm cursor-pointer"
                 style={{ fontFamily: "Hanuman, sans-serif" }}
@@ -377,12 +364,12 @@ const Edit = () => {
           <div className=" flex justify-end  sm:col-span-2 text-end mr-5 mb-5">
             <div className=" flex gap-3">
               {" "}
-              <Link to="/word-list">
+              <Link to="/user/word-list">
                 <Button color="red" text="បោះបង់" className="" />
               </Link>
               <div>
                 {" "}
-                <Link to="/word-list">
+                <Link to="/user/word-list">
                   <Button
                     color="blue"
                     text="រក្សាទុក"

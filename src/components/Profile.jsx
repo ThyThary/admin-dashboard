@@ -15,7 +15,7 @@ function Profile({ img, name, email, id, position, phone }) {
           btnNo={
             <Button
               color="red"
-              text="បដិសេធ"
+              text="បោះបង់"
               onClick={() => setIsModalOpenPWD(false)}
               className="px-2"
             />

@@ -8,20 +8,12 @@ const Select = lazy(() => import("../../../style/tailwind/Select"));
 const Button = lazy(() => import("../../../style/tailwind/Button"));
 import Toastify from "../../../components/Toastify";
 import DateKhmer from "../../../components/DateKhmer";
-import validatorEnglish from "../../../validate/english";
 const Create = () => {
-  const [nameEnUser, setNameEnUser] = useState("");
-  const [emailUser, setEmailUser] = useState("");
-  const [passwordUser, setPasswordUser] = useState("");
+  const user = JSON.parse(localStorage.getItem("user"));
   //Gender value
   const genderOptions = [
     { label: "ប្រុស", value: "MALE" },
     { label: "ស្រី", value: "FEMALE" },
-  ];
-  //Role
-  const roleOptions = [
-    { label: "អ្នកប្រើប្រាស់", value: "USER" },
-    { label: "អ្នកគ្រប់គ្រង", value: "ADMIN" },
   ];
 
   // use state data form
@@ -41,15 +33,27 @@ const Create = () => {
     username_kh: "",
     role: "",
   });
-
   //Handle input
   const handleChange = (e) => {
     const { name, value } = e.target;
-    console.log(value);
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    const englishOnlyRegex = /^[A-Za-z0-9.@!@#$%^&*+=_-\s]*$/;
+    const khmerOnlyRegex = /^[\u1780-\u17FF\s]+$/;
+    const numberOnlyRegex = /^[0-9]*$/;
+    if (name === "email" && !englishOnlyRegex.test(value)) {
+      return;
+    } else if (name === "phone_number" && !numberOnlyRegex.test(value)) {
+      return;
+    } else if (
+      (name === "username_kh" || name === "position") &&
+      !khmerOnlyRegex.test(value)
+    ) {
+      return;
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
   };
   // Form validation (for front-end)
   const validateForm = () => {
@@ -261,18 +265,51 @@ const Create = () => {
                     />
                   </div>
                   <div className=" mt-3">
-                    <Select
-                      options={roleOptions}
-                      label="តួនាទី"
-                      id="role"
-                      name="role"
-                      value={formData.role}
-                      classNname={`${errors.role && "border-red-500"}`}
-                      onChange={(e) => {
-                        handleChange(e);
-                      }}
-                      star="true"
-                    />
+                    {(() => {
+                      if (user.role === "SUPERUSER") {
+                        const roleOptions = [
+                          { label: "អ្នកប្រើប្រាស់", value: "USER" },
+                          { label: "អ្នកគ្រប់គ្រង", value: "ADMIN" },
+                          {
+                            label: "អ្នកគ្រប់គ្រងជាន់ខ្ពស់",
+                            value: "SUPERUSER",
+                          },
+                        ];
+                        return (
+                          <Select
+                            options={roleOptions}
+                            label="តួនាទី"
+                            id="role"
+                            name="role"
+                            value={formData.role}
+                            classNname={`${errors.role && "border-red-500"}`}
+                            onChange={(e) => {
+                              handleChange(e);
+                            }}
+                            star="true"
+                          />
+                        );
+                      } else {
+                        const roleOptions = [
+                          { label: "អ្នកប្រើប្រាស់", value: "USER" },
+                          { label: "អ្នកគ្រប់គ្រង", value: "ADMIN" },
+                        ];
+                        return (
+                          <Select
+                            options={roleOptions}
+                            label="តួនាទី"
+                            id="role"
+                            name="role"
+                            value={formData.role}
+                            classNname={`${errors.role && "border-red-500"}`}
+                            onChange={(e) => {
+                              handleChange(e);
+                            }}
+                            star="true"
+                          />
+                        );
+                      }
+                    })()}
                   </div>
                 </div>
               </div>
