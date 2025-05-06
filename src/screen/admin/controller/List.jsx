@@ -55,7 +55,7 @@ const customStyles = {
   cells: {
     style: {
       fontSize: "14px",
-      padding: "2px 5px",
+      padding: "1px 5px",
       textAlign: "center",
       justifyContent: "center",
       fontFamily: "Hanuman, sans-serif",
@@ -77,7 +77,6 @@ const List = () => {
   const [originalData, setOriginalData] = useState();
   const [entries, setEntries] = useState(10);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [userId, setUserId] = useState(null);
   const [pending, setPending] = useState(true);
   // Table header
   const columns = [
@@ -183,12 +182,7 @@ const List = () => {
       cell: (row) => (
         <div className="w-full flex gap-2 !items-center !justify-center *:hover:scale-110">
           <Link to={`/admin/controller-detail/${row.id}`}>
-            <button
-              title="Detail"
-              onClick={(e) => {
-                setUserId(1);
-              }}
-            >
+            <button title="Detail">
               <DetailIcon name="detail" size="18" color="" />
             </button>
           </Link>
@@ -259,7 +253,7 @@ const List = () => {
                 className="text-sm cursor-pointer"
                 style={{ fontFamily: "Hanuman, sans-serif" }}
               >
-                / ត្រួតពិនិត្យសំណើរ
+                / ត្រួតពិនិត្យសំណើ
               </label>
             </Link>
             <Link to="">

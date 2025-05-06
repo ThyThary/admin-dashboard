@@ -17,14 +17,26 @@ const ChangePasword = ({ isOpen, btnNo, btnOk, id }) => {
     new_password: "",
     confirm_password: "",
   });
-  // console.log("Error", errors);
   //Handle input
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    const englishOnlyRegex = /^[A-Za-z0-9.@!@#$%^&*+=_-\s]*$/;
+    if (
+      (name === "current_password" ||
+        name === "new_password" ||
+        name === "confirm_password") &&
+      !englishOnlyRegex.test(value)
+    ) {
+      return setFormData((prev) => ({
+        ...prev,
+        [name]: "",
+      }));
+    } else {
+      return setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
   };
   // Form validation (for front-end)
 
@@ -193,7 +205,6 @@ const ChangePasword = ({ isOpen, btnNo, btnOk, id }) => {
               </div>
             </div>
           </div>
-
           <div
             className={`flex w-full gap-3 justify-center mb-5 ${
               errors.confirm_password == "" ? "mt-5" : "mt-2"

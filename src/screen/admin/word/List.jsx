@@ -61,7 +61,7 @@ const customStyles = {
   cells: {
     style: {
       fontSize: "14px",
-      padding: "2px 5px",
+      padding: "1px 5px",
       textAlign: "center",
       justifyContent: "center",
     },
@@ -138,7 +138,7 @@ const List = () => {
       selector: (row) => row.actions,
       sortable: true,
       cell: (row) => (
-        <div className="w-full flex gap-2 !items-center !justify-center *:hover:scale-110">
+        <div className="w-full flex gap-x-2 !items-center !justify-center *:hover:scale-110">
           <Link to={`/admin/word-edit/${row.id}`}>
             <button title="Edit">
               <EditIcon name="edit" size="20" color="" />

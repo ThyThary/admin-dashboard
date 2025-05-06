@@ -95,9 +95,9 @@ function Detail() {
                 className="text-sm cursor-pointer"
                 style={{ fontFamily: "Hanuman, sans-serif" }}
               >
-                / ត្រួតពិនិត្យសំណើរ
+                / ត្រួតពិនិត្យសំណើ
               </label>
-            </Link>
+            </Link> 
             <Link to="">
               <label
                 className="text-sm cursor-pointer"

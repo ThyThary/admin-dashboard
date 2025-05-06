@@ -52,7 +52,7 @@ const customStyles = {
   cells: {
     style: {
       fontSize: "14px",
-      padding: "2px 5px",
+      padding: "2.2px 5px",
       textAlign: "center",
       justifyContent: "center",
       fontFamily: "Hanuman, sans-serif",
