@@ -134,12 +134,15 @@ const Edit = () => {
           default:
         }
         setWordClassEn(wordEn);
+        setFormData((prev) => ({
+          ...prev,
+          word_en_type: wordEn,
+        }));
       }
 
       setFormData((prev) => ({
         ...prev,
         [name]: value,
-        word_en_type: wordEn,
       }));
     }
   };

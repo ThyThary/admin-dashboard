@@ -67,6 +67,7 @@ function ModalImportExcel({ isOpen, btnNo, btnOk }) {
         }, 2000);
       }
     } catch (error) {
+      console.log("Error: ", error);
       if (error.response) {
         console.log("Error: ", error.response);
         const backendErrors = error.response.data.data.failed_entries || {};

@@ -152,19 +152,28 @@ const Create = () => {
 
     try {
       const token = localStorage.getItem("access");
-      await api.post("/api/dictionary/staging/create/", formData, {
+      const data = await api.post("/api/dictionary/staging/create/", formData, {
         headers: {
+          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`, // 👈 attach token here
         },
       });
-      Toastify("success", "រក្សាទុកដោយជោគជ័យ!");
-      setTimeout(() => {
-        window.location.href = "http://localhost:8012/admin/word-list";
-      }, 2000);
+      console.log("Data: ", data);
+      if (data.data.responseCode === 201) {
+        Toastify("success", "រក្សាទុកដោយជោគជ័យ!");
+        setTimeout(() => {
+          window.location.href = "http://localhost:8012/admin/word-list";
+        }, 2000);
+      }
     } catch (error) {
+      console.log("Error:", error.response.data.responseCode);
       if (error.response) {
-        const backendErrors = error.response.data.data || {};
-        Toastify("warning", "ទិន្នន័យមិនត្រឹមត្រូវ!");
+        const backendErrors = error.response.data || {};
+        if (error.response.data.responseCode == 400) {
+          Toastify("warning", "ពាក្យមានរួចហើយ!");
+        } else {
+          Toastify("warning", "ទិន្នន័យមិនត្រឹមត្រូវ!");
+        }
         setErrors(backendErrors);
       } else {
         Toastify("error", "ការរក្សាទុកបានបរាជ័យ!");

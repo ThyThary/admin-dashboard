@@ -135,12 +135,14 @@ const Edit = () => {
           default:
         }
         setWordClassEn(wordEn);
+        setFormData((prev) => ({
+          ...prev,
+          word_en_type: wordEn,
+        }));
       }
-      console.log(value, wordEn);
       setFormData((prev) => ({
         ...prev,
         [name]: value,
-        word_en_type: wordEn,
       }));
     }
   };
@@ -188,15 +190,21 @@ const Edit = () => {
 
     try {
       const token = localStorage.getItem("access");
-      await api.put(`/api/dictionary/staging/update?id=${id}`, formData, {
-        headers: {
-          Authorization: `Bearer ${token}`, // 👈 attach token here
-        },
-      });
-      Toastify("success", "រក្សាទុកដោយជោគជ័យ!");
-      setTimeout(() => {
-        window.location.href = "http://localhost:8012/admin/word-list";
-      }, 3000);
+      const data = await api.put(
+        `/api/dictionary/staging/update?id=${id}`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // 👈 attach token here
+          },
+        }
+      );
+      if (data.data.responseCode === 200) {
+        Toastify("success", "រក្សាទុកដោយជោគជ័យ!");
+        setTimeout(() => {
+          window.location.href = "http://localhost:8012/admin/word-list";
+        }, 2000);
+      }
     } catch (error) {
       if (error.response) {
         const backendErrors = error.response.data.data || {};
