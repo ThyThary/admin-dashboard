@@ -11,6 +11,7 @@ import DateKhmer from "../../components/DateKhmer";
 import Toastify from "../../components/Toastify";
 
 const Create = () => {
+  const [wordClassEn, setWordClassEn] = useState("");
   const wordClassKh = [
     { label: "នាម", value: "នាម" },
     { label: "កិរិយាសព្ទ", value: "កិរិយាសព្ទ" },
@@ -21,16 +22,7 @@ const Create = () => {
     { label: "ឈ្នាប់", value: "ឈ្នាប់" },
     { label: "ឧទានសព្ទ", value: "ឧទានសព្ទ" },
   ];
-  const wordClassEn = [
-    { label: "Noun", value: "NOUN" },
-    { label: "Verb", value: "VERB" },
-    { label: "Adjective", value: "ADJECTIVE" },
-    { label: "Adverb", value: "ADVERB" },
-    { label: "Pronoun", value: "PRONOUN" },
-    { label: "Preposition", value: "PREPOSITION" },
-    { label: "Conjunction", value: "CONJUNCTION" },
-    { label: "Interjection", value: "INTERJECTION" },
-  ];
+
   // use state data form
   const [formData, setFormData] = useState({
     word_kh: "",
@@ -50,20 +42,75 @@ const Create = () => {
     word_kh_type: "",
     word_kh_definition: "",
     word_en: "",
-    word_en_type: "",
+    // word_en_type: "",
     word_en_definition: "",
   });
-
   //Handle input
   const handleChange = (e) => {
     const { name, value } = e.target;
-    console.log(value);
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    const englishOnlyRegex = /^[A-Za-z0-9.@!@#$%^&*+=_-\s]*$/;
+    const khmerOnlyRegex = /^[\u1780-\u17FF\s]+$/;
+    if (
+      (name === "word_en" ||
+        name === "word_en_type" ||
+        name === "word_en_definition" ||
+        name === "pronunciation_en") &&
+      !englishOnlyRegex.test(value)
+    ) {
+      return;
+    } else if (
+      (name === "word_kh" ||
+        name === "word_kh_type" ||
+        name === "word_kh_definition" ||
+        name === "pronunciation_kh") &&
+      !khmerOnlyRegex.test(value)
+    ) {
+      return;
+    } else {
+      var wordEn;
+      if (name === "word_kh_type") {
+        // Get English by Khmer
+        const wordClassKhmer = e.target.value;
+        switch (true) {
+          case wordClassKhmer === "នាម":
+            wordEn = "NOUN";
+            break;
+          case wordClassKhmer === "កិរិយាសព្ទ":
+            wordEn = "VERB";
+            break;
+          case wordClassKhmer === "គុណនាម":
+            wordEn = "ADJECTIVE";
+            break;
+          case wordClassKhmer === "គុណកិរិយា":
+            wordEn = "ADVERB";
+            break;
+          case wordClassKhmer === "សព្វនាម":
+            wordEn = "PRONOUN";
+            break;
+          case wordClassKhmer === "ធ្នាក់":
+            wordEn = "PREPOSITION";
+            break;
+          case wordClassKhmer === "ឈ្នាប់":
+            wordEn = "CONJUNCTION";
+            break;
+          case wordClassKhmer === "ឧទានសព្ទ":
+            wordEn = "INTERJECTION";
+            break;
+          default:
+        }
+        setWordClassEn(wordEn);
+        setFormData((prev) => ({
+          ...prev,
+          word_en_type: wordEn,
+        }));
+      }
+      console.log(wordEn);
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
   };
-
   // Form validation (for front-end)
   const validateForm = () => {
     const newErrors = {};
@@ -73,7 +120,16 @@ const Create = () => {
     if (!formData.word_en) newErrors.word_en = "Error";
     if (!formData.word_en_type) newErrors.word_en_type = "Error";
     if (!formData.word_en_definition) newErrors.word_en_definition = "Error";
-
+    if (
+      !formData.word_kh ||
+      !formData.word_kh_type ||
+      !formData.word_kh_definition ||
+      !formData.word_en ||
+      !formData.word_en_type ||
+      !formData.word_en_definition
+    ) {
+      Toastify("warning", "បញ្ចូលទិន្នន័យ");
+    }
     return newErrors;
   };
   // Submit form
@@ -257,16 +313,23 @@ const Create = () => {
                   />
                 </div>
                 <div className="mt-3">
-                  <Select
-                    options={wordClassEn}
-                    label="ថ្នាក់ពាក្យអង់គ្លេស"
-                    id="word_en_type"
+                  {/* hide to get data from select word class khmer*/}
+                  <input
+                    type="text"
                     name="word_en_type"
-                    value={formData.word_en_type}
-                    onChange={(e) => {
-                      handleChange(e);
-                    }}
-                    classNname={`${errors.word_en_type && "border-red-500"}`}
+                    id="word_en_type"
+                    value={wordClassEn}
+                    className="hidden"
+                  />
+                  {/* Only show */}
+                  <Input
+                    disabled={true}
+                    label="ថ្នាក់ពាក្យអង់គ្លេស"
+                    type="text"
+                    placeholder="បញ្ចូលទិន្នន័យនៅទីនេះ"
+                    id="word_en_types"
+                    name="word_en_types"
+                    value={wordClassEn}
                     star="true"
                   />
                 </div>

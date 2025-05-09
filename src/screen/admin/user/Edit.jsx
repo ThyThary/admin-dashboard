@@ -59,6 +59,7 @@ const Edit = () => {
   //Handle input
   const handleChange = (e) => {
     const { name, value } = e.target;
+
     const englishOnlyRegex = /^[A-Za-z0-9.@!@#$%^&*+=_-\s]*$/;
     const khmerOnlyRegex = /^[\u1780-\u17FF\s]+$/;
     const numberOnlyRegex = /^[0-9]*$/;
@@ -70,7 +71,10 @@ const Edit = () => {
       (name === "username_kh" || name === "position") &&
       !khmerOnlyRegex.test(value)
     ) {
-      return;
+      return setFormData((prev) => ({
+        ...prev,
+        [name]: "",
+      }));
     } else {
       setFormData((prev) => ({
         ...prev,
@@ -125,7 +129,7 @@ const Edit = () => {
       Toastify("success", "រក្សាទុកដោយជោគជ័យ!");
       setTimeout(() => {
         window.location.href = "http://localhost:8012/admin/user-list";
-      }, 3000);
+      }, 2000);
     } catch (error) {
       if (error.response) {
         const backendErrors = error.response.data.data || {};

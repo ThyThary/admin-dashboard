@@ -99,7 +99,7 @@ const ChangePasword = ({ isOpen, btnNo, btnOk, id }) => {
       Toastify("success", "បដិសេធដោយជោគជ័យ!");
       setTimeout(() => {
         window.location.href = "http://localhost:8012/admin/controller-list";
-      }, 3000);
+      }, 2000);
     } catch (error) {
       if (error.response) {
         // const backendErrors = error.response.data.data || {};

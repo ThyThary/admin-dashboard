@@ -1,5 +1,5 @@
 import React, { useState, lazy } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import api from "../../../api";
 const HomeIcon = lazy(() => import("../../../icons/svg/Home"));
 const CreateIcon = lazy(() => import("../../../icons/svg/Create"));
@@ -11,12 +11,8 @@ import DateKhmer from "../../../components/DateKhmer";
 import Toastify from "../../../components/Toastify";
 
 const Create = () => {
-  // path name
-  const location = useLocation();
-  const textRoute = location.pathname;
-  const wordRotue = textRoute.split("-");
-  const seperateRoute = wordRotue[1];
-  const sidebarRoute = wordRotue[0];
+  const [wordClassEn, setWordClassEn] = useState("");
+  // Word class Khmer
   const wordClassKh = [
     { label: "នាម", value: "នាម" },
     { label: "កិរិយាសព្ទ", value: "កិរិយាសព្ទ" },
@@ -27,23 +23,14 @@ const Create = () => {
     { label: "ឈ្នាប់", value: "ឈ្នាប់" },
     { label: "ឧទានសព្ទ", value: "ឧទានសព្ទ" },
   ];
-  const wordClassEn = [
-    { label: "Noun", value: "NOUN" },
-    { label: "Verb", value: "VERB" },
-    { label: "Adjective", value: "ADJECTIVE" },
-    { label: "Adverb", value: "ADVERB" },
-    { label: "Pronoun", value: "PRONOUN" },
-    { label: "Preposition", value: "PREPOSITION" },
-    { label: "Conjunction", value: "CONJUNCTION" },
-    { label: "Interjection", value: "INTERJECTION" },
-  ];
+
   // use state data form
   const [formData, setFormData] = useState({
     word_kh: "",
     word_kh_type: "",
     word_kh_definition: "",
     word_en: "",
-    word_en_type: "",
+    word_en_type: wordClassEn,
     word_en_definition: "",
     pronunciation_kh: "",
     pronunciation_en: "",
@@ -56,9 +43,9 @@ const Create = () => {
     word_kh_type: "",
     word_kh_definition: "",
     word_en: "",
-    word_en_type: "",
     word_en_definition: "",
   });
+
   //Handle input
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -68,8 +55,7 @@ const Create = () => {
       (name === "word_en" ||
         name === "word_en_type" ||
         name === "word_en_definition" ||
-        name === "pronunciation_en" ||
-        name === "example_sentence_en") &&
+        name === "pronunciation_en") &&
       !englishOnlyRegex.test(value)
     ) {
       return;
@@ -77,12 +63,49 @@ const Create = () => {
       (name === "word_kh" ||
         name === "word_kh_type" ||
         name === "word_kh_definition" ||
-        name === "pronunciation_kh" ||
-        name === "example_sentence_kh") &&
+        name === "pronunciation_kh") &&
       !khmerOnlyRegex.test(value)
     ) {
       return;
     } else {
+      var wordEn;
+      if (name === "word_kh_type") {
+        // Get English by Khmer
+        const wordClassKhmer = e.target.value;
+        switch (true) {
+          case wordClassKhmer === "នាម":
+            wordEn = "NOUN";
+            break;
+          case wordClassKhmer === "កិរិយាសព្ទ":
+            wordEn = "VERB";
+            break;
+          case wordClassKhmer === "គុណនាម":
+            wordEn = "ADJECTIVE";
+            break;
+          case wordClassKhmer === "គុណកិរិយា":
+            wordEn = "ADVERB";
+            break;
+          case wordClassKhmer === "សព្វនាម":
+            wordEn = "PRONOUN";
+            break;
+          case wordClassKhmer === "ធ្នាក់":
+            wordEn = "PREPOSITION";
+            break;
+          case wordClassKhmer === "ឈ្នាប់":
+            wordEn = "CONJUNCTION";
+            break;
+          case wordClassKhmer === "ឧទានសព្ទ":
+            wordEn = "INTERJECTION";
+            break;
+          default:
+        }
+        setWordClassEn(wordEn);
+        setFormData((prev) => ({
+          ...prev,
+          word_en_type: wordEn,
+        }));
+      }
+
       setFormData((prev) => ({
         ...prev,
         [name]: value,
@@ -97,9 +120,16 @@ const Create = () => {
     if (!formData.word_kh_type) newErrors.word_kh_type = "Error";
     if (!formData.word_kh_definition) newErrors.word_kh_definition = "Error";
     if (!formData.word_en) newErrors.word_en = "Error";
-    if (!formData.word_en_type) newErrors.word_en_type = "Error";
     if (!formData.word_en_definition) newErrors.word_en_definition = "Error";
-
+    if (
+      !formData.word_kh ||
+      !formData.word_kh_type ||
+      !formData.word_kh_definition ||
+      !formData.word_en ||
+      !formData.word_en_definition
+    ) {
+      Toastify("warning", "បញ្ចូលទិន្នន័យ");
+    }
     return newErrors;
   };
   // Submit form
@@ -111,7 +141,6 @@ const Create = () => {
       word_kh_type: "",
       word_kh_definition: "",
       word_en: "",
-      word_en_type: "",
       word_en_definition: "",
     });
     // Validate form before submitting
@@ -186,46 +215,6 @@ const Create = () => {
           </div>
         </div>
         <div className="relative bg-white overflow-y-auto m-5 shadow-md rounded-md min-h-[72vh] max-h-[72vh]">
-          {/* <div className=" flex flex-row pl-5">
-            <Link
-              to="/admin/word-list"
-              className={` px-5 mt-2 text-white  ${
-                location.pathname === `/admin/word-${seperateRoute}`
-                  ? " border-green-500 border-b-2"
-                  : " hover:bg-blue-950"
-              }`}
-            >
-              <div className=" flex cursor-pointer py-1 hover:scale-110">
-                <div>
-                  <label
-                    className=" text-md !text-black"
-                    style={{ fontFamily: "Hanuman, sans-serif" }}
-                  >
-                    បង្កើត
-                  </label>
-                </div>
-              </div>
-            </Link>
-            <Link
-              to="/admin/word-list"
-              className={` px-5 mt-2 text-white  ${
-                location.pathname === `/admin-${seperateRoute}`
-                  ? "bg-teal-700 shadow-md"
-                  : " hover:bg-blue-950"
-              }`}
-            >
-              <div className=" flex w-full cursor-pointer py-1 hover:scale-110">
-                <div>
-                  <label
-                    className=" text-md ml-3"
-                    style={{ fontFamily: "Hanuman, sans-serif" }}
-                  >
-                    នាំឯកសារ Excel ចូល
-                  </label>
-                </div>
-              </div>
-            </Link>
-          </div> */}
           <div className="p-5">
             <div className=" grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 w-full gap-3">
               {/* Sub content one */}
@@ -323,17 +312,24 @@ const Create = () => {
                   />
                 </div>
                 <div className="mt-3">
-                  <Select
-                    options={wordClassEn}
-                    label="ថ្នាក់ពាក្យអង់គ្លេស"
-                    id="word_en_type"
+                  {/* hide to get data from select word class khmer*/}
+                  <input
+                    type="text"
                     name="word_en_type"
-                    value={formData.word_en_type}
-                    onChange={(e) => {
-                      handleChange(e);
-                    }}
-                    classNname={`${errors.word_en_type && "border-red-500"}`}
+                    id="word_en_type"
+                    value={wordClassEn}
+                    className="hidden"
+                  />
+                  {/* Only show */}
+                  <Input
+                    label="ថ្នាក់ពាក្យអង់គ្លេស"
+                    type="text"
+                    placeholder="បញ្ចូលទិន្នន័យនៅទីនេះ"
+                    id="word_en_types"
+                    name="word_en_types"
+                    value={wordClassEn}
                     star="true"
+                    disabled={true}
                   />
                 </div>
                 <div className="mt-3">

@@ -79,10 +79,10 @@ function Detail() {
           }
           btnOk={<Button color="blue" text="បាទ" className=" px-3" />}
           routeWeb="/admin/controller-list"
+          routeAPI="/api/dictionary/staging/reject?id="
           routeAPIType="post"
-          routeAPI="/api/dictionary/staging/approve?id="
           id={id}
-          text="អនុម័ត"
+          text="បដិសេធ"
         />
       </div>
       <div className=" flex-row">
@@ -97,7 +97,7 @@ function Detail() {
               >
                 / ត្រួតពិនិត្យសំណើ
               </label>
-            </Link> 
+            </Link>
             <Link to="">
               <label
                 className="text-sm cursor-pointer"

@@ -5,10 +5,15 @@ import { Link, useParams } from "react-router-dom";
 import Button from "../../../style/tailwind/Button";
 import DateKhmer from "../../../components/DateKhmer";
 import api from "../../../api";
+import ModalReject from "../controller/ModalReject";
+import Modal from "../../../components/Modal";
 export default function Detail() {
   // Get user id
   const { id } = useParams();
   const [user, setUser] = useState();
+  const userLog = JSON.parse(localStorage.getItem("user"));
+  const [isModalReject, setIsModalReject] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   // Fetch data from API
   useEffect(() => {
     const token = localStorage.getItem("access");
@@ -19,7 +24,7 @@ export default function Detail() {
         },
       })
       .then((res) => {
-        // console.log("Get data: ", res.data.data);
+        console.log("Get data: ", res.data.data);
         setUser(res.data.data);
       })
       .catch((err) => {
@@ -43,6 +48,43 @@ export default function Detail() {
     );
   return (
     <>
+      {/* Modal Disable/enable */}
+      <div className="overflow-hidden">
+        <Modal
+          isOpen={isModalOpen}
+          btnNo={
+            <Button
+              color="red"
+              text="ទេ"
+              onClick={() => setIsModalOpen(false)}
+              className="!px-4.5"
+            />
+          }
+          btnOk={<Button color="blue" text="បាទ" className=" px-3" />}
+          routeWeb="/admin/user-list"
+          routeAPIType="post"
+          routeAPI="/api/users/unsuspend/?id="
+          id={id}
+          text="បើក"
+        />
+        <ModalReject
+          isOpen={isModalReject}
+          btnNo={
+            <Button
+              color="red"
+              text="ទេ"
+              onClick={() => setIsModalReject(false)}
+              className="!px-4.5"
+            />
+          }
+          btnOk={<Button color="blue" text="បាទ" className=" px-3" />}
+          routeWeb="/admin/user-list"
+          routeAPIType="post"
+          routeAPI="/api/users/suspend/?id="
+          id={id}
+          text="បិទ"
+        />
+      </div>
       <div className=" flex-row">
         <div className="flex flex-col min-h-28 max-h-28 px-5 pt-5">
           {/* Breakcrabe */}
@@ -102,9 +144,7 @@ export default function Detail() {
                     className="font-bold text-md w-[260px]"
                     style={{ fontFamily: "Hanuman, sans-serif" }}
                   >
-                    <div data-column-id="2" class="sc-cXrvCr kSanMI">
-                      លេខសម្គាល់
-                    </div>
+                    <div data-column-id="2">លេខសម្គាល់</div>
                   </li>
                   <li className="">:</li>
                   <li
@@ -119,9 +159,7 @@ export default function Detail() {
                     className="font-bold text-md w-[260px]"
                     style={{ fontFamily: "Hanuman, sans-serif" }}
                   >
-                    <div data-column-id="2" class="sc-cXrvCr kSanMI">
-                      ឈ្មោះ
-                    </div>
+                    <div data-column-id="2">ឈ្មោះ</div>
                   </li>
                   <li className="">:</li>
                   <li
@@ -136,9 +174,7 @@ export default function Detail() {
                     className="font-bold text-md w-[260px]"
                     style={{ fontFamily: "Hanuman, sans-serif" }}
                   >
-                    <div data-column-id="2" class="sc-cXrvCr kSanMI">
-                      ភេទ
-                    </div>
+                    <div data-column-id="2">ភេទ</div>
                   </li>
                   <li className="">:</li>
                   <li
@@ -153,9 +189,7 @@ export default function Detail() {
                     className="font-bold text-md w-[260px]"
                     style={{ fontFamily: "Hanuman, sans-serif" }}
                   >
-                    <div data-column-id="2" class="sc-cXrvCr kSanMI">
-                      លេខទូរស័ព្ទ
-                    </div>
+                    <div data-column-id="2">លេខទូរស័ព្ទ</div>
                   </li>
                   <li className="">:</li>
                   <li
@@ -165,68 +199,12 @@ export default function Detail() {
                     {user.phone_number ?? ""}
                   </li>
                 </ul>
-              </div>
-              {/* grid two */}
-              <div className="ml-2">
                 <ul className="flex mb-2">
                   <li
                     className="font-bold text-md w-[260px]"
                     style={{ fontFamily: "Hanuman, sans-serif" }}
                   >
-                    <div data-column-id="2" class="sc-cXrvCr kSanMI">
-                      អ៊ីមែល
-                    </div>
-                  </li>
-                  <li className="">:</li>
-                  <li
-                    className="ml-6 text-md w-full"
-                    style={{ fontFamily: "Moul,serif" }}
-                  >
-                    {user.email ?? ""}
-                  </li>
-                </ul>
-                <ul className="flex mb-2">
-                  <li
-                    className="font-bold text-md w-[260px]"
-                    style={{ fontFamily: "Hanuman, sans-serif" }}
-                  >
-                    <div data-column-id="2" class="sc-cXrvCr kSanMI">
-                      មុខតំណែង
-                    </div>
-                  </li>
-                  <li className="">:</li>
-                  <li
-                    className="ml-6 text-md w-full"
-                    style={{ fontFamily: "Hanuman, sans-serif" }}
-                  >
-                    {user.position ?? ""}
-                  </li>
-                </ul>
-                <ul className="flex mb-2">
-                  <li
-                    className="font-bold text-md w-[260px]"
-                    style={{ fontFamily: "Hanuman, sans-serif" }}
-                  >
-                    <div data-column-id="2" class="sc-cXrvCr kSanMI">
-                      កាលបរិច្ឆេទបង្កើត
-                    </div>
-                  </li>
-                  <li className="">:</li>
-                  <li
-                    className="ml-6 text-md w-full"
-                    style={{ fontFamily: "Hanuman, sans-serif" }}
-                  >
-                    {user.date_joined ?? ""}
-                  </li>
-                </ul>
-                <ul className="flex mb-2">
-                  <li
-                    className="font-bold text-md w-[260px]"
-                    style={{ fontFamily: "Hanuman, sans-serif" }}
-                  >
-                    <div data-column-id="2" class="sc-cXrvCr kSanMI">
-                      តួនាទី
-                    </div>
+                    <div data-column-id="2">តួនាទី</div>
                   </li>
                   <li className="">:</li>
                   <li
@@ -245,6 +223,88 @@ export default function Detail() {
                   </li>
                 </ul>
               </div>
+              {/* grid two */}
+              <div className="">
+                <ul className="flex mb-2">
+                  <li
+                    className="font-bold text-md w-[260px]"
+                    style={{ fontFamily: "Hanuman, sans-serif" }}
+                  >
+                    <div data-column-id="2">ឈ្មោះអ្នកប្រើប្រាស់</div>
+                  </li>
+                  <li className="">:</li>
+                  <li
+                    className="ml-6 text-md w-full"
+                    style={{ fontFamily: "Moul,serif" }}
+                  >
+                    {user.username ?? ""}
+                  </li>
+                </ul>
+                <ul className="flex mb-2">
+                  <li
+                    className="font-bold text-md w-[260px]"
+                    style={{ fontFamily: "Hanuman, sans-serif" }}
+                  >
+                    <div data-column-id="2">អ៊ីមែល</div>
+                  </li>
+                  <li className="">:</li>
+                  <li
+                    className="ml-6 text-md w-full"
+                    style={{ fontFamily: "Moul,serif" }}
+                  >
+                    {user.email ?? ""}
+                  </li>
+                </ul>
+                <ul className="flex mb-2">
+                  <li
+                    className="font-bold text-md w-[260px]"
+                    style={{ fontFamily: "Hanuman, sans-serif" }}
+                  >
+                    <div data-column-id="2">មុខតំណែង</div>
+                  </li>
+                  <li className="">:</li>
+                  <li
+                    className="ml-6 text-md w-full"
+                    style={{ fontFamily: "Hanuman, sans-serif" }}
+                  >
+                    {user.position ?? ""}
+                  </li>
+                </ul>
+                <ul
+                  className={`flex mb-2${
+                    user.is_suspended != 1 ? "hidden" : ""
+                  }`}
+                >
+                  <li
+                    className="font-bold text-md w-[260px]"
+                    style={{ fontFamily: "Hanuman, sans-serif" }}
+                  >
+                    <div data-column-id="2">មូលហេតុ</div>
+                  </li>
+                  <li className="">:</li>
+                  <li
+                    className="ml-6 text-md w-full"
+                    style={{ fontFamily: "Hanuman, sans-serif" }}
+                  >
+                    {user.suspended_reason ?? ""}
+                  </li>
+                </ul>
+                <ul className="flex mb-2">
+                  <li
+                    className="font-bold text-md w-[260px]"
+                    style={{ fontFamily: "Hanuman, sans-serif" }}
+                  >
+                    <div data-column-id="2">កាលបរិច្ឆេទបង្កើត</div>
+                  </li>
+                  <li className="">:</li>
+                  <li
+                    className="ml-6 text-md w-full"
+                    style={{ fontFamily: "Hanuman, sans-serif" }}
+                  >
+                    {user.date_joined ?? ""}
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
           {/* button */}
@@ -256,6 +316,60 @@ export default function Detail() {
                   <Button color="slate" text="ត្រលប់ក្រោយ" className="" />
                 </Link>
               </div>
+              {(() => {
+                if (userLog.role === "SUPERUSER") {
+                  return (
+                    <div>
+                      <div
+                        className={`${user.is_suspended != 0 ? "hidden" : ""}`}
+                      >
+                        <Button
+                          color="red"
+                          text="បិទ"
+                          className="!px-2.5 !pt-2 !pb-1"
+                          onClick={() => setIsModalReject(true)}
+                        />
+                      </div>
+                      <div
+                        className={`${user.is_suspended != 1 ? "hidden" : ""}`}
+                      >
+                        <Button
+                          color="blue"
+                          text="បើក"
+                          className="!px-2.5 !pt-2 !pb-1"
+                          onClick={() => setIsModalOpen(true)}
+                        />
+                      </div>
+                    </div>
+                  );
+                } else if (userLog.role === "ADMIN") {
+                  return (
+                    <div className={`${user.role === "ADMIN" ? "hidden" : ""}`}>
+                      <div
+                        className={`${user.is_suspended != 0 ? "hidden" : ""}`}
+                      >
+                        <Button
+                          color="red"
+                          text="បិទ"
+                          className="!px-2.5 !pt-2 !pb-1"
+                          onClick={() => setIsModalReject(true)}
+                        />
+                      </div>
+                      <div
+                        className={`${user.is_suspended != 1 ? "hidden" : ""}`}
+                      >
+                        <Button
+                          color="blue"
+                          text="បើក"
+                          className="!px-2.5 !pt-2 !pb-1"
+                          onClick={() => setIsModalOpen(true)}
+                        />
+                      </div>
+                    </div>
+                  );
+                } else {
+                }
+              })()}
             </div>
           </div>
         </div>

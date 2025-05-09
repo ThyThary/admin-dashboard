@@ -40,14 +40,23 @@ const Create = () => {
     const khmerOnlyRegex = /^[\u1780-\u17FF\s]+$/;
     const numberOnlyRegex = /^[0-9]*$/;
     if (name === "email" && !englishOnlyRegex.test(value)) {
-      return;
+      return setFormData((prev) => ({
+        ...prev,
+        [name]: "",
+      }));
     } else if (name === "phone_number" && !numberOnlyRegex.test(value)) {
-      return;
+      return setFormData((prev) => ({
+        ...prev,
+        [name]: "",
+      }));
     } else if (
       (name === "username_kh" || name === "position") &&
       !khmerOnlyRegex.test(value)
     ) {
-      return;
+      return setFormData((prev) => ({
+        ...prev,
+        [name]: "",
+      }));
     } else {
       setFormData((prev) => ({
         ...prev,
@@ -102,7 +111,7 @@ const Create = () => {
       Toastify("success", "រក្សាទុកដោយជោគជ័យ!");
       setTimeout(() => {
         window.location.href = "http://localhost:8012/admin/user-list";
-      }, 3000);
+      }, 2000);
     } catch (error) {
       if (error.response) {
         const backendErrors = error.response.data.data || {};

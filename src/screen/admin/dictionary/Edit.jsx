@@ -172,7 +172,7 @@ const Edit = () => {
       Toastify("success", "រក្សាទុកដោយជោគជ័យ!");
       setTimeout(() => {
         window.location.href = "http://localhost:8012/admin/dictionary-list";
-      }, 3000);
+      }, 2000);
     } catch (error) {
       if (error.response) {
         const backendErrors = error.response.data.data || {};

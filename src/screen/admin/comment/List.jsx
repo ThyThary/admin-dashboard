@@ -126,7 +126,7 @@ const List = () => {
         },
       })
       .then((res) => {
-        console.log(res.data.data.comments);
+        console.log("Get data:", res.data.data.comments);
         setRecords(res.data.data.comments);
         setOriginalData(res.data.data.comments);
         setPending(false);

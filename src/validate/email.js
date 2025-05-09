@@ -31,6 +31,7 @@ const email = async (e, valueOne, valueTwo, errorOne, errorTwo, errorThree) => {
         .then((res) => {
           localStorage.setItem("access", res.data.data.access);
           localStorage.setItem("user", JSON.stringify(res.data.data.user));
+          localStorage.setItem("refresh", res.data.data.refresh);
           console.log(res.data.data.user.role);
           if (res.data.data.user.role === "USER") {
             window.location.href = "http://localhost:8012/user/word-list";
@@ -43,8 +44,11 @@ const email = async (e, valueOne, valueTwo, errorOne, errorTwo, errorThree) => {
           }
         })
         .catch((err) => {
+          console.log(err.status);
           if (err.status === 401) {
             errorThree("ឈ្មោះអ្នកប្រើប្រាស់ ​ឬ ពាក្យសម្ងាត់មិនត្រឹមត្រូវ");
+          } else if (err.status === 403) {
+            errorThree("គណនីបានផ្អាកដំណើរការ");
           } else {
             errorThree("");
           }

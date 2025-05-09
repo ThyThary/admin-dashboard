@@ -40,7 +40,7 @@ const ModalReject = ({
     return newErrors;
   };
   // Submit form
-  const handleClick = async (e) => {
+  const handleClick = async (e, routeWeb, routeAPI, routeAPIType, id, text) => {
     e.preventDefault();
 
     // Clear previous errors
@@ -54,22 +54,38 @@ const ModalReject = ({
 
     try {
       const token = localStorage.getItem("access");
-      await api.post(`/api/dictionary/staging/reject?id=${id}`, formData, {
-        headers: {
-          Authorization: `Bearer ${token}`, // 👈 attach token here
-        },
-      });
-      Toastify("success", "បដិសេធដោយជោគជ័យ!");
+      if (routeAPIType == "post") {
+        await api.post(`${routeAPI}${id}`, formData, {
+          headers: {
+            Authorization: `Bearer ${token}`, // 👈 attach token here
+          },
+        });
+      } else if (routeAPIType == "put") {
+        await api.put(`${routeAPI}${id}`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+      } else {
+        await api.delete(`${routeAPI}${id}`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+      }
+      Toastify("success", `បាន${text}ដោយជោគជ័យ!`);
       setTimeout(() => {
-        window.location.href = "http://localhost:8012/admin/controller-list";
-      }, 3000);
+        window.location.href = `http://localhost:8012${routeWeb}`;
+      }, 2000);
     } catch (error) {
       if (error.response) {
         const backendErrors = error.response.data.data || {};
         Toastify("warning", "ទិន្នន័យមិនត្រឹមត្រូវ!");
         setErrors(backendErrors);
       } else {
-        Toastify("error", "ការរបដិសេធបានបរាជ័យ!");
+        Toastify("error", `ការ${text}បានបរាជ័យ!`);
       }
       console.error("Submission error:", error);
     }
@@ -112,7 +128,11 @@ const ModalReject = ({
         </div>
         <div className="flex w-full gap-3 justify-center mt-7">
           <div>{btnNo}</div>
-          <button onClick={(e) => handleClick(e)}>
+          <button
+            onClick={(e) =>
+              handleClick(e, routeWeb, routeAPI, routeAPIType, id, text)
+            }
+          >
             <div>{btnOk}</div>
           </button>
         </div>

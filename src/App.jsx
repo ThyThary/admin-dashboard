@@ -12,6 +12,8 @@ const App = () => {
           {/* Login routes */}
           <Route path="/" element={<Navigate to="/log-in" replace />} />
           <Route path="/log-in" Component={Login}></Route>
+          {/* Home routes */}
+          <Route path="/admin/home" Component={Master}></Route>
           {/* User routes */}
           <Route path="/admin/user-list" Component={Master}></Route>
           <Route path="/admin/user-create" Component={Master}></Route>

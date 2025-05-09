@@ -21,7 +21,6 @@ const Select = ({
           </label>
         )}
         <select
-          // value={value}
           onChange={onChange}
           id={id}
           name={name}

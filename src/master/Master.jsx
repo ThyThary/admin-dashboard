@@ -6,6 +6,8 @@ import { ToastContainer } from "react-toastify";
 
 const MenuIcon = lazy(() => import("../icons/svg/Menu"));
 const MenuBar = lazy(() => import("./MenuBar"));
+//Calendar component
+const Calendar = lazy(() => import("../screen/home/Calendar"));
 // User component
 const UserList = lazy(() => import("../screen/admin/user/List"));
 const UserCreate = lazy(() => import("../screen/admin/user/Create"));
@@ -133,6 +135,12 @@ const Master = ({ color = "#2a4f8a" }) => {
               </div>
             </div>
           </div>
+          {/* User route */}
+          {route === "/admin/home" && (
+            <div className=" h-auto">
+              <Calendar />
+            </div>
+          )}
           {/* User route */}
           {route === "/admin/user-list" && (
             <div className=" h-auto">

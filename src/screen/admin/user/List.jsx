@@ -15,6 +15,7 @@ import DateKhmer from "../../../components/DateKhmer";
 import LoadingPage from "../../../components/LoadingPage";
 import api from "../../../api";
 import "./style/table.css";
+
 // Remove bottom
 const rbs = {
   tableWrapper: {
@@ -126,6 +127,38 @@ const UserList = () => {
       ),
     },
     {
+      name: "ស្ថានភាព",
+      selector: (row) => row.is_suspended,
+      cell: (row) => {
+        if (row.is_suspended === 1) {
+          return (
+            <span
+              className="text-red-600 font-bold "
+              style={{
+                fontFamily: "Hanuman, sans-serif",
+                textAlign: "center",
+              }}
+            >
+              បិទ
+            </span>
+          );
+        } else {
+          return (
+            <span
+              className="text-green-600 font-bold "
+              style={{
+                fontFamily: "Hanuman, sans-serif",
+              }}
+            >
+              បើក
+            </span>
+          );
+        }
+      },
+
+      sortable: true,
+    },
+    {
       name: "កាលបរិច្ឆេទបង្កើត",
       selector: (row) => row.date_joined,
       // center: true,
@@ -166,7 +199,7 @@ const UserList = () => {
             <div className="w-full flex gap-2 text-center !items-center !justify-center *:hover:scale-110">
               <Link
                 to={`/admin/user-edit/${row.id}`}
-                className={`${row.role != "ADMIN" ? "" : "hidden"}`}
+                className={`${row.role == "USER" ? "" : "hidden"}`}
               >
                 <button title="Edit">
                   <EditIcon name="edit" size="20" color="" />
@@ -174,13 +207,13 @@ const UserList = () => {
               </Link>
               <Link
                 to={`/admin/user-detail/${row.id}`}
-                className={`${row.role != "ADMIN" ? "" : "pl-1"}`}
+                className={`${row.role == "USER" ? "" : "pl-1"}`}
               >
                 <button title="Detail">
                   <DetailIcon name="detail" size="18" color="" />
                 </button>
               </Link>
-              <div className={`${row.role != "ADMIN" ? "" : "hidden"}`}>
+              <div className={`${row.role == "USER" ? "" : "hidden"}`}>
                 <button
                   title="Delete"
                   onClick={() => {
