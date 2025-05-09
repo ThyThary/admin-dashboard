@@ -79,6 +79,7 @@ const paginationOptions = {
 const List = () => {
   const [value, setValue] = useState("");
   const [records, setRecords] = useState();
+  const [originalData, setOriginalData] = useState();
   const [entries, setEntries] = useState(10);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [userId, setUserId] = useState(null);
@@ -108,6 +109,7 @@ const List = () => {
       cell: (row) => (
         <div className=" w-40 truncate">{row.word_kh_definition}</div>
       ),
+      sortable: true,
     },
     {
       name: "ពាក្យអង់គ្លេស",
@@ -127,6 +129,7 @@ const List = () => {
           {row.word_en_definition}
         </div>
       ),
+      sortable: true,
     },
     {
       name: "កាលបរិច្ឆេទត្រួតពិនិត្យ",
@@ -136,7 +139,6 @@ const List = () => {
     {
       name: "សកម្មភាពផ្សេងៗ",
       selector: (row) => row.actions,
-      sortable: true,
       cell: (row) => (
         <div className="w-full flex gap-x-2 !items-center !justify-center *:hover:scale-110">
           <Link to={`/admin/word-edit/${row.id}`}>
@@ -178,6 +180,7 @@ const List = () => {
       .then((res) => {
         console.log("Get data: ", res.data.data);
         setRecords(res.data.data.entries);
+        setOriginalData(res.data.data.entries);
         setPending(false);
       })
       .catch((err) => {
@@ -187,10 +190,23 @@ const List = () => {
   }, []);
   // Search data
   const handleFilter = (e) => {
-    const newData = records.filter((row) => {
-      return row.position.toLowerCase().includes(e.target.value.toLowerCase());
-    });
-    setRecords(newData);
+    const searchValue = e.target.value.normalize("NFC").toLowerCase().trim();
+    if (searchValue === "") {
+      setRecords(originalData); // Reset if input is empty
+    } else {
+      const filteredData = originalData.filter((row) => {
+        const fieldsToSearch = [
+          row.word_kh,
+          row.word_kh_definition,
+          row.word_en,
+          row.word_en_definition,
+        ];
+        return fieldsToSearch.some((field) =>
+          (field || "").normalize("NFC").toLowerCase().includes(searchValue)
+        );
+      });
+      setRecords(filteredData);
+    }
   };
 
   return (

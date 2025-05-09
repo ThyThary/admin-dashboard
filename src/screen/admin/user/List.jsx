@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 
 import HomeIcon from "../../../icons/svg/Home";
@@ -79,6 +79,7 @@ const paginationOptions = {
 const UserList = () => {
   const [value, setValue] = useState("");
   const [records, setRecords] = useState();
+  const [originalData, setOriginalData] = useState();
   const [entries, setEntries] = useState(10);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [userId, setUserId] = useState(null);
@@ -101,7 +102,7 @@ const UserList = () => {
       sortable: true,
       // center: true,
     },
-    { name: "ឈ្មោះ", selector: (row) => row.username_kh },
+    { name: "ឈ្មោះ", selector: (row) => row.username_kh, sortable: true },
     {
       name: "មុខតំណែង",
       selector: (row) => row.position,
@@ -113,6 +114,7 @@ const UserList = () => {
           {row.position}
         </div>
       ),
+      sortable: true,
     },
     {
       name: "អ៊ីមែល",
@@ -125,6 +127,7 @@ const UserList = () => {
           {row.email}
         </div>
       ),
+      sortable: true,
     },
     {
       name: "ស្ថានភាព",
@@ -155,13 +158,13 @@ const UserList = () => {
           );
         }
       },
-
       sortable: true,
     },
     {
       name: "កាលបរិច្ឆេទបង្កើត",
       selector: (row) => row.date_joined,
       // center: true,
+      sortable: true,
     },
     {
       name: "សកម្មភាពផ្សេងៗ",
@@ -242,6 +245,7 @@ const UserList = () => {
       .then((res) => {
         console.log("Get data: ", res);
         setRecords(res.data.data.users);
+        setOriginalData(res.data.data.users);
         setPending(false);
       })
       .catch((err) => {
@@ -251,10 +255,23 @@ const UserList = () => {
   }, []);
   // Search data
   const handleFilter = (e) => {
-    const newData = records.filter((row) => {
-      return row.position.toLowerCase().includes(e.target.value.toLowerCase());
-    });
-    setRecords(newData);
+    const searchValue = e.target.value.normalize("NFC").toLowerCase().trim();
+    if (searchValue === "") {
+      setRecords(originalData); // Reset if input is empty
+    } else {
+      const filteredData = originalData.filter((row) => {
+        const fieldsToSearch = [
+          row.position,
+          row.staff_id,
+          row.username_kh,
+          row.email,
+        ];
+        return fieldsToSearch.some((field) =>
+          (field || "").normalize("NFC").toLowerCase().includes(searchValue)
+        );
+      });
+      setRecords(filteredData);
+    }
   };
 
   return (

@@ -107,6 +107,7 @@ const List = () => {
       cell: (row) => (
         <div className=" w-40 truncate">{row.word_kh_definition}</div>
       ),
+      sortable: true,
     },
     {
       name: "ពាក្យអង់គ្លេស",
@@ -126,11 +127,11 @@ const List = () => {
           {row.word_en_definition}
         </div>
       ),
+      sortable: true,
     },
     {
       name: "សកម្មភាពផ្សេងៗ",
       selector: (row) => row.actions,
-      sortable: true,
       cell: (row) => (
         <div className="w-full flex gap-2 !items-center !justify-center *:hover:scale-110">
           <Link
@@ -183,20 +184,24 @@ const List = () => {
   }, []);
   // Search data
   const handleFilter = (e) => {
-    const searchValue = e.target.value.normalize("NFC").toLowerCase();
-    console.log(searchValue);
+    const searchValue = e.target.value.normalize("NFC").toLowerCase().trim();
     if (searchValue === "") {
-      setRecords(originalData); // Reset to originalData data when input is cleared
+      setRecords(originalData); // Reset if input is empty
     } else {
-      const newData = records.filter((row) => {
-        const kh = row.word_kh?.normalize("NFC") || "";
-        const en = row.word_en?.toLowerCase() || "";
-        return kh.includes(searchValue) || en.includes(searchValue);
+      const filteredData = originalData.filter((row) => {
+        const fieldsToSearch = [
+          row.word_kh,
+          row.word_kh_definition,
+          row.word_en,
+          row.word_en_definition,
+        ];
+        return fieldsToSearch.some((field) =>
+          (field || "").normalize("NFC").toLowerCase().includes(searchValue)
+        );
       });
-      setRecords(newData);
+      setRecords(filteredData);
     }
   };
-
   return (
     <>
       <div className="overflow-hidden">

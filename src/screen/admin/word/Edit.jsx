@@ -93,7 +93,10 @@ const Edit = () => {
         name === "pronunciation_en") &&
       !englishOnlyRegex.test(value)
     ) {
-      return;
+      return setFormData((prev) => ({
+        ...prev,
+        [name]: "",
+      }));
     } else if (
       (name === "word_kh" ||
         name === "word_kh_type" ||
@@ -101,7 +104,10 @@ const Edit = () => {
         name === "pronunciation_kh") &&
       !khmerOnlyRegex.test(value)
     ) {
-      return;
+      return setFormData((prev) => ({
+        ...prev,
+        [name]: "",
+      }));
     } else {
       var wordEn;
       if (name === "word_kh_type") {

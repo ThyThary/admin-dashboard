@@ -92,7 +92,6 @@ const List = () => {
           {index + 1}
         </div>
       ),
-      // sortable: true,
     },
     {
       name: "ពាក្យខ្មែរ",
@@ -106,6 +105,7 @@ const List = () => {
       cell: (row) => (
         <div className=" w-40 truncate">{row.word_kh_definition}</div>
       ),
+      sortable: true,
     },
     {
       name: "ពាក្យអង់គ្លេស",
@@ -125,8 +125,9 @@ const List = () => {
           {row.word_en_definition}
         </div>
       ),
+      sortable: true,
     },
-    { name: "អ្នកស្នើសុំ", selector: (row) => row.created_by },
+    { name: "អ្នកស្នើសុំ", selector: (row) => row.created_by, sortable: true },
     {
       name: "ស្ថានភាព",
       selector: (row) => row.review_status,
@@ -167,7 +168,6 @@ const List = () => {
           );
         }
       },
-
       sortable: true,
     },
     {
@@ -213,20 +213,25 @@ const List = () => {
   }, []);
   // Search data
   const handleFilter = (e) => {
-    const searchValue = e.target.value.normalize("NFC").toLowerCase();
-    console.log(searchValue);
+    const searchValue = e.target.value.normalize("NFC").toLowerCase().trim();
     if (searchValue === "") {
-      setRecords(originalData); // Reset to originalData data when input is cleared
+      setRecords(originalData); // Reset if input is empty
     } else {
-      const newData = records.filter((row) => {
-        const kh = row.word_kh?.normalize("NFC") || "";
-        const en = row.word_en?.toLowerCase() || "";
-        return kh.includes(searchValue) || en.includes(searchValue);
+      const filteredData = originalData.filter((row) => {
+        const fieldsToSearch = [
+          row.word_kh,
+          row.word_kh_definition,
+          row.word_en,
+          row.word_en_definition,
+          row.created_by,
+        ];
+        return fieldsToSearch.some((field) =>
+          (field || "").normalize("NFC").toLowerCase().includes(searchValue)
+        );
       });
-      setRecords(newData);
+      setRecords(filteredData);
     }
   };
-
   return (
     <>
       <div className="overflow-hidden">
