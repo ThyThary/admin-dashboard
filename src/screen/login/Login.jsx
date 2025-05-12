@@ -13,7 +13,6 @@ const Login = () => {
   const [passwordError, setPasswordError] = useState("");
   const [unauthorizedError, setUnauthorizedError] = useState("");
 
-  
   return (
     <>
       <div className="flex h-screen font-serif bg-slate-100 ">
@@ -37,7 +36,7 @@ const Login = () => {
                   className={`input-box line-hover font-hanuman
                     ${userNameError == "" ? "" : "!border-red-500"}
                     `}
-                  type="text" 
+                  type="text"
                   name="userName"
                   id="userName"
                   value={userName}
