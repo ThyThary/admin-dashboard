@@ -40,6 +40,7 @@ const Delete = async (routeWeb, routeAPIType, routeAPI, id, text) => {
     }, 2000);
   } catch (err) {
     console.error("Error deleting item", err);
+    alert(1);
     Toastify("error", `ការ${text}បានបរាជ័យ!`);
   }
 };

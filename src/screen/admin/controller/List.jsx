@@ -5,26 +5,26 @@ const ListIcon = lazy(() => import("../../../icons/svg/List"));
 const DetailIcon = lazy(() => import("../../../icons/svg/Detail"));
 const Button = lazy(() => import("../../../style/tailwind/Button"));
 
-import Modal from "../../../components/Modal";
 import DateKhmer from "../../../components/DateKhmer";
 import LoadingPage from "../../../components/LoadingPage";
 import api from "../../../api";
 import "../../../style/css/table.css";
+const statusStyles = {
+  PENDING: { label: "ថ្មី", color: "text-green-600" },
+  APPROVED: { label: "អនុម័ត", color: "text-blue-600" },
+  REJECTED: { label: "បដិសេធ", color: "text-red-600" },
+};
 const List = () => {
   const [data, setData] = useState([]);
   const [perPage, setPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalEntries, setTotalEntries] = useState(1);
   const [loading, setLoading] = useState(true);
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [userId, setUserId] = useState(null);
   const [search, setSearch] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
       const token = localStorage.getItem("access");
-      const userId = JSON.parse(localStorage.getItem("user"));
       setLoading(true);
 
       try {
@@ -67,25 +67,6 @@ const List = () => {
   return (
     <>
       {/* Modal Delete */}
-      <div className="overflow-hidden">
-        <Modal
-          isOpen={isModalOpen}
-          btnNo={
-            <Button
-              color="red"
-              text="ទេ"
-              onClick={() => setIsModalOpen(false)}
-              className="!px-4.5"
-            />
-          }
-          btnOk={<Button color="blue" text="បាទ" className=" px-3" />}
-          routeWeb="/admin/user-list"
-          routeAPIType="delete"
-          routeAPI="/api/users/drop?id="
-          id={userId}
-          text="លុប"
-        />
-      </div>
       <div className=" flex-row ">
         <div className="flex flex-col min-h-28 max-h-28 px-5 pt-5 ">
           {/* Breakcrabe */}
@@ -211,102 +192,73 @@ const List = () => {
                         </td>
                       </tr>
                     ) : (
-                      data.map((item, index) => (
-                        <tr key={item.id} className="column">
-                          <td className="px-2 py-[4.5px]">
-                            {" "}
-                            {(currentPage - 1) * perPage + index + 1}
-                          </td>
-                          <td className="px-2 py-[4.5px] w-32 truncate">
-                            {item.word_kh || <span className="">N/A</span>}
-                          </td>
-                          <td className="px-2 py-[4.5px] w-40 truncate">
-                            {item.word_kh_definition || (
-                              <span className="">N/A</span>
-                            )}
-                          </td>
-                          <td
-                            className="px-2 py-[4.5px] truncate w-32"
-                            style={{
-                              fontFamily: "Moul,serif",
-                            }}
-                          >
-                            {item.word_en || <span className="">N/A</span>}
-                          </td>
-                          <td
-                            className="px-2 py-[4.5px] truncate w-40"
-                            style={{
-                              fontFamily: "Moul,serif",
-                            }}
-                          >
-                            {item.word_en_definition || (
-                              <span className="">N/A</span>
-                            )}
-                          </td>
-                          <td className="px-2 py-[4.5px]">
-                            {item.created_by || <span className="">N/A</span>}
-                          </td>
-                          <td className="px-2 py-[4.5px]">
-                            {(() => {
-                              if (item.review_status == "PENDING") {
-                                return (
+                      ["PENDING", "APPROVED", "REJECTED"].map((status) =>
+                        data
+                          .filter((item) => item.review_status === status)
+                          .map((item, index) => {
+                            const style = statusStyles[item.review_status] || {
+                              label: item.review_status,
+                              color: "text-gray-600",
+                            };
+
+                            return (
+                              <tr
+                                key={`${status}-${item.id}`}
+                                className="column"
+                              >
+                                <td className="px-2 py-[4.5px]">
+                                  {(currentPage - 1) * perPage + index + 1}
+                                </td>
+                                <td className="px-2 py-[4.5px] w-32 truncate">
+                                  {item.word_kh || <span>N/A</span>}
+                                </td>
+                                <td className="px-2 py-[4.5px] w-40 truncate">
+                                  {item.word_kh_definition || <span>N/A</span>}
+                                </td>
+                                <td
+                                  className="px-2 py-[4.5px] truncate w-32"
+                                  style={{ fontFamily: "Moul,serif" }}
+                                >
+                                  {item.word_en || <span>N/A</span>}
+                                </td>
+                                <td
+                                  className="px-2 py-[4.5px] truncate w-40"
+                                  style={{ fontFamily: "Moul,serif" }}
+                                >
+                                  {item.word_en_definition || <span>N/A</span>}
+                                </td>
+                                <td className="px-2 py-[4.5px]">
+                                  {item.created_by || <span>N/A</span>}
+                                </td>
+                                <td className="px-2 py-[4.5px]">
                                   <span
-                                    className=" text-green-600 font-bold"
+                                    className={`${style.color} font-bold`}
                                     style={{
                                       fontFamily: "Hanuman, sans-serif",
                                       textAlign: "center",
                                     }}
                                   >
-                                    ថ្មី
+                                    {style.label}
                                   </span>
-                                );
-                              } else if (item.review_status == "APPROVED") {
-                                return (
-                                  <span
-                                    className=" text-blue-600 font-bold"
-                                    style={{
-                                      fontFamily: "Hanuman, sans-serif",
-                                    }}
-                                  >
-                                    អនុម័ត
-                                  </span>
-                                );
-                              } else {
-                                return (
-                                  <span
-                                    className="text-red-600 font-bold "
-                                    style={{
-                                      fontFamily: "Hanuman, sans-serif",
-                                    }}
-                                  >
-                                    បដិសេធ
-                                  </span>
-                                );
-                              }
-                            })()}
-                          </td>
-                          <td className="px-2 py-[4.5px]">
-                            {item.created_at || <span className="">N/A</span>}
-                          </td>
-                          <td className="px-2 py-[1px]">
-                            {(
-                              <div className="w-full flex gap-x-2 !items-center !justify-center *:hover:scale-110">
-                                <Link
-                                  to={`/admin/controller-detail/${item.id}`}
-                                >
-                                  <button title="Detail">
-                                    <DetailIcon
-                                      name="detail"
-                                      size="18"
-                                      color=""
-                                    />
-                                  </button>
-                                </Link>
-                              </div>
-                            ) || <span className=""> N/A</span>}
-                          </td>
-                        </tr>
-                      ))
+                                </td>
+                                <td className="px-2 py-[4.5px]">
+                                  {item.created_at || <span>N/A</span>}
+                                </td>
+                                <td className="px-2 py-[1px]">
+                                  <div className="w-full flex gap-x-2 items-center justify-center *:hover:scale-110">
+                                    <Link
+                                      to={`/admin/controller-detail/${item.id}`}
+                                    >
+                                      <button title="Detail">
+                                        <DetailIcon name="detail" size="18" />
+                                      </button>
+                                    </Link>
+                                  </div>
+                                </td>
+                              </tr>
+                            );
+                          })
+                      )
                     )}
                   </tbody>
                 </table>

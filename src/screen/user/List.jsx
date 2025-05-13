@@ -15,7 +15,11 @@ import Modal from "../../components/Modal";
 import DateKhmer from "../../components/DateKhmer";
 import "../../style/css/table.css";
 import api from "../../api";
-
+const statusStyles = {
+  PENDING: { label: "ថ្មី", color: "text-green-600" },
+  APPROVED: { label: "អនុម័ត", color: "text-blue-600" },
+  REJECTED: { label: "បដិសេធ", color: "text-red-600" },
+};
 const List = () => {
   const [data, setData] = useState([]);
   const [perPage, setPerPage] = useState(10);
@@ -242,125 +246,163 @@ const List = () => {
                         </td>
                       </tr>
                     ) : (
-                      data.map((item) => (
-                        <tr key={item.id} className="column">
-                          <td className="px-2 py-1.5">
-                            {" "}
-                            {(currentPage - 1) * perPage + index + 1}
-                          </td>
-                          <td className="px-2 py-1.5">
-                            {item.word_kh || <span className="">N/A</span>}
-                          </td>
-                          <td className="px-2 py-1.5">
-                            {item.word_kh_definition || (
-                              <span className="">N/A</span>
-                            )}
-                          </td>
-                          <td className="px-2 py-1.5">
-                            {item.word_en || <span className="">N/A</span>}
-                          </td>
-                          <td className="px-2 py-1.5">
-                            {item.word_en_definition || (
-                              <span className="">N/A</span>
-                            )}
-                          </td>
-                          <td className="px-2 py-1.5">
-                            {(() => {
-                              if (item.review_status == "PENDING") {
-                                return (
+                      ["PENDING", "APPROVED", "REJECTED"].map((status) =>
+                        data
+                          .filter((item) => item.review_status === status)
+                          .map((item, index) => {
+                            const style = statusStyles[item.review_status] || {
+                              label: item.review_status,
+                              color: "text-gray-600",
+                            };
+                            return (
+                              <tr
+                                key={`${status}-${item.id}`}
+                                className="column"
+                              >
+                                <td className="px-2 py-1.5">
+                                  {" "}
+                                  {(currentPage - 1) * perPage + index + 1}
+                                </td>
+                                <td className="px-2 py-1.5">
+                                  {item.word_kh || (
+                                    <span className="">N/A</span>
+                                  )}
+                                </td>
+                                <td className="px-2 py-1.5">
+                                  {item.word_kh_definition || (
+                                    <span className="">N/A</span>
+                                  )}
+                                </td>
+                                <td className="px-2 py-1.5">
+                                  {item.word_en || (
+                                    <span className="">N/A</span>
+                                  )}
+                                </td>
+                                <td className="px-2 py-1.5">
+                                  {item.word_en_definition || (
+                                    <span className="">N/A</span>
+                                  )}
+                                </td>
+                                <td className="px-2 py-[4.5px]">
                                   <span
-                                    className=" text-green-600 font-bold"
+                                    className={`${style.color} font-bold`}
                                     style={{
                                       fontFamily: "Hanuman, sans-serif",
                                       textAlign: "center",
                                     }}
                                   >
-                                    ថ្មី
+                                    {style.label}
                                   </span>
-                                );
-                              } else if (item.review_status == "APPROVED") {
-                                return (
-                                  <span
-                                    className=" text-blue-600 font-bold"
-                                    style={{
-                                      fontFamily: "Hanuman, sans-serif",
-                                    }}
-                                  >
-                                    អនុម័ត
-                                  </span>
-                                );
-                              } else {
-                                return (
-                                  <span
-                                    className="text-red-600 font-bold "
-                                    style={{
-                                      fontFamily: "Hanuman, sans-serif",
-                                    }}
-                                  >
-                                    បដិសេធ
-                                  </span>
-                                );
-                              }
-                            })()}
-                          </td>
-                          <td className="px-2 py-1.5">
-                            {item.created_at || <span className="">N/A</span>}
-                          </td>
-                          <td className="px-2 py-1.5">
-                            <div className="w-full flex gap-2 !items-center !justify-center *:hover:scale-110">
-                              <div
-                                className={`${
-                                  item.review_status != "PENDING"
-                                    ? "hidden"
-                                    : ""
-                                }`}
-                              >
-                                <Link to={`/user/word-edit/${item.id}`}>
-                                  <button title="Edit">
-                                    <EditIcon name="edit" size="20" color="" />
-                                  </button>
-                                </Link>
-                              </div>
-                              <div
-                                className={`${
-                                  item.review_status != "PENDING" ? "pl-1" : ""
-                                }`}
-                              >
-                                <Link to={`/user/word-detail/${item.id}`}>
-                                  <button title="Detail">
-                                    <DetailIcon
-                                      name="detail"
-                                      size="18"
-                                      color=""
-                                    />
-                                  </button>
-                                </Link>
-                              </div>
-                              <div
-                                className={`${
-                                  item.review_status != "PENDING"
-                                    ? "hidden"
-                                    : ""
-                                }`}
-                              >
-                                <button
-                                  title="Delete"
-                                  onClick={() => {
-                                    setIsModalOpen(true);
-                                    setUserId(item.id);
-                                  }}
-                                >
-                                  <DeleteIcon
-                                    name="delete"
-                                    size="18"
-                                    color=""
-                                  />
-                                </button>
-                              </div>
-                            </div>
-                          </td>
-                        </tr>
-                      ))
+                                </td>
+                                {/* <td className="px-2 py-1.5">
+                                  {(() => {
+                                    if (item.review_status == "PENDING") {
+                                      return (
+                                        <span
+                                          className=" text-green-600 font-bold"
+                                          style={{
+                                            fontFamily: "Hanuman, sans-serif",
+                                            textAlign: "center",
+                                          }}
+                                        >
+                                          ថ្មី
+                                        </span>
+                                      );
+                                    } else if (
+                                      item.review_status == "APPROVED"
+                                    ) {
+                                      return (
+                                        <span
+                                          className=" text-blue-600 font-bold"
+                                          style={{
+                                            fontFamily: "Hanuman, sans-serif",
+                                          }}
+                                        >
+                                          អនុម័ត
+                                        </span>
+                                      );
+                                    } else {
+                                      return (
+                                        <span
+                                          className="text-red-600 font-bold "
+                                          style={{
+                                            fontFamily: "Hanuman, sans-serif",
+                                          }}
+                                        >
+                                          បដិសេធ
+                                        </span>
+                                      );
+                                    }
+                                  })()}
+                                </td> */}
+                                <td className="px-2 py-1.5">
+                                  {item.created_at || (
+                                    <span className="">N/A</span>
+                                  )}
+                                </td>
+                                <td className="px-2 py-1.5">
+                                  <div className="w-full flex gap-2 !items-center !justify-center *:hover:scale-110">
+                                    <div
+                                      className={`${
+                                        item.review_status != "PENDING"
+                                          ? "hidden"
+                                          : ""
+                                      }`}
+                                    >
+                                      <Link to={`/user/word-edit/${item.id}`}>
+                                        <button title="Edit">
+                                          <EditIcon
+                                            name="edit"
+                                            size="20"
+                                            color=""
+                                          />
+                                        </button>
+                                      </Link>
+                                    </div>
+                                    <div
+                                      className={`${
+                                        item.review_status != "PENDING"
+                                          ? "pl-1"
+                                          : ""
+                                      }`}
+                                    >
+                                      <Link to={`/user/word-detail/${item.id}`}>
+                                        <button title="Detail">
+                                          <DetailIcon
+                                            name="detail"
+                                            size="18"
+                                            color=""
+                                          />
+                                        </button>
+                                      </Link>
+                                    </div>
+                                    <div
+                                      className={`${
+                                        item.review_status != "PENDING"
+                                          ? "hidden"
+                                          : ""
+                                      }`}
+                                    >
+                                      <button
+                                        title="Delete"
+                                        onClick={() => {
+                                          setIsModalOpen(true);
+                                          setUserId(item.id);
+                                        }}
+                                      >
+                                        <DeleteIcon
+                                          name="delete"
+                                          size="18"
+                                          color=""
+                                        />
+                                      </button>
+                                    </div>
+                                  </div>
+                                </td>
+                              </tr>
+                            );
+                          })
+                      )
                     )}
                   </tbody>
                 </table>
