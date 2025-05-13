@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import TextArea from "../../../style/tailwind/TextArea";
 import Toastify from "../../../components/Toastify";
 import api from "../../../api";
+import WEB_BASE_URL from "../../../config/web";
 
 const ModalReject = ({
   isOpen,
@@ -77,7 +78,7 @@ const ModalReject = ({
       }
       Toastify("success", `បាន${text}ដោយជោគជ័យ!`);
       setTimeout(() => {
-        window.location.href = `http://localhost:8012${routeWeb}`;
+        window.location.href = `${WEB_BASE_URL}${routeWeb}`;
       }, 2000);
     } catch (error) {
       if (error.response) {

@@ -8,6 +8,7 @@ const Select = lazy(() => import("../../../style/tailwind/Select"));
 const Button = lazy(() => import("../../../style/tailwind/Button"));
 import Toastify from "../../../components/Toastify";
 import DateKhmer from "../../../components/DateKhmer";
+import WEB_BASE_URL from "../../../config/web";
 const Create = () => {
   const user = JSON.parse(localStorage.getItem("user"));
   //Gender value
@@ -110,7 +111,7 @@ const Create = () => {
       });
       Toastify("success", "រក្សាទុកដោយជោគជ័យ!");
       setTimeout(() => {
-        window.location.href = "http://localhost:8012/admin/user-list";
+        window.location.href = `${WEB_BASE_URL}/admin/user-list`;
       }, 2000);
     } catch (error) {
       if (error.response) {

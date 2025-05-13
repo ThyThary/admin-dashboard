@@ -187,7 +187,7 @@ const List = () => {
               <LoadingPage />
             ) : (
               <>
-                <table className="min-w-full  text-sm border border-[#2f7447]">
+                <table className="min-w-full text-sm border border-[#2f7447]">
                   <thead className="bg-gray-100 head">
                     <tr className="*:whitespace-nowrap">
                       <th className="px-4 py-4 w-10">ល.រ</th>
@@ -214,27 +214,31 @@ const List = () => {
                           <td className="px-2 py-[4.5px]">
                             {(currentPage - 1) * perPage + index + 1}
                           </td>
-                          <td className="px-2 py-[4.5px] w-32 truncate">
-                            {item.word_kh || <span className="">N/A</span>}
+                          <td className="px-2 py-[4.5px] text-center ">
+                            <div className=" w-50 truncate">
+                              {item.word_kh || <span>N/A</span>}
+                            </div>
                           </td>
                           <td className="px-2 py-[4.5px]">
-                            {item.word_kh_definition || (
-                              <span className="">N/A</span>
-                            )}
+                            <div className="w-70 truncate">
+                              {item.word_kh_definition || <span>N/A</span>}
+                            </div>
                           </td>
                           <td
-                            className="px-2 py-[4.5px]"
+                            className="px-2 py-[4.5px] truncate w-32"
                             style={{ fontFamily: "Moul,serif" }}
                           >
-                            {item.word_en || <span className="">N/A</span>}
+                            <div className="w-50 truncate">
+                              {item.word_en || <span>N/A</span>}
+                            </div>
                           </td>
                           <td
-                            className="px-2 py-[4.5px]"
+                            className="px-2 py-[4.5px] truncate w-40"
                             style={{ fontFamily: "Moul,serif" }}
                           >
-                            {item.word_en_definition || (
-                              <span className="">N/A</span>
-                            )}
+                            <div className="w-70 truncate">
+                              {item.word_en_definition || <span>N/A</span>}
+                            </div>
                           </td>
 
                           <td className="px-2 py-[1px]">

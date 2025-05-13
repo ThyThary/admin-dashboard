@@ -8,6 +8,7 @@ import Button from "../../../style/tailwind/Button";
 import DateKhmer from "../../../components/DateKhmer";
 import Toastify from "../../../components/Toastify";
 import api from "../../../api";
+import WEB_BASE_URL from "../../../config/web";
 const Edit = () => {
   // Get user id
   const { id } = useParams();
@@ -128,7 +129,7 @@ const Edit = () => {
       });
       Toastify("success", "រក្សាទុកដោយជោគជ័យ!");
       setTimeout(() => {
-        window.location.href = "http://localhost:8012/admin/user-list";
+        window.location.href = `${WEB_BASE_URL}/admin/user-list`;
       }, 2000);
     } catch (error) {
       if (error.response) {

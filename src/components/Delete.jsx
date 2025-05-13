@@ -1,5 +1,6 @@
 import api from "../api";
 import Toastify from "./Toastify";
+import WEB_BASE_URL from "../config/web";
 const Delete = async (routeWeb, routeAPIType, routeAPI, id, text) => {
   if (!id) {
     alert("Invalid ID");
@@ -36,11 +37,10 @@ const Delete = async (routeWeb, routeAPIType, routeAPI, id, text) => {
     }
     Toastify("success", `បាន${text}ដោយជោគជ័យ!`);
     setTimeout(() => {
-      window.location.href = `http://localhost:8012${routeWeb}`;
+      window.location.href = `${WEB_BASE_URL}${routeWeb}`;
     }, 2000);
   } catch (err) {
     console.error("Error deleting item", err);
-    alert(1);
     Toastify("error", `ការ${text}បានបរាជ័យ!`);
   }
 };

@@ -182,10 +182,14 @@ const List = () => {
                             {(currentPage - 1) * perPage + index + 1}
                           </td>
                           <td className="px-2 py-[4.5px] ">
-                            {item.device_id || <span className="">N/A</span>}
+                            <div className=" w-[500px] truncate">
+                              {item.device_id || <span className="">N/A</span>}
+                            </div>
                           </td>
                           <td className="px-2 py-[4.5px]">
-                            {item.detail || <span className="">N/A</span>}
+                            <div className="w-[500px]">
+                              {item.detail || <span className="">N/A</span>}
+                            </div>
                           </td>
                           <td className="px-2 py-[4.5px]">
                             {item.created_at || <span className="">N/A</span>}

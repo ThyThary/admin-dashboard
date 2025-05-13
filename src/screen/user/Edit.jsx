@@ -9,6 +9,7 @@ import DateKhmer from "../../components/DateKhmer";
 import Select from "../../style/tailwind/Select";
 import Toastify from "../../components/Toastify";
 import api from "../../api";
+import WEB_BASE_URL from "../../config/web";
 
 const Edit = () => {
   // Get user id
@@ -92,7 +93,10 @@ const Edit = () => {
         name === "pronunciation_en") &&
       !englishOnlyRegex.test(value)
     ) {
-      return;
+      return setFormData((prev) => ({
+        ...prev,
+        [name]: "",
+      }));
     } else if (
       (name === "word_kh" ||
         name === "word_kh_type" ||
@@ -100,7 +104,10 @@ const Edit = () => {
         name === "pronunciation_kh") &&
       !khmerOnlyRegex.test(value)
     ) {
-      return;
+      return setFormData((prev) => ({
+        ...prev,
+        [name]: "",
+      }));
     } else {
       var wordEn;
       if (name === "word_kh_type") {
@@ -139,7 +146,6 @@ const Edit = () => {
           word_en_type: wordEn,
         }));
       }
-
       setFormData((prev) => ({
         ...prev,
         [name]: value,
@@ -197,7 +203,7 @@ const Edit = () => {
       });
       Toastify("success", "រក្សាទុកដោយជោគជ័យ!");
       setTimeout(() => {
-        window.location.href = "http://localhost:8012/user/word-list";
+        window.location.href = `${WEB_BASE_URL}/user/word-list`;
       }, 2000);
     } catch (error) {
       if (error.response) {

@@ -209,23 +209,35 @@ const List = () => {
                                 <td className="px-2 py-[4.5px]">
                                   {(currentPage - 1) * perPage + index + 1}
                                 </td>
-                                <td className="px-2 py-[4.5px] w-32 truncate">
-                                  {item.word_kh || <span>N/A</span>}
+                                <td className="px-2 py-[4.5px] ">
+                                  <div className="w-32 truncate">
+                                    {item.word_kh || <span>N/A</span>}
+                                  </div>
                                 </td>
-                                <td className="px-2 py-[4.5px] w-40 truncate">
-                                  {item.word_kh_definition || <span>N/A</span>}
+                                <td className="px-2 py-[4.5px]">
+                                  <div className="w-40 truncate">
+                                    {item.word_kh_definition || (
+                                      <span>N/A</span>
+                                    )}
+                                  </div>
                                 </td>
                                 <td
                                   className="px-2 py-[4.5px] truncate w-32"
                                   style={{ fontFamily: "Moul,serif" }}
                                 >
-                                  {item.word_en || <span>N/A</span>}
+                                  <div className="w-32 truncate">
+                                    {item.word_en || <span>N/A</span>}
+                                  </div>
                                 </td>
                                 <td
                                   className="px-2 py-[4.5px] truncate w-40"
                                   style={{ fontFamily: "Moul,serif" }}
                                 >
-                                  {item.word_en_definition || <span>N/A</span>}
+                                  <div className="w-40 truncate">
+                                    {item.word_en_definition || (
+                                      <span>N/A</span>
+                                    )}
+                                  </div>
                                 </td>
                                 <td className="px-2 py-[4.5px]">
                                   {item.created_by || <span>N/A</span>}

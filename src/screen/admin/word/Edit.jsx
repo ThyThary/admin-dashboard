@@ -9,6 +9,7 @@ import DateKhmer from "../../../components/DateKhmer";
 import Select from "../../../style/tailwind/Select";
 import api from "../../../api";
 import Toastify from "../../../components/Toastify";
+import WEB_BASE_URL from "../../../config/web";
 const Edit = () => {
   // Get user id
   const { id } = useParams();
@@ -208,7 +209,7 @@ const Edit = () => {
       if (data.data.responseCode === 200) {
         Toastify("success", "រក្សាទុកដោយជោគជ័យ!");
         setTimeout(() => {
-          window.location.href = "http://localhost:8012/admin/word-list";
+          window.location.href = `${WEB_BASE_URL}/admin/word-list`;
         }, 2000);
       }
     } catch (error) {

@@ -264,24 +264,32 @@ const List = () => {
                                   {(currentPage - 1) * perPage + index + 1}
                                 </td>
                                 <td className="px-2 py-1.5">
-                                  {item.word_kh || (
-                                    <span className="">N/A</span>
-                                  )}
+                                  <div className="w-32 truncate">
+                                    {item.word_kh || (
+                                      <span className="">N/A</span>
+                                    )}
+                                  </div>
                                 </td>
                                 <td className="px-2 py-1.5">
-                                  {item.word_kh_definition || (
-                                    <span className="">N/A</span>
-                                  )}
+                                  <div className="w-40 truncate">
+                                    {item.word_kh_definition || (
+                                      <span className="">N/A</span>
+                                    )}
+                                  </div>
                                 </td>
                                 <td className="px-2 py-1.5">
-                                  {item.word_en || (
-                                    <span className="">N/A</span>
-                                  )}
+                                  <div className="w-32 truncate">
+                                    {item.word_en || (
+                                      <span className="">N/A</span>
+                                    )}
+                                  </div>
                                 </td>
                                 <td className="px-2 py-1.5">
-                                  {item.word_en_definition || (
-                                    <span className="">N/A</span>
-                                  )}
+                                  <div className="w-40 truncate">
+                                    {item.word_en_definition || (
+                                      <span className="">N/A</span>
+                                    )}
+                                  </div>
                                 </td>
                                 <td className="px-2 py-[4.5px]">
                                   <span

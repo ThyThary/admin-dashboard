@@ -9,6 +9,7 @@ const Button = lazy(() => import("../../../style/tailwind/Button"));
 const TextArea = lazy(() => import("../../../style/tailwind/TextArea"));
 import DateKhmer from "../../../components/DateKhmer";
 import Toastify from "../../../components/Toastify";
+import WEB_BASE_URL from "../../../config/web";
 
 const Create = () => {
   const [wordClassEn, setWordClassEn] = useState("");
@@ -168,7 +169,7 @@ const Create = () => {
       if (data.data.responseCode === 201) {
         Toastify("success", "រក្សាទុកដោយជោគជ័យ!");
         setTimeout(() => {
-          window.location.href = "http://localhost:8012/admin/word-list";
+          window.location.href = `${WEB_BASE_URL}/admin/word-list`;
         }, 2000);
       }
     } catch (error) {

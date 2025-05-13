@@ -243,7 +243,33 @@ const List = () => {
                           <td className="px-2 py-[4.5px]">
                             {(currentPage - 1) * perPage + index + 1}
                           </td>
+                          <td className="px-2 py-[4.5px] ">
+                            <div className="w-40 truncate">
+                              {item.word_kh || <span>N/A</span>}
+                            </div>
+                          </td>
                           <td className="px-2 py-[4.5px]">
+                            <div className="w-60 truncate">
+                              {item.word_kh_definition || <span>N/A</span>}
+                            </div>
+                          </td>
+                          <td
+                            className="px-2 py-[4.5px] truncate w-32"
+                            style={{ fontFamily: "Moul,serif" }}
+                          >
+                            <div className="w-40 truncate">
+                              {item.word_en || <span>N/A</span>}
+                            </div>
+                          </td>
+                          <td
+                            className="px-2 py-[4.5px] truncate w-40"
+                            style={{ fontFamily: "Moul,serif" }}
+                          >
+                            <div className="w-60 truncate">
+                              {item.word_en_definition || <span>N/A</span>}
+                            </div>
+                          </td>
+                          {/* <td className="px-2 py-[4.5px]">
                             {item.word_kh || <span className="">N/A</span>}
                           </td>
                           <td className="px-2 py-[4.5px]">
@@ -258,7 +284,7 @@ const List = () => {
                             {item.word_en_definition || (
                               <span className="">N/A</span>
                             )}
-                          </td>
+                          </td> */}
                           <td className="px-2 py-[4.5px]">
                             {item.created_at || <span className="">N/A</span>}
                           </td>

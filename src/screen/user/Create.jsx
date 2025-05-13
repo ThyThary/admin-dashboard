@@ -9,6 +9,7 @@ import Button from "../../style/tailwind/Button";
 import TextArea from "../../style/tailwind/TextArea";
 import DateKhmer from "../../components/DateKhmer";
 import Toastify from "../../components/Toastify";
+import WEB_BASE_URL from "../../config/web";
 
 const Create = () => {
   const [wordClassEn, setWordClassEn] = useState("");
@@ -57,7 +58,10 @@ const Create = () => {
         name === "pronunciation_en") &&
       !englishOnlyRegex.test(value)
     ) {
-      return;
+      return setFormData((prev) => ({
+        ...prev,
+        [name]: "",
+      }));
     } else if (
       (name === "word_kh" ||
         name === "word_kh_type" ||
@@ -65,7 +69,10 @@ const Create = () => {
         name === "pronunciation_kh") &&
       !khmerOnlyRegex.test(value)
     ) {
-      return;
+      return setFormData((prev) => ({
+        ...prev,
+        [name]: "",
+      }));
     } else {
       var wordEn;
       if (name === "word_kh_type") {
@@ -160,7 +167,7 @@ const Create = () => {
       });
       Toastify("success", "រក្សាទុកដោយជោគជ័យ!");
       setTimeout(() => {
-        window.location.href = "http://localhost:8012/user/word-list";
+        window.location.href = `${WEB_BASE_URL}/user/word-list`;
       }, 2000);
     } catch (error) {
       if (error.response) {
