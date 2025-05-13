@@ -203,7 +203,7 @@ const List = () => {
                       <th className="px-4 py-4">សកម្មភាពផ្សេងៗ</th>
                     </tr>
                   </thead>
-                  <tbody className="">
+                  <tbody className="*:whitespace-nowrap">
                     {data.length === 0 ? (
                       <tr className="column-no-data">
                         <td

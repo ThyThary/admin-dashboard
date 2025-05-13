@@ -7,7 +7,6 @@ const DetailIcon = lazy(() => import("../../../icons/svg/Detail"));
 const ExcelIcon = lazy(() => import("../../../icons/svg/Excel"));
 const DeleteIcon = lazy(() => import("../../../icons/svg/Delete"));
 const Button = lazy(() => import("../../../style/tailwind/Button"));
-const Input = lazy(() => import("../../../style/tailwind/Input"));
 
 import Modal from "../../../components/Modal";
 import DateKhmer from "../../../components/DateKhmer";
@@ -228,11 +227,11 @@ const List = () => {
                       <th className="px-4 py-4">សកម្មភាពផ្សេងៗ</th>
                     </tr>
                   </thead>
-                  <tbody className="">
+                  <tbody className="*:whitespace-nowrap">
                     {data.length === 0 ? (
                       <tr className="column-no-data">
                         <td
-                          colSpan={8}
+                          colSpan={7}
                           className="px-2 py-[4.5px] text-center "
                         >
                           គ្មានទិន្នន័យ

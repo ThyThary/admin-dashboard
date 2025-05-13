@@ -198,11 +198,11 @@ const List = () => {
                       <th className="px-4 py-4">សកម្មភាពផ្សេងៗ</th>
                     </tr>
                   </thead>
-                  <tbody className="">
+                  <tbody className="*:whitespace-nowrap">
                     {data.length === 0 ? (
                       <tr className="column-no-data">
                         <td
-                          colSpan={8}
+                          colSpan={6}
                           className="px-2 py-[4.5px] text-center "
                         >
                           គ្មានទិន្នន័យ

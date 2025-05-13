@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import UnlockIcon from "../icons/svg/Unlock";
 import LogOutIcon from "../icons/svg/LogOut";
 import ModalChangePassword from "./ChangePasword";

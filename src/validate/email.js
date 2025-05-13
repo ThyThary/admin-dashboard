@@ -1,7 +1,6 @@
-import validator from "validator";
 import api from "../api";
 import CryptoJS from "crypto-js"; // You'll need to install this package
-
+import WEB_BASE_URL from "../config/web";
 // Function to encrypt data using OpenSSL-compatible AES-256 encryption
 const encryptData = (data) => {
   try {
@@ -18,19 +17,12 @@ const encryptData = (data) => {
       .replace("${current_year}", currentYear)
       .replace("${current_month}", currentMonth);
 
-    console.log("Using dynamic key:", dynamicKey); // For debugging
-
     // Generate random 8-byte salt
     const salt = CryptoJS.lib.WordArray.random(8);
-    console.log("Salt (hex):", salt.toString(CryptoJS.enc.Hex)); // For debugging
-
     // Create key and IV using OpenSSL EVP_BytesToKey derivation
     const keyAndIv = deriveKeyAndIv(dynamicKey, salt);
     const key = keyAndIv.key;
     const iv = keyAndIv.iv;
-
-    console.log("Derived key (hex):", key.toString(CryptoJS.enc.Hex)); // For debugging
-    console.log("Derived IV (hex):", iv.toString(CryptoJS.enc.Hex)); // For debugging
 
     // Encrypt the data
     const encrypted = CryptoJS.AES.encrypt(data, key, {
@@ -114,12 +106,18 @@ const email = async (
   rejectCallback
 ) => {
   e.preventDefault();
-
+  errorOne("");
+  errorTwo("");
   // User name validation
-  if (valueOne == "") {
+  if (valueOne == "" && valueTwo == "") {
     errorOne("ត្រូវការឈ្មោះអ្នកប្រើប្រាស់");
+    errorTwo("ត្រូវការពាក្យសម្ងាត់");
     if (rejectCallback) rejectCallback("Missing username");
     return;
+  } else if (valueOne == "") {
+    errorOne("ត្រូវការឈ្មោះអ្នកប្រើប្រាស់");
+  } else if (valueTwo == "") {
+    errorTwo("ត្រូវការពាក្យសម្ងាត់");
   } else {
     try {
       // Encrypt both login_input and password
@@ -151,9 +149,12 @@ const email = async (
           } else {
             // Original redirect logic if no callback provided
             if (res.data.data.user.role == "USER") {
-              window.location.href = "http://localhost:8012/user/word-list";
-            } else if (res.data.data.user.role == "ADMIN") {
-              window.location.href = "http://localhost:8012/admin/user-list";
+              window.location.href = `${WEB_BASE_URL}/user/word-list`;
+            } else if (
+              res.data.data.user.role == "ADMIN" ||
+              res.data.data.user.role == "SUPERUSER"
+            ) {
+              window.location.href = `${WEB_BASE_URL}/admin/user-list`;
             } else {
               /* empty */
             }

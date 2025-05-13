@@ -8,7 +8,6 @@ const DetailIcon = lazy(() => import("../../icons/svg/Detail"));
 const DeleteIcon = lazy(() => import("../../icons/svg/Delete"));
 const ExcelIcon = lazy(() => import("../../icons/svg/Excel"));
 const Button = lazy(() => import("../../style/tailwind/Button"));
-const Input = lazy(() => import("../../style/tailwind/Input"));
 
 import ModalImportExcel from "../admin/word/ModalImportExcel";
 import LoadingPage from "../../components/LoadingPage";
@@ -235,7 +234,7 @@ const List = () => {
                       <th className="px-4 py-4">សកម្មភាពផ្សេងៗ</th>
                     </tr>
                   </thead>
-                  <tbody className="">
+                  <tbody className="*:whitespace-nowrap">
                     {data.length === 0 ? (
                       <tr className="column-no-data">
                         <td colSpan={8} className="px-2 py-1.5 text-center ">

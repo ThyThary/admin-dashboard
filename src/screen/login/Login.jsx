@@ -4,6 +4,7 @@ import validatorEnglish from "../../validate/english";
 import handleClickSubmit from "../../validate/email";
 import Svg from "../../icons/svg/Svg";
 import Button from "../../style/tailwind/Button";
+import imgFMISLogo from "../../assets/logo/FMIS_Dictionary.png";
 //User log in account
 const Login = () => {
   const [userName, setUserName] = useState("");
@@ -18,9 +19,16 @@ const Login = () => {
       <div className="flex h-screen font-serif bg-slate-100 ">
         <div className="flex w-full justify-center items-center text-center">
           <div className=" w-[310px] h-[360px] bg-white rounded-xl shadow-xl">
-            <div className="flex mt-3 justify-center">
+            <div className="flex mt-5 justify-center">
               {/* Icons */}
-              <Svg name="userStroke" size="80" color="#2A4F8A" />
+              {/* <Svg name="userStroke" size="80" color="#2A4F8A" /> */}
+              <img
+                src={imgFMISLogo}
+                width={65}
+                height={65}
+                alt=""
+                className="shadow-md rounded-2xl"
+              />
             </div>
             <div className="mt-2">
               <label htmlFor="employeefrm" className="font-hanuman-title">
@@ -89,7 +97,7 @@ const Login = () => {
                       setUnauthorizedError
                     );
                   }}
-                  color="blue"
+                  color="green"
                   text="ចូលប្រព័ន្ធ"
                   className="px-7 py-2 font-bold text-lg mt-1"
                 />

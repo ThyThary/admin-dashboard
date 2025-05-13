@@ -5,6 +5,7 @@ function Button({ text, onClick, color = "#2a4f8a", className }) {
     blue: "bg-[#2a4f8a] hover:bg-blue-950 text-white",
     red: "bg-red-700 hover:bg-red-800 text-white",
     slate: "bg-slate-300 hover:bg-gray-400 !text-black",
+    green: "bg-[#00ba98] hover:bg-emerald-600 !text-white",
   };
   return (
     <button

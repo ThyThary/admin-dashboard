@@ -5,13 +5,6 @@
   font-size: 22px;
   color: #2f7447;
 }
-/* .siemreap-regular {
-  font-family: "Moul", serif;
-  font-weight: 400;
-  font-style: normal;
-  font-style: normal;
-  font-size: 16px;
-}
 
 .siemreap-title {
   font-family: "Moul", serif;
@@ -37,9 +30,8 @@
     0 2px 4px -1px rgba(0, 0, 0, 0.06);
   background-color: #2a4f8a;
   cursor: pointer;
-} */
-
-.btn-color {
+}
+*/ .btn-color {
   background-color: #2a4f8a;
 }
 .line-hover:hover {

@@ -1,4 +1,5 @@
 import axios from "axios";
+import WEB_BASE_URL from "../src/config/web";
 
 // Create an Axios instance with base URL from environment variable
 const api = axios.create({
@@ -46,11 +47,10 @@ api.interceptors.response.use(
       } catch (refreshError) {
         // Redirect if refresh fails
         alert("ផុតកំណត់ការប្រើប្រាស់!");
-        window.location.href = "http://localhost:8012/log-in";
+        window.location.href = `${WEB_BASE_URL}/log-in`;
         return Promise.reject(refreshError);
       }
     }
-
     // Reject all other errors
     return Promise.reject(error);
   }
