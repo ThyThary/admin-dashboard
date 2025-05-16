@@ -25,7 +25,6 @@ const List = () => {
   const [userId, setUserId] = useState(null);
   const [search, setSearch] = useState("");
   const user = JSON.parse(localStorage.getItem("user"));
-  let index = 0;
   useEffect(() => {
     const fetchData = async () => {
       const token = localStorage.getItem("access");

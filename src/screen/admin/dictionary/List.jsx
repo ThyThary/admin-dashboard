@@ -93,7 +93,7 @@ const List = () => {
           {/* Breakcrabe */}
           <div className="flex flex-row items-center cursor-pointer text-gray-500 gap-x-2 w-full">
             <HomeIcon name="home" size="15" color="#6B7280" />
-            <Link to="admin/dictionary-list">
+            <Link to="/admin/dictionary-list">
               <label
                 className="text-sm cursor-pointer"
                 style={{ fontFamily: "Hanuman, sans-serif" }}
@@ -126,13 +126,6 @@ const List = () => {
               >
                 បញ្ជី
               </label>
-            </div>
-            <div className=" flex items-center ml-auto text-right gap-x-3">
-              <div>
-                <Link to="admin/dictionary-create">
-                  <Button color="blue" text="បង្កើត" className="px-3" />
-                </Link>
-              </div>
             </div>
           </div>
         </div>

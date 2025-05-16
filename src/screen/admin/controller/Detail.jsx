@@ -223,6 +223,36 @@ function Detail() {
                     {user.word_kh_definition}
                   </li>
                 </ul>
+                <ul className="flex mb-2">
+                  <li
+                    className="font-bold text-md w-[260px]"
+                    style={{ fontFamily: "Hanuman, sans-serif" }}
+                  >
+                    បញ្ចេញសម្លេងខ្មែរ
+                  </li>
+                  <li className="">:</li>
+                  <li
+                    className="ml-6 text-md w-full"
+                    style={{ fontFamily: "Hanuman, sans-serif" }}
+                  >
+                    {user.pronunciation_kh ?? ""}
+                  </li>
+                </ul>
+                <ul className="flex mb-2">
+                  <li
+                    className="font-bold text-md w-[260px]"
+                    style={{ fontFamily: "Hanuman, sans-serif" }}
+                  >
+                    ឧទាហរណ៍ខ្មែរ
+                  </li>
+                  <li className="">:</li>
+                  <li
+                    className="ml-6 text-md w-full"
+                    style={{ fontFamily: "Hanuman, sans-serif" }}
+                  >
+                    {user.example_sentence_kh ?? ""}
+                  </li>
+                </ul>
               </div>
               {/* grid two */}
               <div className="ml-2">
@@ -301,6 +331,36 @@ function Detail() {
                     {user.word_en_definition}
                   </li>
                 </ul>
+                <ul className="flex mb-2">
+                  <li
+                    className="font-bold text-md w-[260px]"
+                    style={{ fontFamily: "Hanuman, sans-serif" }}
+                  >
+                    បញ្ចេញសម្លេងអង់គ្លេស
+                  </li>
+                  <li className="">:</li>
+                  <li
+                    className="ml-6 text-md w-full"
+                    style={{ fontFamily: "Moul, serif" }}
+                  >
+                    {user.pronunciation_en ?? ""}
+                  </li>
+                </ul>
+                <ul className="flex mb-2">
+                  <li
+                    className="font-bold text-md w-[260px]"
+                    style={{ fontFamily: "Hanuman, sans-serif" }}
+                  >
+                    ឧទាហរណ៍អង់គ្លេស
+                  </li>
+                  <li className="">:</li>
+                  <li
+                    className="ml-6 text-md w-full"
+                    style={{ fontFamily: "Moul, serif" }}
+                  >
+                    {user.example_sentence_en ?? ""}
+                  </li>
+                </ul>
               </div>
             </div>
           </div>
@@ -329,6 +389,17 @@ function Detail() {
                           setIsModalOpen(true);
                         }}
                       />
+                    </div>
+                  </div>
+                );
+              } else {
+                return (
+                  <div className="flex gap-3">
+                    <div>
+                      {" "}
+                      <Link to="/admin/controller-list">
+                        <Button color="slate" text="ត្រលប់ក្រោយ" className="" />
+                      </Link>
                     </div>
                   </div>
                 );

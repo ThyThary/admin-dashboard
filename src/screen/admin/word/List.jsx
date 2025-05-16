@@ -27,16 +27,15 @@ const List = () => {
   const [userId, setUserId] = useState(null);
   const [search, setSearch] = useState("");
 
-  let index = 0;
   useEffect(() => {
     const fetchData = async () => {
       const token = localStorage.getItem("access");
-      const userId = JSON.parse(localStorage.getItem("user"));
+      const user = JSON.parse(localStorage.getItem("user"));
       setLoading(true);
 
       try {
         const res = await api.get(
-          `/api/dictionary/staging/list?id=${userId.id}`,
+          `/api/dictionary/staging/list?id=${user.id}`,
           {
             headers: { Authorization: `Bearer ${token}` },
             params: { search, page: currentPage, per_page: perPage },
@@ -156,7 +155,7 @@ const List = () => {
                 </button>
               </div>
               <div>
-                <Link to="/user/word-create">
+                <Link to="/admin/word-create">
                   <Button color="blue" text="បង្កើត" className="px-3" />
                 </Link>
               </div>

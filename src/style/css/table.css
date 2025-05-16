@@ -11,8 +11,9 @@
 .column {
   border: none;
   font-family: "Hanuman", sans-serif;
-  min-height: 8px;
   text-align: center;
+  font-size: 13px;
+  padding: 10px 2px;
 }
 
 .column:nth-of-type(odd) {

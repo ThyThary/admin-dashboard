@@ -1,4 +1,4 @@
-import React, { useState, useEffect, lazy, Suspense } from "react";
+import React, { useState, useEffect, lazy } from "react";
 import { Link } from "react-router-dom";
 
 const HomeIcon = lazy(() => import("../../icons/svg/Home"));
@@ -31,11 +31,12 @@ const List = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [userId, setUserId] = useState(null);
   const [search, setSearch] = useState("");
-  let index = 0;
+  let globalIndex = 0;
   useEffect(() => {
     const fetchData = async () => {
       const token = localStorage.getItem("access");
       const userId = JSON.parse(localStorage.getItem("user"));
+
       console.log("ID:", userId);
       setLoading(true);
 
@@ -249,7 +250,8 @@ const List = () => {
                       ["PENDING", "APPROVED", "REJECTED"].map((status) =>
                         data
                           .filter((item) => item.review_status === status)
-                          .map((item, index) => {
+                          .map((item) => {
+                            globalIndex += 1;
                             const style = statusStyles[item.review_status] || {
                               label: item.review_status,
                               color: "text-gray-600",
@@ -261,7 +263,7 @@ const List = () => {
                               >
                                 <td className="px-2 py-1.5">
                                   {" "}
-                                  {(currentPage - 1) * perPage + index + 1}
+                                  {(currentPage - 1) * perPage + globalIndex}
                                 </td>
                                 <td className="px-2 py-1.5">
                                   <div className="w-32 truncate">
@@ -302,47 +304,6 @@ const List = () => {
                                     {style.label}
                                   </span>
                                 </td>
-                                {/* <td className="px-2 py-1.5">
-                                  {(() => {
-                                    if (item.review_status == "PENDING") {
-                                      return (
-                                        <span
-                                          className=" text-green-600 font-bold"
-                                          style={{
-                                            fontFamily: "Hanuman, sans-serif",
-                                            textAlign: "center",
-                                          }}
-                                        >
-                                          ថ្មី
-                                        </span>
-                                      );
-                                    } else if (
-                                      item.review_status == "APPROVED"
-                                    ) {
-                                      return (
-                                        <span
-                                          className=" text-blue-600 font-bold"
-                                          style={{
-                                            fontFamily: "Hanuman, sans-serif",
-                                          }}
-                                        >
-                                          អនុម័ត
-                                        </span>
-                                      );
-                                    } else {
-                                      return (
-                                        <span
-                                          className="text-red-600 font-bold "
-                                          style={{
-                                            fontFamily: "Hanuman, sans-serif",
-                                          }}
-                                        >
-                                          បដិសេធ
-                                        </span>
-                                      );
-                                    }
-                                  })()}
-                                </td> */}
                                 <td className="px-2 py-1.5">
                                   {item.created_at || (
                                     <span className="">N/A</span>

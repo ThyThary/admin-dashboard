@@ -85,8 +85,8 @@ const Edit = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     console.log(name, value);
-    const englishOnlyRegex = /^[A-Za-z0-9.@!@#$%^&*+=_-\s]*$/;
-    const khmerOnlyRegex = /^[\u1780-\u17FF\s]+$/;
+    const englishOnlyRegex = /^[\x20-\x7E]*$/;
+    const khmerOnlyRegex = /^[\u1780-\u17FF\u200B\u25CC\u17D4-\u17DC\s]+$/;
     if (
       (name === "word_en" ||
         name === "word_en_type" ||
@@ -98,13 +98,7 @@ const Edit = () => {
         ...prev,
         [name]: "",
       }));
-    } else if (
-      (name === "word_kh" ||
-        name === "word_kh_type" ||
-        name === "word_kh_definition" ||
-        name === "pronunciation_kh") &&
-      !khmerOnlyRegex.test(value)
-    ) {
+    } else if (name === "word_kh" && !khmerOnlyRegex.test(value)) {
       return setFormData((prev) => ({
         ...prev,
         [name]: "",

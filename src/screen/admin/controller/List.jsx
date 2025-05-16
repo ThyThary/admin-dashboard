@@ -21,7 +21,7 @@ const List = () => {
   const [totalEntries, setTotalEntries] = useState(1);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
-
+  let globalIndex = 0;
   useEffect(() => {
     const fetchData = async () => {
       const token = localStorage.getItem("access");
@@ -195,7 +195,8 @@ const List = () => {
                       ["PENDING", "APPROVED", "REJECTED"].map((status) =>
                         data
                           .filter((item) => item.review_status === status)
-                          .map((item, index) => {
+                          .map((item) => {
+                            globalIndex += 1;
                             const style = statusStyles[item.review_status] || {
                               label: item.review_status,
                               color: "text-gray-600",
@@ -207,7 +208,7 @@ const List = () => {
                                 className="column"
                               >
                                 <td className="px-2 py-[4.5px]">
-                                  {(currentPage - 1) * perPage + index + 1}
+                                  {(currentPage - 1) * perPage + globalIndex}
                                 </td>
                                 <td className="px-2 py-[4.5px] ">
                                   <div className="w-32 truncate">
