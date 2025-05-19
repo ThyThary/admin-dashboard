@@ -36,8 +36,8 @@ const List = () => {
           headers: { Authorization: `Bearer ${token}` },
           params: { search, page: currentPage, per_page: perPage },
         });
-        setData(res.data.data.users);
         console.log(res.data);
+        setData(res.data.data.users);
         setTotalEntries(res.data.data.total_entries); // Correct total count if available
       } catch (err) {
         console.error("API fetch error:", err);

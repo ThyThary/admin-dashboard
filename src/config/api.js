@@ -1,5 +1,5 @@
 import axios from "axios";
-import WEB_BASE_URL from "../src/config/web";
+import WEB_BASE_URL from "../config/web";
 
 // Create an Axios instance with base URL from environment variable
 const api = axios.create({

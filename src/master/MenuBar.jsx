@@ -12,7 +12,6 @@ const MenuBar = () => {
   const wordRotue = textRoute.split("-");
   const seperateRoute = wordRotue[1];
   const sidebarRoute = wordRotue[0];
-  console.log(sidebarRoute);
   const [activeTab, setActiveTab] = useState("FMIS Admin Dictionary ");
   useEffect(() => {
     // Update browser tab title

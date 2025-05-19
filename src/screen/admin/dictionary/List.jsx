@@ -6,9 +6,7 @@ const EditIcon = lazy(() => import("../../../icons/svg/Edit"));
 const DetailIcon = lazy(() => import("../../../icons/svg/Detail"));
 const DeleteIcon = lazy(() => import("../../../icons/svg/Delete"));
 const Button = lazy(() => import("../../../style/tailwind/Button"));
-const Input = lazy(() => import("../../../style/tailwind/Input"));
 
-import DataTable from "react-data-table-component";
 import Modal from "../../../components/Modal";
 import DateKhmer from "../../../components/DateKhmer";
 import LoadingPage from "../../../components/LoadingPage";
@@ -20,16 +18,14 @@ const List = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalEntries, setTotalEntries] = useState(1);
   const [loading, setLoading] = useState(true);
-  const user = JSON.parse(localStorage.getItem("user"));
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [userId, setUserId] = useState(null);
   const [search, setSearch] = useState("");
+  const user = JSON.parse(localStorage.getItem("user"));
 
-  let index = 0;
   useEffect(() => {
     const fetchData = async () => {
       const token = localStorage.getItem("access");
-      const userId = JSON.parse(localStorage.getItem("user"));
       setLoading(true);
 
       try {
@@ -37,6 +33,7 @@ const List = () => {
           headers: { Authorization: `Bearer ${token}` },
           params: { search, page: currentPage, per_page: perPage },
         });
+        console.log(res.data);
         setData(res.data.data.entries);
         setTotalEntries(res.data.data.total_entries); // Correct total count if available
       } catch (err) {

@@ -41,6 +41,7 @@ const List = () => {
             params: { search, page: currentPage, per_page: perPage },
           }
         );
+        console.log(res.data);
         setData(res.data.data.entries);
         setTotalEntries(res.data.data.total_entries); // Correct total count if available
       } catch (err) {

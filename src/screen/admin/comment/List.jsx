@@ -13,16 +13,11 @@ const List = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalEntries, setTotalEntries] = useState(1);
   const [loading, setLoading] = useState(true);
-  const user = JSON.parse(localStorage.getItem("user"));
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [userId, setUserId] = useState(null);
   const [search, setSearch] = useState("");
 
-  let index = 0;
   useEffect(() => {
     const fetchData = async () => {
       const token = localStorage.getItem("access");
-      const userId = JSON.parse(localStorage.getItem("user"));
       setLoading(true);
 
       try {
