@@ -7,7 +7,7 @@ const Button = lazy(() => import("../../../style/tailwind/Button"));
 import capitalizeFirst from "../../../validate/capitalizeFirst";
 import Modal from "../../../components/Modal";
 import ModalReject from "./ModalReject";
-import api from "../../../api";
+import api from "../../../config/api";
 function Detail() {
   // Get user id
   const { id } = useParams();

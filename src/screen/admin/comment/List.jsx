@@ -5,7 +5,7 @@ const ListIcon = lazy(() => import("../../../icons/svg/List"));
 
 import DateKhmer from "../../../components/DateKhmer";
 import LoadingPage from "../../../components/LoadingPage";
-import api from "../../../api";
+import api from "../../../config/api";
 import "../../../style/css/table.css";
 const List = () => {
   const [data, setData] = useState([]);

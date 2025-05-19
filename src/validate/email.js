@@ -1,4 +1,4 @@
-import api from "../api";
+import api from "../config/api";
 import CryptoJS from "crypto-js"; // You'll need to install this package
 import WEB_BASE_URL from "../config/web";
 // Function to encrypt data using OpenSSL-compatible AES-256 encryption

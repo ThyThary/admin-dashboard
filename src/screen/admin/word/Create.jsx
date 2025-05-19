@@ -1,6 +1,6 @@
 import React, { useState, lazy } from "react";
 import { Link } from "react-router-dom";
-import api from "../../../api";
+import api from "../../../config/api";
 const HomeIcon = lazy(() => import("../../../icons/svg/Home"));
 const CreateIcon = lazy(() => import("../../../icons/svg/Create"));
 const Input = lazy(() => import("../../../style/tailwind/Input"));

@@ -5,7 +5,7 @@ import { Link, useParams } from "react-router-dom";
 import Button from "../../style/tailwind/Button";
 import DateKhmer from "../../components/DateKhmer";
 import capitalizeFirst from "../../validate/capitalizeFirst";
-import api from "../../api";
+import api from "../../config/api";
 const Detail = () => {
   const { id } = useParams();
   const [user, setUser] = useState([]);

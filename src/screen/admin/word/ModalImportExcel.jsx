@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import * as XLSX from "xlsx";
-import api from "../../../api";
+import api from "../../../config/api";
 import Toastify from "../../../components/Toastify";
 
 function ModalImportExcel({ isOpen, btnNo, btnOk }) {

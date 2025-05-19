@@ -14,7 +14,7 @@ import LoadingPage from "../../components/LoadingPage";
 import Modal from "../../components/Modal";
 import DateKhmer from "../../components/DateKhmer";
 import "../../style/css/table.css";
-import api from "../../api";
+import api from "../../config/api";
 const statusStyles = {
   PENDING: { label: "ថ្មី", color: "text-green-600" },
   APPROVED: { label: "អនុម័ត", color: "text-blue-600" },

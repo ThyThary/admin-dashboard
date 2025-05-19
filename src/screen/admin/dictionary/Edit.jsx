@@ -7,7 +7,7 @@ import Button from "../../../style/tailwind/Button";
 import TextArea from "../../../style/tailwind/TextArea";
 import DateKhmer from "../../../components/DateKhmer";
 import Select from "../../../style/tailwind/Select";
-import api from "../../../api";
+import api from "../../../config/api";
 import Toastify from "../../../components/Toastify";
 import WEB_BASE_URL from "../../../config/web";
 const Edit = () => {

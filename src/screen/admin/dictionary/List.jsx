@@ -12,7 +12,7 @@ import DataTable from "react-data-table-component";
 import Modal from "../../../components/Modal";
 import DateKhmer from "../../../components/DateKhmer";
 import LoadingPage from "../../../components/LoadingPage";
-import api from "../../../api";
+import api from "../../../config/api";
 import "../../../style/css/table.css";
 const List = () => {
   const [data, setData] = useState([]);

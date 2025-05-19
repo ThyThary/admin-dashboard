@@ -7,7 +7,7 @@ const Button = lazy(() => import("../../../style/tailwind/Button"));
 
 import DateKhmer from "../../../components/DateKhmer";
 import LoadingPage from "../../../components/LoadingPage";
-import api from "../../../api";
+import api from "../../../config/api";
 import "../../../style/css/table.css";
 const statusStyles = {
   PENDING: { label: "ថ្មី", color: "text-green-600" },

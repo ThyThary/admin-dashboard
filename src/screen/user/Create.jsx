@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import api from "../../api";
+import api from "../../config/api";
 import HomeIcon from "../../icons/svg/Home";
 import CreateIcon from "../../icons/svg/Create";
 import Input from "../../style/tailwind/Input";

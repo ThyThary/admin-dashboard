@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Input from "../style/tailwind/Input";
 import Toastify from "../components/Toastify";
-import api from "../api";
+import api from "../config/api";
 import CryptoJS from "crypto-js"; // You'll need to install this package
 
 // Function to encrypt data using OpenSSL-compatible AES-256 encryption

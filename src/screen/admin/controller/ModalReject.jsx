@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import TextArea from "../../../style/tailwind/TextArea";
 import Toastify from "../../../components/Toastify";
-import api from "../../../api";
+import api from "../../../config/api";
 import WEB_BASE_URL from "../../../config/web";
 
 const ModalReject = ({

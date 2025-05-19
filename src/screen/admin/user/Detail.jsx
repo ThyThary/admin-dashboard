@@ -4,7 +4,7 @@ import DetailIcon from "../../../icons/svg/Detail";
 import { Link, useParams } from "react-router-dom";
 import Button from "../../../style/tailwind/Button";
 import DateKhmer from "../../../components/DateKhmer";
-import api from "../../../api";
+import api from "../../../config/api";
 import ModalReject from "../controller/ModalReject";
 import Modal from "../../../components/Modal";
 export default function Detail() {

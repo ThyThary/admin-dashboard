@@ -1,4 +1,4 @@
-import api from "../api";
+import api from "../config/api";
 import Toastify from "./Toastify";
 import WEB_BASE_URL from "../config/web";
 const Delete = async (routeWeb, routeAPIType, routeAPI, id, text) => {

@@ -7,7 +7,7 @@ import Select from "../../../style/tailwind/Select";
 import Button from "../../../style/tailwind/Button";
 import DateKhmer from "../../../components/DateKhmer";
 import Toastify from "../../../components/Toastify";
-import api from "../../../api";
+import api from "../../../config/api";
 import WEB_BASE_URL from "../../../config/web";
 const Edit = () => {
   // Get user id
