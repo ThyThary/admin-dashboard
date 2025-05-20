@@ -211,7 +211,7 @@ const Edit = () => {
                 className="text-sm cursor-pointer"
                 style={{ fontFamily: "Hanuman, sans-serif" }}
               >
-                / ពាក្យ
+                / វចនានុក្រម
               </label>
             </Link>
             <Link to="">

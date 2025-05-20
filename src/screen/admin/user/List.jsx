@@ -12,7 +12,7 @@ import Modal from "../../../components/Modal";
 import DateKhmer from "../../../components/DateKhmer";
 import LoadingPage from "../../../components/LoadingPage";
 import api from "../../../config/api";
-import "./style/table.css";
+import "../../../style/css/table.css";
 
 const List = () => {
   const [data, setData] = useState([]);
@@ -139,8 +139,8 @@ const List = () => {
           </div>
         </div>
         {/* Content */}
-        <div className=" bg-white overflow-y-auto m-5 shadow-md rounded-md min-h-[72vh] max-h-[72vh]">
-          <div className="p-6">
+        <div className="flex bg-white overflow-y-auto m-5 shadow-md rounded-md min-h-[72vh] max-h-[72vh]">
+          <div className="lg:w-full p-6">
             <div className="flex flex-wrap items-center justify-between mb-4">
               <div className="mb-2">
                 <div className="flex items-center space-x-2">
@@ -188,8 +188,8 @@ const List = () => {
             {loading ? (
               <LoadingPage />
             ) : (
-              <>
-                <table className="min-w-full  text-sm border border-[#2f7447]">
+              <div className="w-full">
+                <table className="min-w-full text-sm border border-[#2f7447]">
                   <thead className="bg-gray-100 head">
                     <tr className="*:whitespace-nowrap">
                       <th className="px-4 py-4 w-10">ល.រ</th>
@@ -219,13 +219,13 @@ const List = () => {
                             {(currentPage - 1) * perPage + index + 1}
                           </td>
                           <td className="px-2 py-[4.5px]">
-                            {item.staff_id || <span className="">N/A</span>}
+                            {item.staff_id || ""}
                           </td>
                           <td className="px-2 py-[4.5px]">
-                            {item.username_kh || <span className="">N/A</span>}
+                            {item.username_kh || ""}
                           </td>
                           <td className="px-2 py-[4.5px] truncate w-60">
-                            {item.position || <span className="">N/A</span>}
+                            {item.position || ""}
                           </td>
                           <td
                             className="px-2 py-[4.5px] truncate w-60"
@@ -234,7 +234,7 @@ const List = () => {
                               fontSize: "14px",
                             }}
                           >
-                            {item.email || <span className="">N/A</span>}
+                            {item.email || ""}
                           </td>
                           <td className="px-2 py-[4.5px]">
                             {(() => {
@@ -265,7 +265,7 @@ const List = () => {
                             })()}
                           </td>
                           <td className="px-2 py-[4.5px]">
-                            {item.date_joined || <span className="">N/A</span>}
+                            {item.date_joined || ""}
                           </td>
                           <td className="px-2 py-[1px]">
                             {(() => {
@@ -367,8 +367,7 @@ const List = () => {
                     )}
                   </tbody>
                 </table>
-
-                <div className="mt-4 flex justify-between items-center flex-wrap gap-2">
+                <div className="min-w-full mt-4 flex justify-between items-center flex-wrap gap-2">
                   <p
                     className="text-sm"
                     style={{
@@ -380,7 +379,6 @@ const List = () => {
                     {Math.min(currentPage * perPage, totalEntries)} នៃ{" "}
                     {totalEntries} ទិន្នន័យ
                   </p>
-
                   <div className="flex space-x-1">
                     {getPageNumbers(currentPage, totalPages).map(
                       (page, index) => (
@@ -402,7 +400,7 @@ const List = () => {
                     )}
                   </div>
                 </div>
-              </>
+              </div>
             )}
           </div>
         </div>

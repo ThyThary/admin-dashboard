@@ -170,8 +170,8 @@ const List = () => {
           </div>
         </div>
         {/* Content */}
-        <div className=" bg-white overflow-y-auto m-5 shadow-md rounded-md min-h-[72vh] max-h-[72vh]">
-          <div className="p-6">
+        <div className="flex bg-white overflow-y-auto m-5 shadow-md rounded-md min-h-[72vh] max-h-[72vh]">
+          <div className="lg:w-full p-6">
             <div className="flex flex-wrap items-center justify-between mb-4">
               <div className="mb-2">
                 {/* {!loading && ( */}
@@ -267,33 +267,25 @@ const List = () => {
                                 </td>
                                 <td className="px-2 py-1.5">
                                   <div className="w-32 truncate">
-                                    {item.word_kh || (
-                                      <span className="">N/A</span>
-                                    )}
+                                    {item.word_kh || ""}
                                   </div>
                                 </td>
                                 <td className="px-2 py-1.5">
                                   <div className="w-40 truncate">
-                                    {item.word_kh_definition || (
-                                      <span className="">N/A</span>
-                                    )}
+                                    {item.word_kh_definition || ""}
                                   </div>
                                 </td>
                                 <td className="px-2 py-1.5">
                                   <div className="w-32 truncate">
-                                    {item.word_en || (
-                                      <span className="">N/A</span>
-                                    )}
+                                    {item.word_en || ""}
                                   </div>
                                 </td>
                                 <td className="px-2 py-1.5">
                                   <div className="w-40 truncate">
-                                    {item.word_en_definition || (
-                                      <span className="">N/A</span>
-                                    )}
+                                    {item.word_en_definition || ""}
                                   </div>
                                 </td>
-                                <td className="px-2 py-[4.5px]">
+                                <td className="px-2 py-[5.3px]">
                                   <span
                                     className={`${style.color} font-bold`}
                                     style={{
@@ -305,9 +297,7 @@ const List = () => {
                                   </span>
                                 </td>
                                 <td className="px-2 py-1.5">
-                                  {item.created_at || (
-                                    <span className="">N/A</span>
-                                  )}
+                                  {item.created_at || ""}
                                 </td>
                                 <td className="px-2 py-1.5">
                                   <div className="w-full flex gap-2 !items-center !justify-center *:hover:scale-110">
@@ -384,8 +374,9 @@ const List = () => {
                       fontSize: "12px",
                     }}
                   >
-                    កំពុងបង្ហាញ {(currentPage - 1) * perPage + 1} ទៅ{" "}
-                    {Math.min(currentPage * perPage, totalEntries)} នៃ{" "}
+                    កំពុងបង្ហាញ{" "}
+                    {(currentPage - 1) * perPage + (totalEntries !== 0 ? 1 : 0)}{" "}
+                    ទៅ {Math.min(currentPage * perPage, totalEntries)} នៃ{" "}
                     {totalEntries} ទិន្នន័យ
                   </p>
 

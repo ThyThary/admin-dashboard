@@ -127,8 +127,8 @@ const List = () => {
           </div>
         </div>
         {/* Content */}
-        <div className=" bg-white overflow-y-auto m-5 shadow-md rounded-md min-h-[72vh] max-h-[72vh]">
-          <div className="p-6">
+        <div className="flex bg-white overflow-y-auto m-5 shadow-md rounded-md min-h-[72vh] max-h-[72vh]">
+          <div className="lg:w-full p-6">
             <div className="flex flex-wrap items-center justify-between mb-4">
               <div className="mb-2">
                 <div className="flex items-center space-x-2">
@@ -201,17 +201,17 @@ const List = () => {
                     ) : (
                       data.map((item, index) => (
                         <tr key={item.id} className="column">
-                          <td className="px-2 py-[4.5px]">
+                          <td className="px-2 py-[5.3px]">
                             {(currentPage - 1) * perPage + index + 1}
                           </td>
-                          <td className="px-2 py-[4.5px] text-center ">
+                          <td className="px-2 py-[5.3px] text-center ">
                             <div className=" w-50 truncate">
-                              {item.word_kh || <span>N/A</span>}
+                              {item.word_kh || ""}
                             </div>
                           </td>
-                          <td className="px-2 py-[4.5px]">
+                          <td className="px-2 py-[5.3px]">
                             <div className="w-70 truncate">
-                              {item.word_kh_definition || <span>N/A</span>}
+                              {item.word_kh_definition || ""}
                             </div>
                           </td>
                           <td
@@ -219,7 +219,7 @@ const List = () => {
                             style={{ fontFamily: "Moul,serif" }}
                           >
                             <div className="w-50 truncate">
-                              {item.word_en || <span>N/A</span>}
+                              {item.word_en || ""}
                             </div>
                           </td>
                           <td
@@ -227,7 +227,7 @@ const List = () => {
                             style={{ fontFamily: "Moul,serif" }}
                           >
                             <div className="w-70 truncate">
-                              {item.word_en_definition || <span>N/A</span>}
+                              {item.word_en_definition || ""}
                             </div>
                           </td>
 
@@ -291,8 +291,9 @@ const List = () => {
                       fontSize: "12px",
                     }}
                   >
-                    កំពុងបង្ហាញ {(currentPage - 1) * perPage + 1} ទៅ{" "}
-                    {Math.min(currentPage * perPage, totalEntries)} នៃ{" "}
+                    កំពុងបង្ហាញ{" "}
+                    {(currentPage - 1) * perPage + (totalEntries !== 0 ? 1 : 0)}{" "}
+                    ទៅ {Math.min(currentPage * perPage, totalEntries)} នៃ{" "}
                     {totalEntries} ទិន្នន័យ
                   </p>
 
