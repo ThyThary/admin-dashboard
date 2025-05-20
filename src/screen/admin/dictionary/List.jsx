@@ -205,7 +205,7 @@ const List = () => {
                             {(currentPage - 1) * perPage + index + 1}
                           </td>
                           <td className="px-2 py-[5.3px] text-center ">
-                            <div className=" w-50 truncate">
+                            <div className=" w-40 truncate">
                               {item.word_kh || ""}
                             </div>
                           </td>
@@ -218,7 +218,7 @@ const List = () => {
                             className="px-2 py-[4.5px] truncate w-32"
                             style={{ fontFamily: "Moul,serif" }}
                           >
-                            <div className="w-50 truncate">
+                            <div className="w-40 truncate">
                               {item.word_en || ""}
                             </div>
                           </td>
