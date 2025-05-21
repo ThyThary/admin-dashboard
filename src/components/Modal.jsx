@@ -1,16 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import WarningIcon from "../icons/svg/Warning";
 import Delete from "../components/Delete";
+import Button from "../style/tailwind/Button";
 const Modal = ({
   isOpen,
   btnNo,
-  btnOk,
   routeWeb,
   routeAPI,
   routeAPIType,
   id,
   text,
 }) => {
+  const [isLoading, setIsLoading] = useState(false);
   if (!isOpen) return null;
 
   return (
@@ -34,11 +35,25 @@ const Modal = ({
         <div className="flex w-full gap-3 justify-center">
           {" "}
           <div>{btnNo}</div>
-          <button
-            onClick={() => Delete(routeWeb, routeAPIType, routeAPI, id, text)}
-          >
-            <div>{btnOk}</div>
-          </button>
+          <div>
+            <Button
+              color="blue"
+              text="បាទ"
+              className="px-3"
+              onClick={(e) => {
+                Delete(
+                  routeWeb,
+                  routeAPIType,
+                  routeAPI,
+                  id,
+                  text,
+                  setIsLoading
+                );
+              }}
+              isLoading={isLoading}
+              disabled={isLoading}
+            />
+          </div>
         </div>
       </div>
     </div>

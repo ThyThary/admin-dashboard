@@ -10,6 +10,7 @@ import Toastify from "../../../components/Toastify";
 import DateKhmer from "../../../components/DateKhmer";
 import WEB_BASE_URL from "../../../config/web";
 const Create = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const user = JSON.parse(localStorage.getItem("user"));
   //Gender value
   const genderOptions = [
@@ -90,7 +91,7 @@ const Create = () => {
     return newErrors;
   };
   // Submit form
-  const handleClick = async (e) => {
+  const handleClick = async (e, setIsLoading) => {
     e.preventDefault();
 
     // Clear previous errors
@@ -101,7 +102,7 @@ const Create = () => {
       setErrors(validationErrors);
       return;
     }
-
+    setIsLoading(true);
     try {
       const token = localStorage.getItem("access");
       await api.post("/api/users/register/", formData, {
@@ -340,8 +341,10 @@ const Create = () => {
                     text="រក្សាទុក"
                     className=""
                     onClick={(e) => {
-                      handleClick(e);
+                      handleClick(e, setIsLoading);
                     }}
+                    isLoading={isLoading}
+                    disabled={isLoading}
                   />
                 </Link>
               </div>

@@ -15,6 +15,7 @@ const Edit = () => {
   const [user, setUser] = useState([]);
   const token = localStorage.getItem("access");
   const userRole = JSON.parse(localStorage.getItem("user"));
+  const [isLoading, setIsLoading] = useState(false);
   // Fetch data from API
   useEffect(() => {
     const fetchUserDetails = async () => {
@@ -108,7 +109,7 @@ const Edit = () => {
     return newErrors;
   };
   // Submit form
-  const handleClick = async (e) => {
+  const handleClick = async (e, setIsLoading) => {
     e.preventDefault();
 
     // Clear previous errors
@@ -119,7 +120,7 @@ const Edit = () => {
       setErrors(validationErrors);
       return;
     }
-
+    setIsLoading(true);
     try {
       const token = localStorage.getItem("access");
       await api.patch(`/api/users/update?id=${id}`, formData, {
@@ -372,8 +373,10 @@ const Edit = () => {
                     text="រក្សាទុក"
                     className=""
                     onClick={(e) => {
-                      handleClick(e);
+                      handleClick(e, setIsLoading);
                     }}
+                    isLoading={isLoading}
+                    disabled={isLoading}
                   />
                 </div>
               </div>

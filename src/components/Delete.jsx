@@ -1,12 +1,20 @@
 import api from "../config/api";
 import Toastify from "./Toastify";
 import WEB_BASE_URL from "../config/web";
-const Delete = async (routeWeb, routeAPIType, routeAPI, id, text) => {
+const Delete = async (
+  routeWeb,
+  routeAPIType,
+  routeAPI,
+  id,
+  text,
+  setIsLoading
+) => {
   if (!id) {
     alert("Invalid ID");
     return;
   }
   try {
+    setIsLoading(true);
     const token = localStorage.getItem("access");
 
     if (routeAPIType == "post") {

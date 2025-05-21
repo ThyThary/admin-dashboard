@@ -3,6 +3,7 @@ import UnlockIcon from "../icons/svg/Unlock";
 import LogOutIcon from "../icons/svg/LogOut";
 import ModalChangePassword from "./ChangePasword";
 import Button from "../style/tailwind/Button";
+import WEB_BASE_URL from "../config/web";
 
 function Profile({ img, name, email, id, position, phone }) {
   const [isModalOpenPWD, setIsModalOpenPWD] = useState(false);
@@ -128,7 +129,7 @@ function Profile({ img, name, email, id, position, phone }) {
                   <button
                     onClick={() => {
                       localStorage.removeItem("access");
-                      window.location.href = "http://localhost:8012/log-in";
+                      window.location.href = `${WEB_BASE_URL}/log-in`;
                     }}
                     className=" text-xs font-bold cursor-pointer hover:text-[#375883]"
                     style={{ fontFamily: "Hanuman, sans-serif" }}

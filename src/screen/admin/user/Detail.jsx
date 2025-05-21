@@ -77,7 +77,7 @@ export default function Detail() {
               className="!px-4.5"
             />
           }
-          btnOk={<Button color="blue" text="បាទ" className=" px-3" />}
+          // btnOk={<Button color="blue" text="បាទ" className=" px-3" />}
           routeWeb="/admin/user-list"
           routeAPIType="post"
           routeAPI="/api/users/suspend/?id="

@@ -99,7 +99,7 @@ const List = () => {
             />
           }
           btnOk={<Button color="blue" text="បាទ" className="px-3" />}
-          routeWeb="/user/word-list"
+          routeWeb="/admin/word-list"
           routeAPIType="delete"
           routeAPI="/api/dictionary/staging/drop?id="
           id={userId}

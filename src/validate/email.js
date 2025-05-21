@@ -102,6 +102,7 @@ const email = async (
   errorOne,
   errorTwo,
   errorThree,
+  setIsLoading,
   resolveCallback,
   rejectCallback
 ) => {
@@ -119,6 +120,7 @@ const email = async (
   } else if (valueTwo == "") {
     errorTwo("ត្រូវការពាក្យសម្ងាត់");
   } else {
+    setIsLoading(true);
     try {
       // Encrypt both login_input and password
       const encryptedLoginInput = encryptData(valueOne);
@@ -181,6 +183,8 @@ const email = async (
       if (rejectCallback) {
         rejectCallback(err);
       }
+    } finally {
+      // setIsLoading(false); // Done loading: button enabled
     }
   }
 };

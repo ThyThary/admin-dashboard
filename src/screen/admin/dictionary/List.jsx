@@ -78,9 +78,9 @@ const List = () => {
             />
           }
           btnOk={<Button color="blue" text="បាទ" className="px-3" />}
-          routeWeb="admin/dictionary-list"
+          routeWeb="/admin/dictionary-list"
           routeAPIType="delete"
-          routeAPI="/api/dictionary/staging/drop?id="
+          routeAPI="/api/dictionary/drop?id="
           id={userId}
           text="លុប"
         />
@@ -264,7 +264,7 @@ const List = () => {
                                     title="Delete"
                                     onClick={() => {
                                       setIsModalOpen(true);
-                                      setUserId(row.id);
+                                      setUserId(item.id);
                                     }}
                                   >
                                     <DeleteIcon

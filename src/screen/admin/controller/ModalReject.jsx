@@ -3,11 +3,10 @@ import TextArea from "../../../style/tailwind/TextArea";
 import Toastify from "../../../components/Toastify";
 import api from "../../../config/api";
 import WEB_BASE_URL from "../../../config/web";
-
+import Button from "../../../style/tailwind/Button";
 const ModalReject = ({
   isOpen,
   btnNo,
-  btnOk,
   routeWeb,
   routeAPI,
   routeAPIType,
@@ -40,6 +39,7 @@ const ModalReject = ({
     if (!formData.reason) newErrors.reason = "ត្រូវការមូលហេតុ";
     return newErrors;
   };
+  const [isLoading, setIsLoading] = useState(false);
   // Submit form
   const handleClick = async (e, routeWeb, routeAPI, routeAPIType, id, text) => {
     e.preventDefault();
@@ -52,7 +52,7 @@ const ModalReject = ({
       setErrors(validationErrors);
       return;
     }
-
+    setIsLoading(true);
     try {
       const token = localStorage.getItem("access");
       if (routeAPIType == "post") {
@@ -129,13 +129,19 @@ const ModalReject = ({
         </div>
         <div className="flex w-full gap-3 justify-center mt-7">
           <div>{btnNo}</div>
-          <button
-            onClick={(e) =>
-              handleClick(e, routeWeb, routeAPI, routeAPIType, id, text)
-            }
-          >
-            <div>{btnOk}</div>
-          </button>
+
+          <div>
+            <Button
+              color="blue"
+              text="បាទ"
+              className="px-3"
+              onClick={(e) => {
+                handleClick(e, routeWeb, routeAPI, routeAPIType, id, text);
+              }}
+              isLoading={isLoading}
+              disabled={isLoading}
+            />
+          </div>
         </div>
       </div>
     </div>

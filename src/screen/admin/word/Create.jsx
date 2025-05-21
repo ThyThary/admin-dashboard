@@ -13,6 +13,7 @@ import WEB_BASE_URL from "../../../config/web";
 
 const Create = () => {
   const [wordClassEn, setWordClassEn] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   // Word class Khmer
   const wordClassKh = [
     { label: "នាម", value: "នាម" },
@@ -133,7 +134,7 @@ const Create = () => {
     return newErrors;
   };
   // Submit form
-  const handleClick = async (e) => {
+  const handleClick = async (e, setIsLoading) => {
     e.preventDefault();
     // Clear previous errors
     setErrors({
@@ -149,7 +150,7 @@ const Create = () => {
       setErrors(validationErrors);
       return;
     }
-
+    setIsLoading(true);
     try {
       const token = localStorage.getItem("access");
       const data = await api.post("/api/dictionary/staging/create/", formData, {
@@ -402,8 +403,10 @@ const Create = () => {
                   text="រក្សាទុក"
                   className=""
                   onClick={(e) => {
-                    handleClick(e);
+                    handleClick(e, setIsLoading);
                   }}
+                  isLoading={isLoading}
+                  disabled={isLoading}
                 />
               </div>
             </div>
