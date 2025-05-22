@@ -177,145 +177,154 @@ const List = () => {
               <LoadingPage />
             ) : (
               <>
-                <table className="min-w-full text-sm border border-[#2f7447]">
-                  <thead className="bg-gray-100 head">
-                    <tr className="*:whitespace-nowrap">
-                      <th className="px-4 py-4 w-10">ល.រ</th>
-                      <th className="px-4 py-4 ">ពាក្យខ្មែរ</th>
-                      <th className="px-4 py-4">និយមន័យខ្មែរ</th>
-                      <th className="px-4 py-4">ពាក្យអង់គ្លេស</th>
-                      <th className="px-4 py-4">និយមន័យអង់គ្លេស</th>
-                      <th className="px-4 py-4">សកម្មភាពផ្សេងៗ</th>
+                <table className="min-w-full  text-sm border border-b-0 border-[#2f7447]">
+                  <thead className="sticky bg-gray-100  head">
+                    <tr className="*:whitespace-nowrap *:px-4 *:py-4">
+                      <th className="w-[5%]">ល.រ</th>
+                      <th className="w-[20%] ">ពាក្យខ្មែរ</th>
+                      <th className="w-[20%]">និយមន័យខ្មែរ</th>
+                      <th className="w-[20%]">ពាក្យអង់គ្លេស</th>
+                      <th className="w-[20%]">និយមន័យអង់គ្លេស</th>
+                      <th className="w-[15%]">សកម្មភាពផ្សេងៗ</th>
                     </tr>
                   </thead>
-                  <tbody className="*:whitespace-nowrap">
-                    {data.length === 0 ? (
-                      <tr className="column-no-data">
-                        <td
-                          colSpan={6}
-                          className="px-2 py-[4.5px] text-center "
-                        >
-                          គ្មានទិន្នន័យ
-                        </td>
-                      </tr>
-                    ) : (
-                      data.map((item, index) => (
-                        <tr key={item.id} className="column">
-                          <td className="px-2 py-[5.3px]">
-                            {(currentPage - 1) * perPage + index + 1}
-                          </td>
-                          <td className="px-2 py-[5.3px] text-center ">
-                            <div className=" w-40 truncate">
-                              {item.word_kh || ""}
-                            </div>
-                          </td>
-                          <td className="px-2 py-[5.3px]">
-                            <div className="w-70 truncate">
-                              {item.word_kh_definition || ""}
-                            </div>
-                          </td>
+                </table>
+                <div className="min-w-full max-h-[50vh] overflow-y-auto">
+                  <table className="min-w-full text-sm border border-t-0 border-[#2f7447]">
+                    <tbody className="*:whitespace-nowrap">
+                      {data.length === 0 ? (
+                        <tr className="column-no-data">
                           <td
-                            className="px-2 py-[4.5px] truncate w-32"
-                            style={{ fontFamily: "Moul,serif" }}
+                            colSpan={6}
+                            className="px-2 py-[4.5px] text-center "
                           >
-                            <div className="w-40 truncate">
-                              {item.word_en || ""}
-                            </div>
-                          </td>
-                          <td
-                            className="px-2 py-[4.5px] truncate w-40"
-                            style={{ fontFamily: "Moul,serif" }}
-                          >
-                            <div className="w-70 truncate">
-                              {item.word_en_definition || ""}
-                            </div>
-                          </td>
-
-                          <td className="px-2 py-[1px]">
-                            {(
-                              <div className="w-full flex gap-2 !items-center !justify-center *:hover:scale-110">
-                                <Link
-                                  to={`/admin/dictionary-edit/${item.id}`}
-                                  className={`${
-                                    user.role !== "SUPERUSER" ? "hidden" : ""
-                                  }`}
-                                >
-                                  <button title="Edit">
-                                    <EditIcon name="edit" size="20" color="" />
-                                  </button>
-                                </Link>
-                                <Link
-                                  to={`/admin/dictionary-detail/${item.id}`}
-                                >
-                                  <button title="Detail">
-                                    <DetailIcon
-                                      name="detail"
-                                      size="18"
-                                      color=""
-                                    />
-                                  </button>
-                                </Link>
-                                <div
-                                  className={`${
-                                    user.role !== "SUPERUSER" ? "hidden" : ""
-                                  }`}
-                                >
-                                  <button
-                                    title="Delete"
-                                    onClick={() => {
-                                      setIsModalOpen(true);
-                                      setUserId(item.id);
-                                    }}
-                                  >
-                                    <DeleteIcon
-                                      name="delete"
-                                      size="18"
-                                      color=""
-                                    />
-                                  </button>
-                                </div>
-                              </div>
-                            ) || <span className=""> N/A</span>}
+                            គ្មានទិន្នន័យ
                           </td>
                         </tr>
-                      ))
-                    )}
-                  </tbody>
-                </table>
+                      ) : (
+                        data.map((item, index) => (
+                          <tr key={item.id} className="column">
+                            <td className="w-[5%] px-2 py-[5.3px]">
+                              {(currentPage - 1) * perPage + index + 1}
+                            </td>
+                            <td className="w-[20%] px-2 py-[5.3px] text-center ">
+                              <div className="max-w-[230px] truncate">
+                                {item.word_kh || ""}
+                              </div>
+                            </td>
+                            <td className="w-[20%] px-2 py-[5.3px]">
+                              <div className="max-w-[230px] truncate">
+                                {item.word_kh_definition || ""}
+                              </div>
+                            </td>
+                            <td
+                              className="w-[20%] px-2 py-[4.5px]"
+                              style={{ fontFamily: "Moul,serif" }}
+                            >
+                              <div className="max-w-[230px] truncate">
+                                {item.word_en || ""}
+                              </div>
+                            </td>
+                            <td
+                              className="w-[20%] px-2 py-[4.5px] truncate"
+                              style={{ fontFamily: "Moul,serif" }}
+                            >
+                              <div className="max-w-[230px] truncate">
+                                {item.word_en_definition || ""}
+                              </div>
+                            </td>
 
-                <div className="mt-4 flex justify-between items-center flex-wrap gap-2">
-                  <p
-                    className="text-sm"
-                    style={{
-                      fontFamily: "Hanuman, sans-serif",
-                      fontSize: "12px",
-                    }}
-                  >
-                    កំពុងបង្ហាញ{" "}
-                    {(currentPage - 1) * perPage + (totalEntries !== 0 ? 1 : 0)}{" "}
-                    ទៅ {Math.min(currentPage * perPage, totalEntries)} នៃ{" "}
-                    {totalEntries} ទិន្នន័យ
-                  </p>
+                            <td className="w-[15%] px-2 py-[1px]">
+                              {(
+                                <div className="w-full flex gap-2 !items-center !justify-center *:hover:scale-110">
+                                  <Link
+                                    to={`/admin/dictionary-edit/${item.id}`}
+                                    className={`${
+                                      user.role !== "SUPERUSER" ? "hidden" : ""
+                                    }`}
+                                  >
+                                    <button title="Edit">
+                                      <EditIcon
+                                        name="edit"
+                                        size="20"
+                                        color=""
+                                      />
+                                    </button>
+                                  </Link>
+                                  <Link
+                                    to={`/admin/dictionary-detail/${item.id}`}
+                                  >
+                                    <button title="Detail">
+                                      <DetailIcon
+                                        name="detail"
+                                        size="18"
+                                        color=""
+                                      />
+                                    </button>
+                                  </Link>
+                                  <div
+                                    className={`${
+                                      user.role !== "SUPERUSER" ? "hidden" : ""
+                                    }`}
+                                  >
+                                    <button
+                                      title="Delete"
+                                      onClick={() => {
+                                        setIsModalOpen(true);
+                                        setUserId(item.id);
+                                      }}
+                                    >
+                                      <DeleteIcon
+                                        name="delete"
+                                        size="18"
+                                        color=""
+                                      />
+                                    </button>
+                                  </div>
+                                </div>
+                              ) || <span className=""> N/A</span>}
+                            </td>
+                          </tr>
+                        ))
+                      )}
+                    </tbody>
+                  </table>
 
-                  <div className="flex space-x-1">
-                    {getPageNumbers(currentPage, totalPages).map(
-                      (page, index) => (
-                        <button
-                          key={index}
-                          onClick={() =>
-                            typeof page === "number" && setCurrentPage(page)
-                          }
-                          disabled={page === "..."}
-                          className={`px-3 py-1 rounded ${
-                            page === currentPage
-                              ? "bg-[#375883] text-white"
-                              : "bg-gray-100 hover:bg-blue-200"
-                          } ${page === "..." ? "cursor-default" : ""}`}
-                        >
-                          {page}
-                        </button>
-                      )
-                    )}
+                  <div className="mt-4 flex justify-between items-center flex-wrap gap-2">
+                    <p
+                      className="text-sm"
+                      style={{
+                        fontFamily: "Hanuman, sans-serif",
+                        fontSize: "12px",
+                      }}
+                    >
+                      កំពុងបង្ហាញ{" "}
+                      {(currentPage - 1) * perPage +
+                        (totalEntries !== 0 ? 1 : 0)}{" "}
+                      ទៅ {Math.min(currentPage * perPage, totalEntries)} នៃ{" "}
+                      {totalEntries} ទិន្នន័យ
+                    </p>
+
+                    <div className="flex space-x-1">
+                      {getPageNumbers(currentPage, totalPages).map(
+                        (page, index) => (
+                          <button
+                            key={index}
+                            onClick={() =>
+                              typeof page === "number" && setCurrentPage(page)
+                            }
+                            disabled={page === "..."}
+                            className={`px-3 py-1 rounded ${
+                              page === currentPage
+                                ? "bg-[#375883] text-white"
+                                : "bg-gray-100 hover:bg-blue-200"
+                            } ${page === "..." ? "cursor-default" : ""}`}
+                          >
+                            {page}
+                          </button>
+                        )
+                      )}
+                    </div>
                   </div>
                 </div>
               </>
