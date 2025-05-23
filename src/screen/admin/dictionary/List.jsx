@@ -129,13 +129,13 @@ const List = () => {
         <div className="flex bg-white overflow-y-auto m-5 shadow-md rounded-md min-h-[72vh] max-h-[72vh]">
           <div className="lg:w-full p-6">
             <div className="flex flex-wrap items-center justify-between mb-4">
-              <div className="mb-2">
+              <div className="mb-1">
                 <div className="flex items-center space-x-2">
                   <label
                     className=""
                     style={{
                       fontFamily: "Hanuman, sans-serif",
-                      fontSize: "12px",
+                      fontSize: "13px",
                     }}
                   >
                     កំពុងបង្ហាញ
@@ -146,7 +146,11 @@ const List = () => {
                       setCurrentPage(1);
                       setPerPage(Number(e.target.value));
                     }}
-                    className="px-2 py-[4.5px] border border-[#2f7447] rounded-lg focus:outline-none hover:border-blue-500"
+                    className="px-2 py-1.5 border border-[#2f7447] rounded-lg focus:outline-none hover:border-blue-500"
+                    style={{
+                      fontFamily: "Hanuman, sans-serif",
+                      fontSize: "13px",
+                    }}
                   >
                     {[10, 25, 50, 100].map((n) => (
                       <option key={n} value={n}>
@@ -167,7 +171,7 @@ const List = () => {
                 className="px-2 py-2 border border-[#2f7447] rounded-lg focus:outline-none hover:border-1"
                 style={{
                   fontFamily: "Hanuman, sans-serif",
-                  fontSize: "12px",
+                  fontSize: "13px",
                 }}
               />
             </div>
@@ -298,7 +302,7 @@ const List = () => {
                     className="text-sm"
                     style={{
                       fontFamily: "Hanuman, sans-serif",
-                      fontSize: "12px",
+                      fontSize: "13px",
                     }}
                   >
                     កំពុងបង្ហាញ{" "}
@@ -307,7 +311,13 @@ const List = () => {
                     {totalEntries} ទិន្នន័យ
                   </p>
 
-                  <div className="flex space-x-1">
+                  <div
+                    className="flex space-x-1"
+                    style={{
+                      fontFamily: "Hanuman, sans-serif",
+                      fontSize: "13px",
+                    }}
+                  >
                     {getPageNumbers(currentPage, totalPages).map(
                       (page, index) => (
                         <button
