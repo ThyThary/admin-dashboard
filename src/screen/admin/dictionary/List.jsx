@@ -9,7 +9,7 @@ const Button = lazy(() => import("../../../style/tailwind/Button"));
 
 import Modal from "../../../components/Modal";
 import DateKhmer from "../../../components/DateKhmer";
-import LoadingPage from "../../../components/LoadingPage";
+import LoadingTable from "../../../components/LoadingTable";
 import api from "../../../config/api";
 import "../../../style/css/table.css";
 const List = () => {
@@ -63,7 +63,6 @@ const List = () => {
 
     return range;
   }
-
   return (
     <>
       <div className="overflow-hidden">
@@ -172,25 +171,28 @@ const List = () => {
                 }}
               />
             </div>
-
-            {loading ? (
-              <LoadingPage />
-            ) : (
-              <>
-                <table className="min-w-full  text-sm border border-b-0 border-[#2f7447]">
-                  <thead className="sticky bg-gray-100  head">
-                    <tr className="*:whitespace-nowrap *:px-4 *:py-4">
-                      <th className="w-[5%]">ល.រ</th>
-                      <th className="w-[20%] ">ពាក្យខ្មែរ</th>
-                      <th className="w-[20%]">និយមន័យខ្មែរ</th>
-                      <th className="w-[20%]">ពាក្យអង់គ្លេស</th>
-                      <th className="w-[20%]">និយមន័យអង់គ្លេស</th>
-                      <th className="w-[15%]">សកម្មភាពផ្សេងៗ</th>
+            <>
+              <table className="min-w-full  text-sm border border-b-0 border-[#2f7447]">
+                <thead className="sticky bg-gray-100  head">
+                  <tr className="*:whitespace-nowrap *:px-4 *:py-4">
+                    <th className="w-[5%]">ល.រ</th>
+                    <th className="w-[20%] ">ពាក្យខ្មែរ</th>
+                    <th className="w-[20%]">និយមន័យខ្មែរ</th>
+                    <th className="w-[20%]">ពាក្យអង់គ្លេស</th>
+                    <th className="w-[20%]">និយមន័យអង់គ្លេស</th>
+                    <th className="w-[15%]">សកម្មភាពផ្សេងៗ</th>
+                  </tr>
+                </thead>
+              </table>
+              <div className="min-w-full max-h-[50vh] overflow-y-auto">
+                <table className="min-w-full text-sm border border-t-0 border-[#2f7447]">
+                  {loading ? (
+                    <tr>
+                      <td colSpan={6} className="px-2 py-[4.5px] text-center ">
+                        <LoadingTable />
+                      </td>
                     </tr>
-                  </thead>
-                </table>
-                <div className="min-w-full max-h-[50vh] overflow-y-auto">
-                  <table className="min-w-full text-sm border border-t-0 border-[#2f7447]">
+                  ) : (
                     <tbody className="*:whitespace-nowrap">
                       {data.length === 0 ? (
                         <tr className="column-no-data">
@@ -208,12 +210,12 @@ const List = () => {
                               {(currentPage - 1) * perPage + index + 1}
                             </td>
                             <td className="w-[20%] px-2 py-[5.3px] text-center ">
-                              <div className="max-w-[230px] truncate">
+                              <div className="w-[200px] truncate">
                                 {item.word_kh || ""}
                               </div>
                             </td>
                             <td className="w-[20%] px-2 py-[5.3px]">
-                              <div className="max-w-[230px] truncate">
+                              <div className="w-[200px] truncate">
                                 {item.word_kh_definition || ""}
                               </div>
                             </td>
@@ -221,15 +223,15 @@ const List = () => {
                               className="w-[20%] px-2 py-[4.5px]"
                               style={{ fontFamily: "Moul,serif" }}
                             >
-                              <div className="max-w-[230px] truncate">
+                              <div className="w-[200px] truncate">
                                 {item.word_en || ""}
                               </div>
                             </td>
                             <td
-                              className="w-[20%] px-2 py-[4.5px] truncate"
+                              className="w-[20%] px-2 py-[4.5px]"
                               style={{ fontFamily: "Moul,serif" }}
                             >
-                              <div className="max-w-[230px] truncate">
+                              <div className="w-[200px] truncate">
                                 {item.word_en_definition || ""}
                               </div>
                             </td>
@@ -288,47 +290,46 @@ const List = () => {
                         ))
                       )}
                     </tbody>
-                  </table>
+                  )}
+                </table>
 
-                  <div className="mt-4 flex justify-between items-center flex-wrap gap-2">
-                    <p
-                      className="text-sm"
-                      style={{
-                        fontFamily: "Hanuman, sans-serif",
-                        fontSize: "12px",
-                      }}
-                    >
-                      កំពុងបង្ហាញ{" "}
-                      {(currentPage - 1) * perPage +
-                        (totalEntries !== 0 ? 1 : 0)}{" "}
-                      ទៅ {Math.min(currentPage * perPage, totalEntries)} នៃ{" "}
-                      {totalEntries} ទិន្នន័យ
-                    </p>
+                <div className="mt-4 flex justify-between items-center flex-wrap gap-2">
+                  <p
+                    className="text-sm"
+                    style={{
+                      fontFamily: "Hanuman, sans-serif",
+                      fontSize: "12px",
+                    }}
+                  >
+                    កំពុងបង្ហាញ{" "}
+                    {(currentPage - 1) * perPage + (totalEntries !== 0 ? 1 : 0)}{" "}
+                    ទៅ {Math.min(currentPage * perPage, totalEntries)} នៃ{" "}
+                    {totalEntries} ទិន្នន័យ
+                  </p>
 
-                    <div className="flex space-x-1">
-                      {getPageNumbers(currentPage, totalPages).map(
-                        (page, index) => (
-                          <button
-                            key={index}
-                            onClick={() =>
-                              typeof page === "number" && setCurrentPage(page)
-                            }
-                            disabled={page === "..."}
-                            className={`px-3 py-1 rounded ${
-                              page === currentPage
-                                ? "bg-[#375883] text-white"
-                                : "bg-gray-100 hover:bg-blue-200"
-                            } ${page === "..." ? "cursor-default" : ""}`}
-                          >
-                            {page}
-                          </button>
-                        )
-                      )}
-                    </div>
+                  <div className="flex space-x-1">
+                    {getPageNumbers(currentPage, totalPages).map(
+                      (page, index) => (
+                        <button
+                          key={index}
+                          onClick={() =>
+                            typeof page === "number" && setCurrentPage(page)
+                          }
+                          disabled={page === "..."}
+                          className={`px-3 py-1 rounded ${
+                            page === currentPage
+                              ? "bg-[#375883] text-white"
+                              : "bg-gray-100 hover:bg-blue-200"
+                          } ${page === "..." ? "cursor-default" : ""}`}
+                        >
+                          {page}
+                        </button>
+                      )
+                    )}
                   </div>
                 </div>
-              </>
-            )}
+              </div>
+            </>
           </div>
         </div>
       </div>

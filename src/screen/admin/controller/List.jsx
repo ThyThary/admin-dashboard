@@ -5,7 +5,7 @@ const ListIcon = lazy(() => import("../../../icons/svg/List"));
 const DetailIcon = lazy(() => import("../../../icons/svg/Detail"));
 
 import DateKhmer from "../../../components/DateKhmer";
-import LoadingPage from "../../../components/LoadingPage";
+import LoadingTable from "../../../components/LoadingTable";
 import api from "../../../config/api";
 import "../../../style/css/table.css";
 const statusStyles = {
@@ -155,32 +155,36 @@ const List = () => {
               />
             </div>
 
-            {loading ? (
-              <LoadingPage />
-            ) : (
-              <>
-                <table className="min-w-full  text-sm border border-b-0 border-[#2f7447]">
-                  <thead className="sticky bg-gray-100 head">
-                    <tr className="*:whitespace-nowrap *:px-4 *:py-4">
-                      <th className="w-[5%]">ល.រ</th>
-                      <th className="w-[15%]">ពាក្យខ្មែរ</th>
-                      <th className="w-[15%]">និយមន័យខ្មែរ</th>
-                      <th className="w-[15%]">ពាក្យអង់គ្លេស</th>
-                      <th className="w-[15%]">និយមន័យអង់គ្លេស</th>
-                      <th className="w-[10%]">អ្នកស្នើសុំ</th>
-                      <th className="w-[5%]">ស្ថានភាព</th>
-                      <th className="w-[10%]">កាលបរិច្ឆេទបង្កើត</th>
-                      <th className="w-[10%]">សកម្មភាពផ្សេងៗ</th>
+            <>
+              <table className="min-w-full  text-sm border border-b-0 border-[#2f7447]">
+                <thead className="sticky bg-gray-100 head">
+                  <tr className="*:whitespace-nowrap *:px-4 *:py-4">
+                    <th className="w-[5%]">ល.រ</th>
+                    <th className="w-[13%]">ពាក្យខ្មែរ</th>
+                    <th className="w-[20%]">និយមន័យខ្មែរ</th>
+                    <th className="w-[13%]">ពាក្យអង់គ្លេស</th>
+                    <th className="w-[20%]">និយមន័យអង់គ្លេស</th>
+                    {/* <th className="w-[10%]">អ្នកស្នើសុំ</th> */}
+                    <th className="w-[9%]">ស្ថានភាព</th>
+                    <th className="w-[10%]">កាលបរិច្ឆេទបង្កើត</th>
+                    <th className="w-[10%]">សកម្មភាពផ្សេងៗ</th>
+                  </tr>
+                </thead>
+              </table>
+              <div className="min-w-full max-h-[50vh] overflow-y-auto">
+                <table className="min-w-full  text-sm border border-t-0 border-[#2f7447]">
+                  {loading ? (
+                    <tr>
+                      <td colSpan={8} className="px-2 py-[4.5px] text-center ">
+                        <LoadingTable />
+                      </td>
                     </tr>
-                  </thead>
-                </table>
-                <div className="min-w-full max-h-[50vh] overflow-y-auto">
-                  <table className="min-w-full  text-sm border border-t-0 border-[#2f7447]">
+                  ) : (
                     <tbody className="*:whitespace-nowrap divide-y">
                       {data.length === 0 ? (
                         <tr className="column-no-data">
                           <td
-                            colSpan={9}
+                            colSpan={8}
                             className="px-2 py-[4.5px] text-center "
                           >
                             គ្មានទិន្នន័យ
@@ -207,38 +211,38 @@ const List = () => {
                                   <td className="w-[5%] px-2 py-[5.3px]">
                                     {(currentPage - 1) * perPage + globalIndex}
                                   </td>
-                                  <td className="w-[15%] px-2 py-[5.3px] ">
-                                    <div className="max-w-[134px] truncate text-ellipsis overflow-hidden">
+                                  <td className="w-[13%] px-2 py-[5.3px] ">
+                                    <div className="w-[130px] truncate text-ellipsis overflow-hidden">
                                       {item.word_kh || ""}
                                     </div>
                                   </td>
-                                  <td className="w-[15%] px-2 py-[5.3px]">
-                                    <div className="max-w-[134px] truncate">
+                                  <td className="w-[20%] px-2 py-[5.3px]">
+                                    <div className="w-[200px] truncate">
                                       {item.word_kh_definition || ""}
                                     </div>
                                   </td>
                                   <td
-                                    className="w-[15%] px-2 py-[4.5px] "
+                                    className="w-[13%] px-2 py-[4.5px] "
                                     style={{ fontFamily: "Moul,serif" }}
                                   >
-                                    <div className="max-w-[134px] truncate">
+                                    <div className="w-[130px] truncate">
                                       {item.word_en || ""}
                                     </div>
                                   </td>
                                   <td
-                                    className="w-[15%] px-2 py-[4.5px] "
+                                    className="w-[20%] px-2 py-[4.5px] "
                                     style={{ fontFamily: "Moul,serif" }}
                                   >
-                                    <div className="max-w-[134px] truncate">
+                                    <div className="w-[200px] truncate">
                                       {item.word_en_definition || ""}
                                     </div>
                                   </td>
-                                  <td className="w-[10%] px-2 py-[5.3px]">
+                                  {/* <td className="w-[10%] px-2 py-[5.3px]">
                                     <div className="max-w-[84px] truncate">
                                       {item.created_by || ""}
                                     </div>
-                                  </td>
-                                  <td className="w-[5%] px-2 py-[5.3px]">
+                                  </td> */}
+                                  <td className="w-[9%] px-2 py-[5.3px]">
                                     <span
                                       className={`${style.color} font-bold`}
                                       style={{
@@ -269,47 +273,45 @@ const List = () => {
                         )
                       )}
                     </tbody>
-                  </table>
+                  )}
+                </table>
+                <div className="mt-4 flex justify-between items-center flex-wrap gap-2">
+                  <p
+                    className="text-sm"
+                    style={{
+                      fontFamily: "Hanuman, sans-serif",
+                      fontSize: "12px",
+                    }}
+                  >
+                    កំពុងបង្ហាញ{" "}
+                    {(currentPage - 1) * perPage + (totalEntries !== 0 ? 1 : 0)}{" "}
+                    ទៅ {Math.min(currentPage * perPage, totalEntries)} នៃ{" "}
+                    {totalEntries} ទិន្នន័យ
+                  </p>
 
-                  <div className="mt-4 flex justify-between items-center flex-wrap gap-2">
-                    <p
-                      className="text-sm"
-                      style={{
-                        fontFamily: "Hanuman, sans-serif",
-                        fontSize: "12px",
-                      }}
-                    >
-                      កំពុងបង្ហាញ{" "}
-                      {(currentPage - 1) * perPage +
-                        (totalEntries !== 0 ? 1 : 0)}{" "}
-                      ទៅ {Math.min(currentPage * perPage, totalEntries)} នៃ{" "}
-                      {totalEntries} ទិន្នន័យ
-                    </p>
-
-                    <div className="flex space-x-1">
-                      {getPageNumbers(currentPage, totalPages).map(
-                        (page, index) => (
-                          <button
-                            key={index}
-                            onClick={() =>
-                              typeof page === "number" && setCurrentPage(page)
-                            }
-                            disabled={page === "..."}
-                            className={`px-3 py-1 rounded ${
-                              page === currentPage
-                                ? "bg-[#375883] text-white"
-                                : "bg-gray-100 hover:bg-blue-200"
-                            } ${page === "..." ? "cursor-default" : ""}`}
-                          >
-                            {page}
-                          </button>
-                        )
-                      )}
-                    </div>
+                  <div className="flex space-x-1">
+                    {getPageNumbers(currentPage, totalPages).map(
+                      (page, index) => (
+                        <button
+                          key={index}
+                          onClick={() =>
+                            typeof page === "number" && setCurrentPage(page)
+                          }
+                          disabled={page === "..."}
+                          className={`px-3 py-1 rounded ${
+                            page === currentPage
+                              ? "bg-[#375883] text-white"
+                              : "bg-gray-100 hover:bg-blue-200"
+                          } ${page === "..." ? "cursor-default" : ""}`}
+                        >
+                          {page}
+                        </button>
+                      )
+                    )}
                   </div>
                 </div>
-              </>
-            )}
+              </div>
+            </>
           </div>
         </div>
       </div>

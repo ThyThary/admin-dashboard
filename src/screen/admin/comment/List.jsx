@@ -4,7 +4,7 @@ const HomeIcon = lazy(() => import("../../../icons/svg/Home"));
 const ListIcon = lazy(() => import("../../../icons/svg/List"));
 
 import DateKhmer from "../../../components/DateKhmer";
-import LoadingPage from "../../../components/LoadingPage";
+import LoadingTable from "../../../components/LoadingTable";
 import api from "../../../config/api";
 import "../../../style/css/table.css";
 const List = () => {
@@ -146,56 +146,59 @@ const List = () => {
                 }}
               />
             </div>
-
-            {loading ? (
-              <LoadingPage />
-            ) : (
-              <>
+            <>
+              <table className="min-w-full  text-sm border border-b-0 border-[#2f7447]">
+                <thead className="sticky bg-gray-100  head">
+                  <tr className="*:whitespace-nowrap *:px-4 *:py-4">
+                    <th className="w-[5%]">ល.រ</th>
+                    <th className="w-[20%]">លេខសម្គាល់ឧបករណ៍</th>
+                    <th className="w-[60%]">មតិអ្នកប្រើប្រាស់</th>
+                    <th className="w-[15%]">កាលបរិច្ឆេទបង្កើត</th>
+                  </tr>
+                </thead>
+              </table>
+              <div className="min-w-full max-h-[50vh] overflow-y-auto">
                 <table className="min-w-full  text-sm border border-[#2f7447]">
-                  <thead className="bg-gray-100 head">
-                    <tr className="*:whitespace-nowrap">
-                      <th className="px-4 py-4 w-10">ល.រ</th>
-                      <th className="px-4 py-4 ">លេខសម្គាល់ឧបករណ៍</th>
-                      <th className="px-4 py-4">មតិអ្នកប្រើប្រាស់</th>
-                      <th className="px-4 py-4">កាលបរិច្ឆេទបង្កើត</th>
+                  {loading ? (
+                    <tr>
+                      <td colSpan={4} className="px-2 py-[4.5px] text-center ">
+                        <LoadingTable />
+                      </td>
                     </tr>
-                  </thead>
-                  <tbody className="*:whitespace-nowrap">
-                    {data.length === 0 ? (
-                      <tr className="column-no-data">
-                        <td
-                          colSpan={4}
-                          className="px-2 py-[4.5px] text-center "
-                        >
-                          គ្មានទិន្នន័យ
-                        </td>
-                      </tr>
-                    ) : (
-                      data.map((item, index) => (
-                        <tr key={item.id} className="column">
-                          <td className="px-2 py-[5.3px]">
-                            {(currentPage - 1) * perPage + index + 1}
-                          </td>
-                          <td className="px-2 py-[5.3px] ">
-                            <div
-                              className=" w-[500px] truncate"
-                              style={{ fontFamily: "Moul, serif" }}
-                            >
-                              {item.device_id || ""}
-                            </div>
-                          </td>
-                          <td className="px-2 py-[5.3px]">
-                            <div className="w-[500px]">{item.detail || ""}</div>
-                          </td>
-                          <td className="px-2 py-[5.3px]">
-                            {item.created_at || ""}
+                  ) : (
+                    <tbody className="*:whitespace-nowrap">
+                      {data.length === 0 ? (
+                        <tr className="column-no-data">
+                          <td
+                            colSpan={4}
+                            className="px-2 py-[4.5px] text-center "
+                          >
+                            គ្មានទិន្នន័យ
                           </td>
                         </tr>
-                      ))
-                    )}
-                  </tbody>
+                      ) : (
+                        data.map((item, index) => (
+                          <tr key={item.id} className="column">
+                            <td className="w-[5%] px-2 py-[5.3px]">
+                              {(currentPage - 1) * perPage + index + 1}
+                            </td>
+                            <td className="w-[20%] px-2 py-[5.3px] ">
+                              {item.device_id || ""}
+                            </td>
+                            <td className="w-[60%] px-2 py-[5.3px]">
+                              <div className="w-[600px]">
+                                {item.detail || ""}
+                              </div>
+                            </td>
+                            <td className="w-[15%] px-2 py-[5.3px]">
+                              {item.created_at || ""}
+                            </td>
+                          </tr>
+                        ))
+                      )}
+                    </tbody>
+                  )}
                 </table>
-
                 <div className="mt-4 flex justify-between items-center flex-wrap gap-2">
                   <p
                     className="text-sm"
@@ -231,8 +234,8 @@ const List = () => {
                     )}
                   </div>
                 </div>
-              </>
-            )}
+              </div>
+            </>
           </div>
         </div>
       </div>

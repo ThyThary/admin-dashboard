@@ -10,7 +10,7 @@ import DeleteIcon from "../../../icons/svg/Delete";
 import Button from "../../../style/tailwind/Button";
 import Modal from "../../../components/Modal";
 import DateKhmer from "../../../components/DateKhmer";
-import LoadingPage from "../../../components/LoadingPage";
+import LoadingTable from "../../../components/LoadingTable";
 import api from "../../../config/api";
 import "../../../style/css/table.css";
 
@@ -184,188 +184,197 @@ const List = () => {
                 }}
               />
             </div>
-
-            {loading ? (
-              <LoadingPage />
-            ) : (
-              <div className="w-full">
+            <>
+              <table className="min-w-full  text-sm border border-b-0 border-[#2f7447]">
+                <thead className="sticky bg-gray-100  head">
+                  <tr className="*:whitespace-nowrap *:px-4 *:py-4">
+                    <th className="w-[5%]">ល.រ</th>
+                    <th className="w-[10%]">លេខសម្គាល់</th>
+                    <th className="w-[15%]">ឈ្មោះ</th>
+                    <th className="w-[15%]">មុខតំណែង</th>
+                    <th className="w-[20%]">អ៊ីមែល</th>
+                    <th className="w-[10%]">ស្ថានភាព</th>
+                    <th className="w-[15%]">កាលបរិច្ឆេទបង្កើត</th>
+                    <th className="w-[10%]">សកម្មភាពផ្សេងៗ</th>
+                  </tr>
+                </thead>
+              </table>
+              <div className="min-w-full max-h-[50vh] overflow-y-auto">
                 <table className="min-w-full text-sm border border-[#2f7447]">
-                  <thead className="bg-gray-100 head">
-                    <tr className="*:whitespace-nowrap">
-                      <th className="px-4 py-4 w-10">ល.រ</th>
-                      <th className="px-4 py-4">លេខសម្គាល់</th>
-                      <th className="px-4 py-4">ឈ្មោះ</th>
-                      <th className="px-4 py-4">មុខតំណែង</th>
-                      <th className="px-4 py-4">អ៊ីមែល</th>
-                      <th className="px-4 py-4">ស្ថានភាព</th>
-                      <th className="px-4 py-4">កាលបរិច្ឆេទបង្កើត</th>
-                      <th className="px-4 py-4">សកម្មភាពផ្សេងៗ</th>
+                  {loading ? (
+                    <tr>
+                      <td colSpan={8} className="px-2 py-[4.5px] text-center ">
+                        <LoadingTable />
+                      </td>
                     </tr>
-                  </thead>
-                  <tbody className="*:whitespace-nowrap">
-                    {data.length === 0 ? (
-                      <tr className="column-no-data">
-                        <td
-                          colSpan={8}
-                          className="px-2 py-[4.5px] text-center "
-                        >
-                          គ្មានទិន្នន័យ
-                        </td>
-                      </tr>
-                    ) : (
-                      data.map((item, index) => (
-                        <tr key={item.id} className="column">
-                          <td className="px-2 py-[4.5px]">
-                            {(currentPage - 1) * perPage + index + 1}
-                          </td>
-                          <td className="px-2 py-[4.5px]">
-                            {item.staff_id || ""}
-                          </td>
-                          <td className="px-2 py-[4.5px]">
-                            {item.username_kh || ""}
-                          </td>
-                          <td className="px-2 py-[4.5px] truncate w-60">
-                            {item.position || ""}
-                          </td>
+                  ) : (
+                    <tbody className="*:whitespace-nowrap">
+                      {data.length === 0 ? (
+                        <tr className="column-no-data">
                           <td
-                            className="px-2 py-[4.5px] truncate w-60"
-                            style={{
-                              fontFamily: "Moul,serif",
-                              fontSize: "14px",
-                            }}
+                            colSpan={8}
+                            className="px-2 py-[4.5px] text-center "
                           >
-                            {item.email || ""}
-                          </td>
-                          <td className="px-2 py-[4.5px]">
-                            {(() => {
-                              if (item.is_suspended === 1) {
-                                return (
-                                  <span
-                                    className="text-red-600 font-bold "
-                                    style={{
-                                      fontFamily: "Hanuman, sans-serif",
-                                      textAlign: "center",
-                                    }}
-                                  >
-                                    បិទ
-                                  </span>
-                                );
-                              } else {
-                                return (
-                                  <span
-                                    className="text-green-600 font-bold "
-                                    style={{
-                                      fontFamily: "Hanuman, sans-serif",
-                                    }}
-                                  >
-                                    បើក
-                                  </span>
-                                );
-                              }
-                            })()}
-                          </td>
-                          <td className="px-2 py-[4.5px]">
-                            {item.date_joined || ""}
-                          </td>
-                          <td className="px-2 py-[1px]">
-                            {(() => {
-                              if (user.role === "SUPERUSER") {
-                                return (
-                                  <div className="w-full flex gap-2 text-center !items-center !justify-center *:hover:scale-110">
-                                    <Link to={`/admin/user-edit/${item.id}`}>
-                                      <button title="Edit">
-                                        <EditIcon
-                                          name="edit"
-                                          size="20"
-                                          color=""
-                                        />
-                                      </button>
-                                    </Link>
-                                    <Link to={`/admin/user-detail/${item.id}`}>
-                                      <button title="Detail">
-                                        <DetailIcon
-                                          name="detail"
-                                          size="18"
-                                          color=""
-                                        />
-                                      </button>
-                                    </Link>
-                                    <div>
-                                      <button
-                                        title="Delete"
-                                        onClick={() => {
-                                          setIsModalOpen(true);
-                                          setUserId(item.id);
-                                        }}
-                                      >
-                                        <DeleteIcon
-                                          name="delete"
-                                          size="18"
-                                          color=""
-                                        />
-                                      </button>
-                                    </div>
-                                  </div>
-                                );
-                              } else {
-                                return (
-                                  <div className="w-full flex gap-2 text-center !items-center !justify-center *:hover:scale-110">
-                                    <Link
-                                      to={`/admin/user-edit/${item.id}`}
-                                      className={`${
-                                        item.role == "USER" ? "" : "hidden"
-                                      }`}
-                                    >
-                                      <button title="Edit">
-                                        <EditIcon
-                                          name="edit"
-                                          size="20"
-                                          color=""
-                                        />
-                                      </button>
-                                    </Link>
-                                    <Link
-                                      to={`/admin/user-detail/${item.id}`}
-                                      className={`${
-                                        item.role == "USER" ? "" : "pl-1"
-                                      }`}
-                                    >
-                                      <button title="Detail">
-                                        <DetailIcon
-                                          name="detail"
-                                          size="18"
-                                          color=""
-                                        />
-                                      </button>
-                                    </Link>
-                                    <div
-                                      className={`${
-                                        item.role == "USER" ? "" : "hidden"
-                                      }`}
-                                    >
-                                      <button
-                                        title="Delete"
-                                        onClick={() => {
-                                          setIsModalOpen(true);
-                                          setUserId(item.id);
-                                        }}
-                                      >
-                                        <DeleteIcon
-                                          name="delete"
-                                          size="18"
-                                          color=""
-                                        />
-                                      </button>
-                                    </div>
-                                  </div>
-                                );
-                              }
-                            })()}
+                            គ្មានទិន្នន័យ
                           </td>
                         </tr>
-                      ))
-                    )}
-                  </tbody>
+                      ) : (
+                        data.map((item, index) => (
+                          <tr key={item.id} className="column">
+                            <td className="w-[5%] px-2 py-[4.5px]">
+                              {(currentPage - 1) * perPage + index + 1}
+                            </td>
+                            <td className="w-[10%] px-2 py-[4.5px]">
+                              {item.staff_id || ""}
+                            </td>
+                            <td className="w-[15%] px-2 py-[4.5px]">
+                              {item.username_kh || ""}
+                            </td>
+                            <td className="w-[15%] px-2 py-[4.5px] truncate">
+                              {item.position || ""}
+                            </td>
+                            <td
+                              className="w-[20%] px-2 py-[4.5px] truncate"
+                              style={{
+                                fontFamily: "Moul,serif",
+                                fontSize: "14px",
+                              }}
+                            >
+                              {item.email || ""}
+                            </td>
+                            <td className="w-[10%] px-2 py-[4.5px]">
+                              {(() => {
+                                if (item.is_suspended === 1) {
+                                  return (
+                                    <span
+                                      className="text-red-600 font-bold "
+                                      style={{
+                                        fontFamily: "Hanuman, sans-serif",
+                                        textAlign: "center",
+                                      }}
+                                    >
+                                      បិទ
+                                    </span>
+                                  );
+                                } else {
+                                  return (
+                                    <span
+                                      className="text-green-600 font-bold "
+                                      style={{
+                                        fontFamily: "Hanuman, sans-serif",
+                                      }}
+                                    >
+                                      បើក
+                                    </span>
+                                  );
+                                }
+                              })()}
+                            </td>
+                            <td className="w-[15%] px-2 py-[4.5px]">
+                              {item.date_joined || ""}
+                            </td>
+                            <td className="w-[10%] px-2 py-[1px]">
+                              {(() => {
+                                if (user.role === "SUPERUSER") {
+                                  return (
+                                    <div className="w-full flex gap-2 text-center !items-center !justify-center *:hover:scale-110">
+                                      <Link to={`/admin/user-edit/${item.id}`}>
+                                        <button title="Edit">
+                                          <EditIcon
+                                            name="edit"
+                                            size="20"
+                                            color=""
+                                          />
+                                        </button>
+                                      </Link>
+                                      <Link
+                                        to={`/admin/user-detail/${item.id}`}
+                                      >
+                                        <button title="Detail">
+                                          <DetailIcon
+                                            name="detail"
+                                            size="18"
+                                            color=""
+                                          />
+                                        </button>
+                                      </Link>
+                                      <div>
+                                        <button
+                                          title="Delete"
+                                          onClick={() => {
+                                            setIsModalOpen(true);
+                                            setUserId(item.id);
+                                          }}
+                                        >
+                                          <DeleteIcon
+                                            name="delete"
+                                            size="18"
+                                            color=""
+                                          />
+                                        </button>
+                                      </div>
+                                    </div>
+                                  );
+                                } else {
+                                  return (
+                                    <div className="w-full flex gap-2 text-center !items-center !justify-center *:hover:scale-110">
+                                      <Link
+                                        to={`/admin/user-edit/${item.id}`}
+                                        className={`${
+                                          item.role == "USER" ? "" : "hidden"
+                                        }`}
+                                      >
+                                        <button title="Edit">
+                                          <EditIcon
+                                            name="edit"
+                                            size="20"
+                                            color=""
+                                          />
+                                        </button>
+                                      </Link>
+                                      <Link
+                                        to={`/admin/user-detail/${item.id}`}
+                                        className={`${
+                                          item.role == "USER" ? "" : "pl-1"
+                                        }`}
+                                      >
+                                        <button title="Detail">
+                                          <DetailIcon
+                                            name="detail"
+                                            size="18"
+                                            color=""
+                                          />
+                                        </button>
+                                      </Link>
+                                      <div
+                                        className={`${
+                                          item.role == "USER" ? "" : "hidden"
+                                        }`}
+                                      >
+                                        <button
+                                          title="Delete"
+                                          onClick={() => {
+                                            setIsModalOpen(true);
+                                            setUserId(item.id);
+                                          }}
+                                        >
+                                          <DeleteIcon
+                                            name="delete"
+                                            size="18"
+                                            color=""
+                                          />
+                                        </button>
+                                      </div>
+                                    </div>
+                                  );
+                                }
+                              })()}
+                            </td>
+                          </tr>
+                        ))
+                      )}
+                    </tbody>
+                  )}
                 </table>
                 <div className="min-w-full mt-4 flex justify-between items-center flex-wrap gap-2">
                   <p
@@ -401,7 +410,7 @@ const List = () => {
                   </div>
                 </div>
               </div>
-            )}
+            </>
           </div>
         </div>
       </div>

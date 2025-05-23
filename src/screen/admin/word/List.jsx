@@ -10,7 +10,7 @@ const Button = lazy(() => import("../../../style/tailwind/Button"));
 
 import Modal from "../../../components/Modal";
 import DateKhmer from "../../../components/DateKhmer";
-import LoadingPage from "../../../components/LoadingPage";
+import LoadingTable from "../../../components/LoadingTable";
 import ModalImportExcel from "./ModalImportExcel";
 import api from "../../../config/api";
 import "../../../style/css/table.css";
@@ -210,107 +210,118 @@ const List = () => {
                 }}
               />
             </div>
-
-            {loading ? (
-              <LoadingPage />
-            ) : (
-              <>
+            <>
+              <table className="min-w-full  text-sm border border-b-0 border-[#2f7447]">
+                <thead className="sticky bg-gray-100  head">
+                  <tr className="*:whitespace-nowrap *:px-4 *:py-4">
+                    <th className="w-[5%]">ល.រ</th>
+                    <th className="w-[15%]">ពាក្យខ្មែរ</th>
+                    <th className="w-[20%]">និយមន័យខ្មែរ</th>
+                    <th className="w-[15%]">ពាក្យអង់គ្លេស</th>
+                    <th className="w-[20%]">និយមន័យអង់គ្លេស</th>
+                    <th className="w-[15%]">កាលបរិច្ឆេទត្រួតពិនិត្យ</th>
+                    <th className="w-[10%]">សកម្មភាពផ្សេងៗ</th>
+                  </tr>
+                </thead>
+              </table>
+              <div className="min-w-full max-h-[50vh] overflow-y-auto">
                 <table className="min-w-full  text-sm border border-[#2f7447]">
-                  <thead className="bg-gray-100 head">
-                    <tr className="*:whitespace-nowrap">
-                      <th className="px-4 py-4 w-10">ល.រ</th>
-                      <th className="px-4 py-4">ពាក្យខ្មែរ</th>
-                      <th className="px-4 py-4">និយមន័យខ្មែរ</th>
-                      <th className="px-4 py-4">ពាក្យអង់គ្លេស</th>
-                      <th className="px-4 py-4">និយមន័យអង់គ្លេស</th>
-                      <th className="px-4 py-4">កាលបរិច្ឆេទត្រួតពិនិត្យ</th>
-                      <th className="px-4 py-4">សកម្មភាពផ្សេងៗ</th>
+                  {loading ? (
+                    <tr>
+                      <td colSpan={7} className="px-2 py-[4.5px] text-center ">
+                        <LoadingTable />
+                      </td>
                     </tr>
-                  </thead>
-                  <tbody className="*:whitespace-nowrap">
-                    {data.length === 0 ? (
-                      <tr className="column-no-data">
-                        <td
-                          colSpan={7}
-                          className="px-2 py-[4.5px] text-center "
-                        >
-                          គ្មានទិន្នន័យ
-                        </td>
-                      </tr>
-                    ) : (
-                      data.map((item, index) => (
-                        <tr key={item.id} className="column">
-                          <td className="px-2 py-[5.3px]">
-                            {(currentPage - 1) * perPage + index + 1}
-                          </td>
-                          <td className="px-2 py-[5.3px] ">
-                            <div className="w-40 truncate">
-                              {item.word_kh || ""}
-                            </div>
-                          </td>
-                          <td className="px-2 py-[5.3px]">
-                            <div className="w-60 truncate">
-                              {item.word_kh_definition || ""}
-                            </div>
-                          </td>
+                  ) : (
+                    <tbody className="*:whitespace-nowrap">
+                      {data.length === 0 ? (
+                        <tr className="column-no-data">
                           <td
-                            className="px-2 py-[4.5px] truncate w-32"
-                            style={{ fontFamily: "Moul,serif" }}
+                            colSpan={7}
+                            className="px-2 py-[4.5px] text-center "
                           >
-                            <div className="w-40 truncate">
-                              {item.word_en || ""}
-                            </div>
-                          </td>
-                          <td
-                            className="px-2 py-[4.5px] truncate w-40"
-                            style={{ fontFamily: "Moul,serif" }}
-                          >
-                            <div className="w-60 truncate">
-                              {item.word_en_definition || ""}
-                            </div>
-                          </td>
-                          <td className="px-2 py-[5.3px]">
-                            {item.created_at || <span className="">N/A</span>}
-                          </td>
-                          <td className="px-2 py-[1px]">
-                            {(
-                              <div className="w-full flex gap-x-2 !items-center !justify-center *:hover:scale-110">
-                                <Link to={`/admin/word-edit/${item.id}`}>
-                                  <button title="Edit">
-                                    <EditIcon name="edit" size="20" color="" />
-                                  </button>
-                                </Link>
-                                <Link to={`/admin/word-detail/${item.id}`}>
-                                  <button title="Detail">
-                                    <DetailIcon
-                                      name="detail"
-                                      size="18"
-                                      color=""
-                                    />
-                                  </button>
-                                </Link>
-                                <div className="">
-                                  <button
-                                    title="Delete"
-                                    onClick={() => {
-                                      setIsModalOpen(true);
-                                      setUserId(item.id);
-                                    }}
-                                  >
-                                    <DeleteIcon
-                                      name="delete"
-                                      size="18"
-                                      color=""
-                                    />
-                                  </button>
-                                </div>
-                              </div>
-                            ) || <span className=""> N/A</span>}
+                            គ្មានទិន្នន័យ
                           </td>
                         </tr>
-                      ))
-                    )}
-                  </tbody>
+                      ) : (
+                        data.map((item, index) => (
+                          <tr key={item.id} className="column">
+                            <td className="w-[5%] px-2 py-[5.3px]">
+                              {(currentPage - 1) * perPage + index + 1}
+                            </td>
+                            <td className="w-[15%] px-2 py-[5.3px] ">
+                              <div className="w-[150px] truncate">
+                                {item.word_kh || ""}
+                              </div>
+                            </td>
+                            <td className="w-[20%] px-2 py-[5.3px]">
+                              <div className="w-[200px] truncate">
+                                {item.word_kh_definition || ""}
+                              </div>
+                            </td>
+                            <td
+                              className="w-[15%] px-2 py-[4.5px]"
+                              style={{ fontFamily: "Moul,serif" }}
+                            >
+                              <div className="w-[150px] truncate">
+                                {item.word_en || ""}
+                              </div>
+                            </td>
+                            <td
+                              className="w-[20%] px-2 py-[4.5px]"
+                              style={{ fontFamily: "Moul,serif" }}
+                            >
+                              <div className="w-[200px] truncate">
+                                {item.word_en_definition || ""}
+                              </div>
+                            </td>
+                            <td className="w-[15%] px-2 py-[5.3px]">
+                              {item.created_at || <span className="">N/A</span>}
+                            </td>
+                            <td className="w-[10%] px-2 py-[1px]">
+                              {(
+                                <div className="w-full flex gap-x-2 !items-center !justify-center *:hover:scale-110">
+                                  <Link to={`/admin/word-edit/${item.id}`}>
+                                    <button title="Edit">
+                                      <EditIcon
+                                        name="edit"
+                                        size="20"
+                                        color=""
+                                      />
+                                    </button>
+                                  </Link>
+                                  <Link to={`/admin/word-detail/${item.id}`}>
+                                    <button title="Detail">
+                                      <DetailIcon
+                                        name="detail"
+                                        size="18"
+                                        color=""
+                                      />
+                                    </button>
+                                  </Link>
+                                  <div className="">
+                                    <button
+                                      title="Delete"
+                                      onClick={() => {
+                                        setIsModalOpen(true);
+                                        setUserId(item.id);
+                                      }}
+                                    >
+                                      <DeleteIcon
+                                        name="delete"
+                                        size="18"
+                                        color=""
+                                      />
+                                    </button>
+                                  </div>
+                                </div>
+                              ) || <span className=""> N/A</span>}
+                            </td>
+                          </tr>
+                        ))
+                      )}
+                    </tbody>
+                  )}
                 </table>
 
                 <div className="mt-4 flex justify-between items-center flex-wrap gap-2">
@@ -348,8 +359,8 @@ const List = () => {
                     )}
                   </div>
                 </div>
-              </>
-            )}
+              </div>
+            </>
           </div>
         </div>
       </div>

@@ -14,6 +14,7 @@ const Edit = () => {
   // Get user id
   const { id } = useParams();
   const [user, setUser] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   // Word class Khmer
   const wordClassKh = [
     { label: "នាម", value: "នាម" },
@@ -143,7 +144,7 @@ const Edit = () => {
     return newErrors;
   };
   // Submit form
-  const handleClick = async (e) => {
+  const handleClick = async (e, setIsLoading) => {
     e.preventDefault();
 
     // Clear previous errors
@@ -162,7 +163,7 @@ const Edit = () => {
       console.log(validationErrors);
       return;
     }
-
+    setIsLoading(true);
     try {
       const token = localStorage.getItem("access");
       await api.put(`/api/dictionary/update?id=${id}`, formData, {
@@ -416,8 +417,10 @@ const Edit = () => {
                     text="រក្សាទុក"
                     className=""
                     onClick={(e) => {
-                      handleClick(e);
+                      handleClick(e, setIsLoading);
                     }}
+                    isLoading={isLoading}
+                    disabled={isLoading}
                   />
                 </Link>
               </div>
