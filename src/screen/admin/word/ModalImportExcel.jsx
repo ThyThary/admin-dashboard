@@ -2,15 +2,18 @@ import React, { useState } from "react";
 import * as XLSX from "xlsx";
 import api from "../../../config/api";
 import Toastify from "../../../components/Toastify";
-
-function ModalImportExcel({ isOpen, btnNo, btnOk }) {
+import Button from "../../../style/tailwind/Button";
+import WEB_BASE_URL from "../../../config/web";
+function ModalImportExcel({ isOpen, btnNo }) {
   const [data, setData] = useState([]);
   const [fileError, setFileError] = useState("");
   const [file, setFile] = useState("");
   const [tableError, setTableError] = useState("");
   const [textError, setTextError] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   if (!isOpen) return null;
   const handleFileChange = (e) => {
+    setIsLoading(false);
     const files = e.target.files[0];
     console.log(files);
     if (!files) {
@@ -46,7 +49,7 @@ function ModalImportExcel({ isOpen, btnNo, btnOk }) {
     // Submit logic here (e.g., API call)
     const formData = new FormData();
     formData.append("file", file);
-
+    setIsLoading(true);
     try {
       const token = localStorage.getItem("access");
       const data = await api.post(
@@ -63,7 +66,7 @@ function ModalImportExcel({ isOpen, btnNo, btnOk }) {
       if (data.status === 200) {
         Toastify("success", "រក្សាទុកដោយជោគជ័យ!");
         setTimeout(() => {
-          window.location.href = "http://localhost:8012/admin/word-list";
+          window.location.href = `${WEB_BASE_URL}/admin/word-list`;
         }, 2000);
       }
     } catch (error) {
@@ -76,6 +79,7 @@ function ModalImportExcel({ isOpen, btnNo, btnOk }) {
           console.log("Back-end errors: ", backendErrors);
           setTableError(backendErrors);
           setTextError(backendErrors.map((items) => items.row + ", "));
+          setIsLoading(false);
         } else {
           Toastify("warning", "ទិន្នន័យមិនត្រឹមត្រូវ!");
         }
@@ -208,9 +212,21 @@ function ModalImportExcel({ isOpen, btnNo, btnOk }) {
           >
             {" "}
             <div>{btnNo}</div>
-            <button onClick={(e) => handleSubmit(e)}>
+            {/* <button onClick={(e) => handleSubmit(e)}>
               <div>{btnOk}</div>
-            </button>
+            </button> */}
+            <div>
+              <Button
+                color="blue"
+                text="បាទ"
+                className="px-3"
+                onClick={(e) => {
+                  handleSubmit(e);
+                }}
+                isLoading={isLoading}
+                disabled={isLoading}
+              />
+            </div>
           </div>
         </div>
       </div>

@@ -189,7 +189,7 @@ const List = () => {
                               {item.device_id || ""}
                             </td>
                             <td className="w-[60%] px-2 py-[5.3px]">
-                              <div className="w-[600px]">
+                              <div className="w-[700px]">
                                 {item.detail || ""}
                               </div>
                             </td>

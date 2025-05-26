@@ -165,6 +165,7 @@ const email = async (
         .catch((err) => {
           if (err.response && err.response.status === 401) {
             errorThree("ឈ្មោះអ្នកប្រើប្រាស់ ​ឬ ពាក្យសម្ងាត់មិនត្រឹមត្រូវ");
+            setIsLoading(false);
           } else {
             errorThree("");
           }
