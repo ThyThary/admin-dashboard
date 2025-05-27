@@ -152,7 +152,7 @@ const List = () => {
             <>
               <table className="min-w-full  text-sm border border-b-0 border-[#2f7447]">
                 <thead className="sticky bg-gray-100  head">
-                  <tr className="*:whitespace-nowrap *:px-4 *:py-4">
+                  <tr className="*:whitespace-nowrap *:px-2 *:py-4">
                     <th className="w-[5%]">ល.រ</th>
                     <th className="w-[20%]">លេខសម្គាល់ឧបករណ៍</th>
                     <th className="w-[60%]">មតិអ្នកប្រើប្រាស់</th>
@@ -161,7 +161,7 @@ const List = () => {
                 </thead>
               </table>
               <div className="min-w-full max-h-[50vh] overflow-y-auto">
-                <table className="min-w-full  text-sm border border-[#2f7447]">
+                <table className="table-fixed w-full min-w-full  text-sm border border-[#2f7447]">
                   {loading ? (
                     <tr>
                       <td colSpan={4} className="px-2 py-[4.5px] text-center ">
@@ -169,7 +169,7 @@ const List = () => {
                       </td>
                     </tr>
                   ) : (
-                    <tbody className="*:whitespace-nowrap">
+                    <tbody className="*:whitespace-nowrap *:px-2">
                       {data.length === 0 ? (
                         <tr className="column-no-data">
                           <td
@@ -181,19 +181,19 @@ const List = () => {
                         </tr>
                       ) : (
                         data.map((item, index) => (
-                          <tr key={item.id} className="column">
-                            <td className="w-[5%] px-2 py-[5.3px]">
+                          <tr key={item.id} className="column *:px-2">
+                            <td className="w-[5%] py-[5.3px]">
                               {(currentPage - 1) * perPage + index + 1}
                             </td>
-                            <td className="w-[20%] px-2 py-[5.3px] ">
+                            <td className="w-[20%] py-[5.3px] ">
                               {item.device_id || ""}
                             </td>
-                            <td className="w-[60%] px-2 py-[5.3px]">
-                              <div className="w-[700px]">
+                            <td className="w-[60%] py-[5.3px]">
+                              <div className="w-full truncate">
                                 {item.detail || ""}
                               </div>
                             </td>
-                            <td className="w-[15%] px-2 py-[5.3px]">
+                            <td className="w-[15%] py-[5.3px]">
                               {item.created_at || ""}
                             </td>
                           </tr>

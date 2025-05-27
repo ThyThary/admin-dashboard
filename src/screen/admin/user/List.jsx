@@ -191,7 +191,7 @@ const List = () => {
             <>
               <table className="min-w-full  text-sm border border-b-0 border-[#2f7447]">
                 <thead className="sticky bg-gray-100  head">
-                  <tr className="*:whitespace-nowrap *:px-4 *:py-4">
+                  <tr className="*:whitespace-nowrap *:px-2 *:py-4">
                     <th className="w-[5%]">ល.រ</th>
                     <th className="w-[10%]">លេខសម្គាល់</th>
                     <th className="w-[15%]">ឈ្មោះ</th>
@@ -203,7 +203,7 @@ const List = () => {
                   </tr>
                 </thead>
               </table>
-              <div className="min-w-full max-h-[50vh] overflow-y-auto">
+              <div className="table-fixed w-full min-w-full max-h-[50vh] overflow-y-auto">
                 <table className="min-w-full text-sm border border-[#2f7447]">
                   {loading ? (
                     <tr>
@@ -234,11 +234,11 @@ const List = () => {
                             <td className="w-[15%] px-2 py-[4.5px]">
                               {item.username_kh || ""}
                             </td>
-                            <td className="w-[15%] px-2 py-[4.5px] truncate">
+                            <td className="w-[15%] px-2 py-[4.5px]">
                               {item.position || ""}
                             </td>
                             <td
-                              className="w-[20%] px-2 py-[4.5px] truncate"
+                              className="w-[20%] px-2 py-[4.5px]"
                               style={{
                                 fontFamily: "Moul,serif",
                                 fontSize: "14px",

@@ -12,6 +12,8 @@
   border: none;
   font-family: "Hanuman", sans-serif;
   text-align: center;
+  justify-content: center;
+  align-items: center;
   font-size: 13px;
   padding: 10px 2px;
 }

@@ -178,7 +178,7 @@ const List = () => {
             <>
               <table className="min-w-full  text-sm border border-b-0 border-[#2f7447]">
                 <thead className="sticky bg-gray-100  head">
-                  <tr className="*:whitespace-nowrap *:px-4 *:py-4">
+                  <tr className="*:whitespace-nowrap *:px-2 *:py-4">
                     <th className="w-[5%]">ល.រ</th>
                     <th className="w-[20%] ">ពាក្យខ្មែរ</th>
                     <th className="w-[20%]">និយមន័យខ្មែរ</th>
@@ -189,7 +189,7 @@ const List = () => {
                 </thead>
               </table>
               <div className="min-w-full max-h-[50vh] overflow-y-auto">
-                <table className="min-w-full text-sm border border-t-0 border-[#2f7447]">
+                <table className="table-fixed w-full min-w-full text-sm border border-t-0 border-[#2f7447]">
                   {loading ? (
                     <tr>
                       <td colSpan={6} className="px-2 py-[4.5px] text-center ">
@@ -214,12 +214,12 @@ const List = () => {
                               {(currentPage - 1) * perPage + index + 1}
                             </td>
                             <td className="w-[20%] px-2 py-[5.3px] text-center ">
-                              <div className="w-[200px] truncate">
+                              <div className="w-full truncate">
                                 {item.word_kh || ""}
                               </div>
                             </td>
                             <td className="w-[20%] px-2 py-[5.3px]">
-                              <div className="w-[200px] truncate">
+                              <div className="w-full truncate">
                                 {item.word_kh_definition || ""}
                               </div>
                             </td>
@@ -227,7 +227,7 @@ const List = () => {
                               className="w-[20%] px-2 py-[4.5px]"
                               style={{ fontFamily: "Moul,serif" }}
                             >
-                              <div className="w-[200px] truncate">
+                              <div className="w-full truncate">
                                 {item.word_en || ""}
                               </div>
                             </td>
@@ -235,7 +235,7 @@ const List = () => {
                               className="w-[20%] px-2 py-[4.5px]"
                               style={{ fontFamily: "Moul,serif" }}
                             >
-                              <div className="w-[200px] truncate">
+                              <div className="w-full truncate">
                                 {item.word_en_definition || ""}
                               </div>
                             </td>

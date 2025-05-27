@@ -240,7 +240,7 @@ const List = () => {
                 </thead>
               </table>
               <div className="min-w-full max-h-[50vh] overflow-y-auto">
-                <table className="min-w-full  text-sm border border-[#2f7447]">
+                <table className="table-fixed w-full min-w-full  text-sm border border-[#2f7447]">
                   {loading ? (
                     <tr>
                       <td colSpan={8} className="px-2 py-[4.5px] text-center ">
@@ -277,18 +277,18 @@ const List = () => {
                                     {(currentPage - 1) * perPage + globalIndex}
                                   </td>
                                   <td className="w-[10%] px-2 py-1.5">
-                                    <div className="w-[100px] truncate">
+                                    <div className="w-full truncate">
                                       {item.word_kh || ""}
                                     </div>
                                   </td>
                                   <td className="w-[20%] px-2 py-1.5">
-                                    <div className="w-[200px] truncate">
+                                    <div className="w-full truncate">
                                       {item.word_kh_definition || ""}
                                     </div>
                                   </td>
                                   <td className="w-[10%] px-2 py-1.5">
                                     <div
-                                      className="w-[100px] truncate"
+                                      className="w-full truncate"
                                       style={{ fontFamily: "Moul,serif" }}
                                     >
                                       {item.word_en || ""}
@@ -296,7 +296,7 @@ const List = () => {
                                   </td>
                                   <td className="w-[20%] px-2 py-1.5">
                                     <div
-                                      className="w-[200px] truncate"
+                                      className="w-full truncate"
                                       style={{ fontFamily: "Moul,serif" }}
                                     >
                                       {item.word_en_definition || ""}
