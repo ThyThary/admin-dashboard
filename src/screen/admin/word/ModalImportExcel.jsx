@@ -99,7 +99,8 @@ function ModalImportExcel({ isOpen, btnNo }) {
               style={{ fontFamily: "Hanuman, sans-serif" }}
               className=" font-bold text-lg text-[#2a4f8a]"
             >
-              នាំឯកសារ Excel ចូល
+              នាំឯកសារ <span style={{ fontFamily: "Moul,serif" }}>Excel</span>{" "}
+              ចូល
             </label>
           </div>
           <div className="!border-b-1 border-[#2f7447]"></div>
