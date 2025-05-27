@@ -128,7 +128,7 @@ function ModalImportExcel({ isOpen, btnNo }) {
                     </label>
                   </div>
                   <div className="mt-2 ">
-                    <a href="/src/assets/excel/word_template.xlsx" download>
+                    <a href="/excel/word_template.xlsx" download>
                       <span
                         className=" bg-green-100 px-2 py-2.5 rounded-md cursor-pointer text-green-900 border border-[#2f7447] whitespace-nowrap"
                         style={{
