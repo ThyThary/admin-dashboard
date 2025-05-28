@@ -36,10 +36,7 @@ const List = () => {
     const fetchData = async () => {
       const token = localStorage.getItem("access");
       const userId = JSON.parse(localStorage.getItem("user"));
-
-      console.log("ID:", userId);
       setLoading(true);
-
       try {
         const res = await api.get(
           `/api/dictionary/staging/list?id=${userId.id}`,
@@ -242,11 +239,16 @@ const List = () => {
               <div className="min-w-full max-h-[50vh] overflow-y-auto">
                 <table className="table-fixed w-full min-w-full  text-sm border border-[#2f7447]">
                   {loading ? (
-                    <tr>
-                      <td colSpan={8} className="px-2 py-[4.5px] text-center ">
-                        <LoadingTable />
-                      </td>
-                    </tr>
+                    <tbody>
+                      <tr>
+                        <td
+                          colSpan={8}
+                          className="px-2 py-[4.5px] text-center "
+                        >
+                          <LoadingTable />
+                        </td>
+                      </tr>
+                    </tbody>
                   ) : (
                     <tbody className="*:whitespace-nowrap">
                       {data.length === 0 ? (

@@ -163,11 +163,16 @@ const List = () => {
               <div className="min-w-full max-h-[50vh] overflow-y-auto">
                 <table className="table-fixed w-full min-w-full  text-sm border border-[#2f7447]">
                   {loading ? (
-                    <tr>
-                      <td colSpan={4} className="px-2 py-[4.5px] text-center ">
-                        <LoadingTable />
-                      </td>
-                    </tr>
+                    <tbody>
+                      <tr>
+                        <td
+                          colSpan={4}
+                          className="px-2 py-[4.5px] text-center "
+                        >
+                          <LoadingTable />
+                        </td>
+                      </tr>
+                    </tbody>
                   ) : (
                     <tbody className="*:whitespace-nowrap *:px-2">
                       {data.length === 0 ? (
