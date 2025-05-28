@@ -16,7 +16,6 @@ const Delete = async (
   try {
     setIsLoading(true);
     const token = localStorage.getItem("access");
-
     if (routeAPIType == "post") {
       console.log("Token", token);
       await api.post(

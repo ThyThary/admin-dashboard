@@ -3,7 +3,8 @@ import Input from "../style/tailwind/Input";
 import Toastify from "../components/Toastify";
 import api from "../config/api";
 import CryptoJS from "crypto-js"; // You'll need to install this package
-
+import Button from "../style/tailwind/Button";
+import WEB_BASE_URL from "../config/web";
 // Function to encrypt data using OpenSSL-compatible AES-256 encryption
 const encryptData = (data) => {
   try {
@@ -98,9 +99,11 @@ const deriveKeyAndIv = (password, salt) => {
   };
 };
 
-const ChangePasword = ({ isOpen, btnNo, btnOk, id }) => {
+const ChangePasword = ({ isOpen, btnNo }) => {
   let lower = /^(?=.*[a-z]).+$/;
   let upper = /^(?=.*[A-Z]).+$/;
+  const user = JSON.parse(localStorage.getItem("user"));
+  const userRole = user.role;
   if (!isOpen) return null;
   // use state data form
   const [formData, setFormData] = useState({
@@ -158,7 +161,8 @@ const ChangePasword = ({ isOpen, btnNo, btnOk, id }) => {
     return newErrors;
   };
   // Submit form
-  const handleClick = async (e) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const handleClick = async (e, setIsLoading) => {
     e.preventDefault();
     // Clear previous errors
     setErrors({
@@ -172,10 +176,9 @@ const ChangePasword = ({ isOpen, btnNo, btnOk, id }) => {
       setErrors(validationErrors);
       return;
     }
-
     try {
+      setIsLoading(true);
       const token = localStorage.getItem("access");
-
       // Encrypt password fields
       const encryptedData = {
         current_password: encryptData(formData.current_password),
@@ -199,8 +202,12 @@ const ChangePasword = ({ isOpen, btnNo, btnOk, id }) => {
 
       Toastify("success", "ប្ដូរពាក្យសម្ងាត់ដោយជោគជ័យ!");
       setTimeout(() => {
-        window.location.href = "http://localhost:8012/admin/controller-list";
-      }, 3000);
+        if (userRole === "USER") {
+          window.location.href = `${WEB_BASE_URL}/user/word-list`;
+        } else {
+          window.location.href = `${WEB_BASE_URL}/admin/user-list`;
+        }
+      }, 2000);
     } catch (error) {
       if (error.response) {
         // const backendErrors = error.response.data.data || {};
@@ -215,10 +222,12 @@ const ChangePasword = ({ isOpen, btnNo, btnOk, id }) => {
               "បញ្ជាក់ពាក្យសម្ងាត់មិនត្រឹមត្រូវនិង​​​ពាក្យសម្ងាត់ថ្មី",
           });
         }
+        setIsLoading(false);
         // setErrors(backendErrors);
       } else {
         Toastify("error", "ការប្ដូរពាក្យសម្ងាត់បានបរាជ័យ!");
       }
+      setIsLoading(false);
       console.error("Submission error:", error);
     }
   };
@@ -314,9 +323,19 @@ const ChangePasword = ({ isOpen, btnNo, btnOk, id }) => {
           >
             {" "}
             <div>{btnNo}</div>
-            <button onClick={(e) => handleClick(e)}>
+            {/* <button onClick={(e) => handleClick(e)}>
               <div>{btnOk}</div>
-            </button>
+            </button> */}
+            <div>
+              <Button
+                color="blue"
+                text="រក្សាទុក"
+                className="px-3"
+                onClick={(e) => handleClick(e, setIsLoading)}
+                isLoading={isLoading}
+                disabled={isLoading}
+              />
+            </div>
           </div>
         </div>
       </div>

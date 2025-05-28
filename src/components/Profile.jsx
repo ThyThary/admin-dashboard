@@ -20,8 +20,6 @@ function Profile({ img, name, email, id, position, phone }) {
               className="px-2"
             />
           }
-          btnOk={<Button color="blue" text="រក្សាទុក" className="px-2" />}
-          id={id}
         />
       </div>
       <div className=" absolute z-40 right-3 top-9 ">

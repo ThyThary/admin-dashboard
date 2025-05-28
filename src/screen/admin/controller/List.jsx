@@ -168,7 +168,6 @@ const List = () => {
                     <th className="w-[20%]">និយមន័យខ្មែរ</th>
                     <th className="w-[13%]">ពាក្យអង់គ្លេស</th>
                     <th className="w-[20%]">និយមន័យអង់គ្លេស</th>
-                    {/* <th className="w-[10%]">អ្នកស្នើសុំ</th> */}
                     <th className="w-[9%]">ស្ថានភាព</th>
                     <th className="w-[10%]">កាលបរិច្ឆេទបង្កើត</th>
                     <th className="w-[10%]">សកម្មភាពផ្សេងៗ</th>
@@ -287,7 +286,6 @@ const List = () => {
                     ទៅ {Math.min(currentPage * perPage, totalEntries)} នៃ{" "}
                     {totalEntries} ទិន្នន័យ
                   </p>
-
                   <div
                     className="flex space-x-1 items-center justify-center"
                     style={{

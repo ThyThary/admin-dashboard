@@ -98,7 +98,6 @@ const List = () => {
               className="px-4.5"
             />
           }
-          // btnOk={<Button color="blue" text="បាទ" className="px-3" />}
           routeWeb="/admin/word-list"
           routeAPIType="delete"
           routeAPI="/api/dictionary/staging/drop?id="
