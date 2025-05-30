@@ -298,6 +298,19 @@ const List = () => {
                       fontSize: "13px",
                     }}
                   >
+                    <button
+                      onClick={() =>
+                        setCurrentPage((prev) => Math.max(prev - 1, 1))
+                      }
+                      disabled={currentPage === 1}
+                      className={`mr-2 px-2.5 py-1 rounded ${
+                        currentPage === 1
+                          ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                          : "bg-gray-100 hover:bg-blue-200 cursor-pointer"
+                      }`}
+                    >
+                      មុន
+                    </button>
                     {getPageNumbers(currentPage, totalPages).map(
                       (page, index) => (
                         <button
@@ -306,7 +319,7 @@ const List = () => {
                             typeof page === "number" && setCurrentPage(page)
                           }
                           disabled={page === "..."}
-                          className={`px-2.5 py-1 rounded ${
+                          className={`px-2.5 py-1 rounded cursor-pointer ${
                             page === currentPage
                               ? "bg-[#375883] text-white"
                               : "bg-gray-100 hover:bg-blue-200"
@@ -316,6 +329,19 @@ const List = () => {
                         </button>
                       )
                     )}
+                    <button
+                      onClick={() =>
+                        setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+                      }
+                      disabled={currentPage === totalPages}
+                      className={`ml-1 px-2.5 py-1 rounded ${
+                        currentPage === totalPages
+                          ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                          : "bg-gray-100 hover:bg-blue-200 cursor-pointer"
+                      }`}
+                    >
+                      បន្ទាប់
+                    </button>
                   </div>
                 </div>
               </div>

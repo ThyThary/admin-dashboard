@@ -1,9 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import Login from "./screen/login/Login.jsx";
 import Master from "./master/Master.jsx";
-
+import WEB_BASE_URL from "./config/web.js";
 const App = () => {
+  // Missing token
+  // useEffect(() => {
+  //   const token = localStorage.getItem("access");
+  //   if (!token) {
+  //     alert("ផុតកំណត់ការប្រើប្រាស់!");
+  //     window.location.href = `${WEB_BASE_URL}/log-in`;
+  //   }
+  // }, []);
+
   return (
     <>
       {/* <BrowserRouter basename="/myapp"> */}
@@ -33,10 +42,6 @@ const App = () => {
           <Route path="/admin/dictionary-edit/:id" Component={Master}></Route>
           {/* Comment routes */}
           <Route path="/admin/comment-list" Component={Master}></Route>
-          {/* Password routes */}
-          {/* <Route path="/change-password" Component={Master}></Route> */}
-          {/* Normal user */}
-          {/* Word route */}
           <Route path="/user/word-list" Component={Master}></Route>
           <Route path="/user/word-create" Component={Master}></Route>
           <Route path="/user/word-edit/:id" Component={Master}></Route>

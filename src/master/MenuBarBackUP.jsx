@@ -26,6 +26,7 @@ const MenuBar = () => {
         } `}
       >
         {/* User Link */}
+
         <Link
           to="/admin/user-list"
           className={`w-full px-5 mt-2 text-white  ${
@@ -52,6 +53,7 @@ const MenuBar = () => {
             </div>
           </div>
         </Link>
+
         {/* Controller */}
         <Link
           to="/admin/controller-list"
@@ -161,6 +163,7 @@ const MenuBar = () => {
           </div>
         </Link>
       </div>
+
       {/* Normal user */}
       <div
         className={`grid grid-cols-1 ${
