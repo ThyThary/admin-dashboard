@@ -6,6 +6,8 @@ import { ToastContainer } from "react-toastify";
 
 const MenuIcon = lazy(() => import("../icons/svg/Menu"));
 const MenuBar = lazy(() => import("./MenuBar"));
+//Calendar component
+const Calendar = lazy(() => import("../screen/home/Calendar"));
 // User component
 const UserList = lazy(() => import("../screen/admin/user/List"));
 const UserCreate = lazy(() => import("../screen/admin/user/Create"));
@@ -40,7 +42,7 @@ const user = JSON.parse(localStorage.getItem("user"));
 
 const Master = ({ color = "#2a4f8a" }) => {
   const [showProfile, setShowProfile] = useState(false);
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   // Custome route
   const location = useLocation();
@@ -68,15 +70,14 @@ const Master = ({ color = "#2a4f8a" }) => {
   return (
     <>
       <ToastContainer position="top-right" autoClose={2000} />
-      <div className={`relative flex flex-cols-2 h-full `}>
-        {/* Sidebar menu */}
+      <div className={` flex flex-cols-2 h-full `}>
         <div
-          className={`fixed top-0 left-0 min-h-screen transition-transform duration-300 ease-in-out bg-[${color}] ${
-            sidebarOpen ? "translate-x-0 w-56" : "-translate-x-full w-56"
-          }`}
+          className={` max-w-56 min-w-56 min-h-screen transform transition-all duration-300 ease-in-out bg-[${color}] ${
+            sidebarOpen ? "hidden" : ""
+          } `}
         >
           <div className="w-full min-h-[11.111vh]">
-            <div className="flex w-full justify-center p-3">
+            <div className="flex w-full justify-center  p-3">
               <img src={logo} alt="Logo" width={204} height={120} />
             </div>
             <div className=" border border-b-white shadow-lg mb-3"></div>
@@ -84,20 +85,12 @@ const Master = ({ color = "#2a4f8a" }) => {
             <MenuBar />
           </div>
         </div>
-        {/* Main Content */}
-        <div
-          className={`flex-col w-full  bg-[#e5e7eb] transition-all duration-300 ease-in-out ${
-            sidebarOpen ? "ml-56" : "ml-0"
-          } `}
-        >
-          {/* Top Nav */}
+        <div className=" w-full flex-col bg-[#e5e7eb]">
           <div>
             <div className="flex h-10 items-center justify-center text-center bg-white shadow-md">
               <div className="items-center">
                 <button
-                  className={`p-1 hover:scale-110 transition cursor-pointer  ${
-                    sidebarOpen ? "" : "border border-[#2f7447] rounded-lg"
-                  } ml-1`}
+                  className="p-2 hover:scale-110 transition cursor-pointer"
                   onClick={() => setSidebarOpen(!sidebarOpen)}
                 >
                   <MenuIcon name="menu" size="20" color="#6B7280" />
@@ -124,7 +117,7 @@ const Master = ({ color = "#2a4f8a" }) => {
                       color: "#2a4f8a",
                     }}
                   >
-                    {user.username_kh || ""}
+                    {user.username_kh}
                   </label>
                 </div>
                 {/* Toggle Button Show/Hide*/}
@@ -141,6 +134,12 @@ const Master = ({ color = "#2a4f8a" }) => {
               </div>
             </div>
           </div>
+          {/* User route */}
+          {route === "/admin/home" && (
+            <div className=" h-auto">
+              <Calendar />
+            </div>
+          )}
           {/* User route */}
           {route === "/admin/user-list" && (
             <div className=" h-auto">

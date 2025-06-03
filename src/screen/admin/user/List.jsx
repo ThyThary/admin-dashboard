@@ -142,6 +142,20 @@ const List = () => {
         <div className="flex bg-white overflow-y-auto m-5 shadow-md rounded-md min-h-[72vh] max-h-[72vh]">
           <div className="lg:w-full p-6">
             <div className="flex flex-wrap items-center justify-between mb-4">
+              <input
+                type="text"
+                placeholder="ស្វែងរក..."
+                value={search}
+                onChange={(e) => {
+                  setCurrentPage(1);
+                  setSearch(e.target.value);
+                }}
+                className="px-2 py-2 border border-[#2f7447] rounded-lg focus:outline-none hover:border-1"
+                style={{
+                  fontFamily: "Hanuman, sans-serif",
+                  fontSize: "13px",
+                }}
+              />
               <div className="mb-1">
                 <div className="flex items-center space-x-2">
                   <label
@@ -173,23 +187,9 @@ const List = () => {
                   </select>
                 </div>
               </div>
-              <input
-                type="text"
-                placeholder="ស្វែងរក..."
-                value={search}
-                onChange={(e) => {
-                  setCurrentPage(1);
-                  setSearch(e.target.value);
-                }}
-                className="px-2 py-2 border border-[#2f7447] rounded-lg focus:outline-none hover:border-1"
-                style={{
-                  fontFamily: "Hanuman, sans-serif",
-                  fontSize: "13px",
-                }}
-              />
             </div>
             <>
-              <table className="min-w-full  text-sm border border-b-0 border-[#2f7447]">
+              <table className="min-w-full text-sm border border-b-0 border-[#2f7447]">
                 <thead className="sticky bg-gray-100  head">
                   <tr className="*:whitespace-nowrap *:px-2 *:py-4">
                     <th className="w-[5%]">ល.រ</th>
@@ -203,7 +203,7 @@ const List = () => {
                   </tr>
                 </thead>
               </table>
-              <div className="table-fixed w-full min-w-full max-h-[50vh] overflow-y-auto">
+              <div className="table-fixed w-full min-w-full max-h-[50vh]">
                 <table className="min-w-full text-sm border border-[#2f7447]">
                   {loading ? (
                     <tbody>
