@@ -88,6 +88,7 @@ const ModalReject = ({
       } else {
         Toastify("error", `ការ${text}បានបរាជ័យ!`);
       }
+      setIsLoading(false);
       console.error("Submission error:", error);
     }
   };

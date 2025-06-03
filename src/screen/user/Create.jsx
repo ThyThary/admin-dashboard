@@ -171,6 +171,7 @@ const Create = () => {
       } else {
         Toastify("error", "ការរក្សាទុកបានបរាជ័យ!");
       }
+      setIsLoading(false);
       console.error("Submission error:", error);
     }
   };

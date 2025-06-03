@@ -213,13 +213,10 @@ function ModalImportExcel({ isOpen, btnNo }) {
           >
             {" "}
             <div>{btnNo}</div>
-            {/* <button onClick={(e) => handleSubmit(e)}>
-              <div>{btnOk}</div>
-            </button> */}
             <div>
               <Button
                 color="blue"
-                text="បាទ"
+                text="រក្សាទុក"
                 className="px-3"
                 onClick={(e) => {
                   handleSubmit(e);
