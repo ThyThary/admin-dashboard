@@ -12,7 +12,7 @@ const MenuBar = () => {
   const wordRotue = textRoute.split("-");
   const seperateRoute = wordRotue[1];
   const sidebarRoute = wordRotue[0];
-  const [activeTab, setActiveTab] = useState("FMIS Admin Dictionary ");
+  const [activeTab, setActiveTab] = useState("ប្រព័ន្ធគ្រប់គ្រងវចនានុក្រម");
   useEffect(() => {
     // Update browser tab title
     document.title = activeTab;
@@ -34,7 +34,7 @@ const MenuBar = () => {
               : " hover:bg-blue-950"
           }`}
           onClick={() => {
-            setActiveTab("Admin User");
+            setActiveTab("អ្នកប្រើប្រាស់");
           }}
         >
           <div className=" flex w-full cursor-pointer py-1 hover:scale-110">
@@ -61,7 +61,7 @@ const MenuBar = () => {
               : " hover:bg-blue-950"
           }`}
           onClick={() => {
-            setActiveTab("Admin Controller");
+            setActiveTab(" ត្រួតពិនិត្យសំណើ");
           }}
         >
           <div className=" flex w-full cursor-pointer py-1 hover:scale-110">
@@ -88,7 +88,7 @@ const MenuBar = () => {
               : " hover:bg-blue-950"
           }`}
           onClick={() => {
-            setActiveTab("Admin Word");
+            setActiveTab("ពាក្យ");
           }}
         >
           <div className=" flex w-full cursor-pointer py-1 hover:scale-110">
@@ -115,7 +115,7 @@ const MenuBar = () => {
               : " hover:bg-blue-950"
           }`}
           onClick={() => {
-            setActiveTab("Admin Dictionary");
+            setActiveTab(" វចនានុក្រម");
           }}
         >
           <div className=" flex w-full cursor-pointer py-1 hover:scale-110">
@@ -142,7 +142,7 @@ const MenuBar = () => {
               : " hover:bg-blue-950"
           }`}
           onClick={() => {
-            setActiveTab("Admin Comment");
+            setActiveTab("មតិយោបល់");
           }}
         >
           <div className=" flex w-full cursor-pointer py-1 hover:scale-110">
@@ -176,7 +176,7 @@ const MenuBar = () => {
               : " hover:bg-blue-950"
           }`}
           onClick={() => {
-            setActiveTab("User Word");
+            setActiveTab("ពាក្យ");
           }}
         >
           <div className=" flex w-full cursor-pointer py-1 hover:scale-110">
