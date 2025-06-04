@@ -44,7 +44,7 @@ const MenuBar = () => {
             </div>
             <div>
               <label
-                className=" text-md ml-3"
+                className=" text-md ml-3 cursor-pointer"
                 style={{ fontFamily: "Hanuman, sans-serif" }}
               >
                 អ្នកប្រើប្រាស់
@@ -71,7 +71,7 @@ const MenuBar = () => {
             </div>
             <div>
               <label
-                className=" text-md ml-3"
+                className=" text-md ml-3 cursor-pointer"
                 style={{ fontFamily: "Hanuman, sans-serif" }}
               >
                 ត្រួតពិនិត្យសំណើ
@@ -98,7 +98,7 @@ const MenuBar = () => {
             </div>
             <div>
               <label
-                className=" text-md ml-3"
+                className=" text-md ml-3 cursor-pointer"
                 style={{ fontFamily: "Hanuman, sans-serif" }}
               >
                 ពាក្យ
@@ -125,7 +125,7 @@ const MenuBar = () => {
             </div>
             <div>
               <label
-                className=" text-md ml-2"
+                className=" text-md ml-2 cursor-pointer"
                 style={{ fontFamily: "Hanuman, sans-serif" }}
               >
                 វចនានុក្រម
@@ -152,7 +152,7 @@ const MenuBar = () => {
             </div>
             <div>
               <label
-                className=" text-md ml-3"
+                className=" text-md ml-3 cursor-pointer"
                 style={{ fontFamily: "Hanuman, sans-serif" }}
               >
                 មតិយោបល់
@@ -186,7 +186,7 @@ const MenuBar = () => {
             </div>
             <div>
               <label
-                className=" text-md ml-3"
+                className=" text-md ml-3 cursor-pointer"
                 style={{ fontFamily: "Hanuman, sans-serif" }}
               >
                 ពាក្យ

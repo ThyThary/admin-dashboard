@@ -19,7 +19,7 @@ function Button({
   return (
     <button
       onClick={onClick}
-      className={`${className} px-2 py-1.5 rounded-lg shadow-lg transition-all font-[Moul, serif] tracking-[2px] text-md font-normal
+      className={`${className} cursor-pointer px-2 py-1.5 rounded-lg shadow-lg transition-all font-[Moul, serif] tracking-[2px] text-md font-normal
         ${
           isLoading
             ? "cursor-not-allowed bg-blue-300 text-white"

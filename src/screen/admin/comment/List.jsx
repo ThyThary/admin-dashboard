@@ -133,7 +133,7 @@ const List = () => {
                       setCurrentPage(1);
                       setPerPage(Number(e.target.value));
                     }}
-                    className="px-2 py-1.5 border border-[#2f7447] rounded-lg focus:outline-none hover:border-blue-500"
+                    className="cursor-pointer px-2 py-1.5 border border-[#2f7447] rounded-lg focus:outline-none hover:border-blue-500"
                     style={{
                       fontFamily: "Hanuman, sans-serif",
                       fontSize: "13px",
