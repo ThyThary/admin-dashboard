@@ -203,8 +203,8 @@ const List = () => {
                   </tr>
                 </thead>
               </table>
-              <div className="table-fixed w-full min-w-full max-h-[50vh]">
-                <table className="min-w-full text-sm border border-[#2f7447]">
+              <div className=" w-full max-h-[50vh] overflow-x-auto overflow-y-auto">
+                <table className="table-fixed min-w-[1000px] w-full text-sm border border-[#2f7447]">
                   {loading ? (
                     <tbody>
                       <tr>

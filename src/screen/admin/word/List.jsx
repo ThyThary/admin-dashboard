@@ -212,7 +212,7 @@ const List = () => {
               </div>
             </div>
             <>
-              <table className="min-w-full  text-sm border border-b-0 border-[#2f7447]">
+              <table className="min-w-full text-sm border border-b-0 border-[#2f7447]">
                 <thead className="sticky bg-gray-100  head">
                   <tr className="*:whitespace-nowrap *:px-2 *:py-4">
                     <th className="w-[5%]">ល.រ</th>
@@ -225,14 +225,19 @@ const List = () => {
                   </tr>
                 </thead>
               </table>
-              <div className="table-fixed min-w-full max-h-[50vh]">
-                <table className="w-full min-w-full text-sm border border-[#2f7447]">
+              <div className="w-full max-h-[50vh] overflow-x-auto overflow-y-auto">
+                <table className="table-fixed w-full min-w-[1000px] text-sm border border-[#2f7447]">
                   {loading ? (
-                    <tr>
-                      <td colSpan={7} className="px-2 py-[4.5px] text-center ">
-                        <LoadingTable />
-                      </td>
-                    </tr>
+                    <tbody>
+                      <tr>
+                        <td
+                          colSpan={7}
+                          className="px-2 py-[4.5px] text-center "
+                        >
+                          <LoadingTable />
+                        </td>
+                      </tr>
+                    </tbody>
                   ) : (
                     <tbody className="*:whitespace-nowrap">
                       {data.length === 0 ? (

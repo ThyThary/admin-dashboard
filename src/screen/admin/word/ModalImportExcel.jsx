@@ -93,7 +93,7 @@ function ModalImportExcel({ isOpen, btnNo }) {
   return (
     <>
       <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
-        <div className="bg-white w-2/3 rounded-lg shadow-lg border border-[#2f7447] max-h-[600px]">
+        <div className="bg-white w-2/3 rounded-lg shadow-lg border border-[#2f7447] max-h-[600px] min-w-[400px]">
           <div className="w-full mx-5 py-2 !text-left">
             <label
               style={{ fontFamily: "Hanuman, sans-serif" }}
@@ -108,8 +108,8 @@ function ModalImportExcel({ isOpen, btnNo }) {
             <div className="flex flex-row justify-center gap-3">
               {/* Sub content  */}
               <div className="w-full">
-                <div className="flex mt-3 mb-3 gap-3">
-                  <div className="  w-[80%]">
+                <div className="flex mt-3 mb-3 gap-3 ">
+                  <div className="w-full ">
                     <label className="block">
                       <span className="sr-only">Choose Excel File</span>
                       <input
@@ -128,7 +128,7 @@ function ModalImportExcel({ isOpen, btnNo }) {
                       />
                     </label>
                   </div>
-                  <div className="mt-2 ">
+                  <div className="mt-2">
                     <a href="/excel/word_template.xlsx" download>
                       <span
                         className=" bg-green-100 px-2 py-2.5 rounded-md cursor-pointer text-green-900 border border-[#2f7447] whitespace-nowrap"
