@@ -6,6 +6,7 @@ import Button from "../../../style/tailwind/Button";
 import DateKhmer from "../../../components/DateKhmer";
 import capitalizeFirst from "../../../validate/capitalizeFirst";
 import api from "../../../config/api";
+import LoadingPage from "../../../components/LoadingPage";
 function Detail() {
   const { id } = useParams();
   const [user, setUser] = useState([]);
@@ -28,20 +29,6 @@ function Detail() {
         // setPending(false);
       });
   }, []);
-  if (!user)
-    return (
-      <div style={{ padding: "24px", textAlign: "center" }}>
-        <span
-          style={{
-            fontSize: "24px",
-            color: "#007bff",
-            fontFamily: "Hanuman, sans-serif",
-          }}
-        >
-          កំពុងដំណើរការ... 🔄
-        </span>
-      </div>
-    );
   return (
     <>
       <div className=" flex-row">
@@ -86,201 +73,208 @@ function Detail() {
           </div>
         </div>
         <div className="relative bg-white overflow-y-auto m-5 shadow-md rounded-md min-h-[72vh] max-h-[72vh]">
-          <div className="">
-            <div className="px-5 py-2">
-              <label
-                style={{ fontFamily: "Hanuman, sans-serif" }}
-                className="font-bold text-lg text-[#2a4f8a]"
-              >
-                លម្អិតពាក្យ
-              </label>
-            </div>
-            <div className="col-span-2 !border-b-1 border-[#2f7447]"></div>
-            <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 w-full gap-3 p-5">
-              {/* grid one */}
-              <div className="mr-2">
-                <ul className="flex mb-2">
-                  <li
-                    className="font-bold text-md w-[260px]"
+          {Array.isArray(user) && user.length === 0 ? (
+            <LoadingPage />
+          ) : (
+            <div>
+              {" "}
+              <div className="">
+                <div className="px-5 py-2">
+                  <label
                     style={{ fontFamily: "Hanuman, sans-serif" }}
+                    className="font-bold text-lg text-[#2a4f8a]"
                   >
-                    ស្ថានភាព
-                  </li>
-                  <li className="">:</li>
-                  <li
-                    className="ml-6 text-md w-full"
-                    style={{ fontFamily: "Hanuman, sans-serif" }}
-                  >
-                    <span className="text-blue-600">អនុម័ត</span>
-                  </li>
-                </ul>
-                <ul className="flex mb-2">
-                  <li
-                    className="font-bold text-md w-[260px]"
-                    style={{ fontFamily: "Hanuman, sans-serif" }}
-                  >
-                    ពាក្យខ្មែរ
-                  </li>
-                  <li className="">:</li>
-                  <li
-                    className="ml-6 text-md w-full"
-                    style={{ fontFamily: "Hanuman, sans-serif" }}
-                  >
-                    {user.word_kh ?? ""}
-                  </li>
-                </ul>
-                <ul className="flex mb-2">
-                  <li
-                    className="font-bold text-md w-[260px]"
-                    style={{ fontFamily: "Hanuman, sans-serif" }}
-                  >
-                    ថ្នាក់ពាក្យខ្មែរ
-                  </li>
-                  <li className="">:</li>
-                  <li
-                    className="ml-6 text-md w-full"
-                    style={{ fontFamily: "Hanuman, sans-serif" }}
-                  >
-                    {user.word_kh_type ?? ""}
-                  </li>
-                </ul>
-                <ul className="flex mb-2">
-                  <li
-                    className="font-bold text-md w-[260px]"
-                    style={{ fontFamily: "Hanuman, sans-serif" }}
-                  >
-                    និយមន័យខ្មែរ
-                  </li>
-                  <li className="">:</li>
-                  <li
-                    className="ml-6 text-md w-full"
-                    style={{ fontFamily: "Hanuman, sans-serif" }}
-                  >
-                    {user.word_kh_definition ?? ""}
-                  </li>
-                </ul>
-                <ul className="flex mb-2">
-                  <li
-                    className="font-bold text-md w-[260px]"
-                    style={{ fontFamily: "Hanuman, sans-serif" }}
-                  >
-                    បញ្ចេញសម្លេងខ្មែរ
-                  </li>
-                  <li className="">:</li>
-                  <li
-                    className="ml-6 text-md w-full"
-                    style={{ fontFamily: "Hanuman, sans-serif" }}
-                  >
-                    {user.pronunciation_kh ?? ""}
-                  </li>
-                </ul>
-                <ul className="flex mb-2">
-                  <li
-                    className="font-bold text-md w-[260px]"
-                    style={{ fontFamily: "Hanuman, sans-serif" }}
-                  >
-                    ឧទាហរណ៍ខ្មែរ
-                  </li>
-                  <li className="">:</li>
-                  <li
-                    className="ml-6 text-md w-full"
-                    style={{ fontFamily: "Hanuman, sans-serif" }}
-                  >
-                    {user.example_sentence_kh ?? ""}
-                  </li>
-                </ul>
+                    លម្អិតពាក្យ
+                  </label>
+                </div>
+                <div className="col-span-2 !border-b-1 border-[#2f7447]"></div>
+                <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 w-full gap-3 p-5">
+                  {/* grid one */}
+                  <div className="mr-2">
+                    <ul className="flex mb-2">
+                      <li
+                        className="font-bold text-md w-[260px]"
+                        style={{ fontFamily: "Hanuman, sans-serif" }}
+                      >
+                        ស្ថានភាព
+                      </li>
+                      <li className="">:</li>
+                      <li
+                        className="ml-6 text-md w-full"
+                        style={{ fontFamily: "Hanuman, sans-serif" }}
+                      >
+                        <span className="text-blue-600">អនុម័ត</span>
+                      </li>
+                    </ul>
+                    <ul className="flex mb-2">
+                      <li
+                        className="font-bold text-md w-[260px]"
+                        style={{ fontFamily: "Hanuman, sans-serif" }}
+                      >
+                        ពាក្យខ្មែរ
+                      </li>
+                      <li className="">:</li>
+                      <li
+                        className="ml-6 text-md w-full"
+                        style={{ fontFamily: "Hanuman, sans-serif" }}
+                      >
+                        {user.word_kh ?? ""}
+                      </li>
+                    </ul>
+                    <ul className="flex mb-2">
+                      <li
+                        className="font-bold text-md w-[260px]"
+                        style={{ fontFamily: "Hanuman, sans-serif" }}
+                      >
+                        ថ្នាក់ពាក្យខ្មែរ
+                      </li>
+                      <li className="">:</li>
+                      <li
+                        className="ml-6 text-md w-full"
+                        style={{ fontFamily: "Hanuman, sans-serif" }}
+                      >
+                        {user.word_kh_type ?? ""}
+                      </li>
+                    </ul>
+                    <ul className="flex mb-2">
+                      <li
+                        className="font-bold text-md w-[260px]"
+                        style={{ fontFamily: "Hanuman, sans-serif" }}
+                      >
+                        និយមន័យខ្មែរ
+                      </li>
+                      <li className="">:</li>
+                      <li
+                        className="ml-6 text-md w-full"
+                        style={{ fontFamily: "Hanuman, sans-serif" }}
+                      >
+                        {user.word_kh_definition ?? ""}
+                      </li>
+                    </ul>
+                    <ul className="flex mb-2">
+                      <li
+                        className="font-bold text-md w-[260px]"
+                        style={{ fontFamily: "Hanuman, sans-serif" }}
+                      >
+                        បញ្ចេញសម្លេងខ្មែរ
+                      </li>
+                      <li className="">:</li>
+                      <li
+                        className="ml-6 text-md w-full"
+                        style={{ fontFamily: "Hanuman, sans-serif" }}
+                      >
+                        {user.pronunciation_kh ?? ""}
+                      </li>
+                    </ul>
+                    <ul className="flex mb-2">
+                      <li
+                        className="font-bold text-md w-[260px]"
+                        style={{ fontFamily: "Hanuman, sans-serif" }}
+                      >
+                        ឧទាហរណ៍ខ្មែរ
+                      </li>
+                      <li className="">:</li>
+                      <li
+                        className="ml-6 text-md w-full"
+                        style={{ fontFamily: "Hanuman, sans-serif" }}
+                      >
+                        {user.example_sentence_kh ?? ""}
+                      </li>
+                    </ul>
+                  </div>
+                  {/* grid two */}
+                  <div className="ml-2">
+                    <ul className="flex mb-2">
+                      <li
+                        className="font-bold text-md w-[260px]"
+                        style={{ fontFamily: "Hanuman, sans-serif" }}
+                      >
+                        ពាក្យអង់គ្លេស
+                      </li>
+                      <li className="">:</li>
+                      <li
+                        className="ml-6 text-md w-full"
+                        style={{ fontFamily: "Moul, serif" }}
+                      >
+                        {user.word_en ?? ""}
+                      </li>
+                    </ul>
+                    <ul className="flex mb-2">
+                      <li
+                        className="font-bold text-md w-[260px]"
+                        style={{ fontFamily: "Hanuman, sans-serif" }}
+                      >
+                        ថ្នាក់ពាក្យអង់គ្លេស
+                      </li>
+                      <li className="">:</li>
+                      <li
+                        className="ml-6 text-md w-full"
+                        style={{ fontFamily: "Moul, serif" }}
+                      >
+                        {capitalizeFirst(user.word_en_type)}
+                      </li>
+                    </ul>
+                    <ul className="flex mb-2">
+                      <li
+                        className="font-bold text-md w-[260px]"
+                        style={{ fontFamily: "Hanuman, sans-serif" }}
+                      >
+                        និយមន័យអង់គ្លេស
+                      </li>
+                      <li className="">:</li>
+                      <li
+                        className="ml-6 text-md w-full"
+                        style={{ fontFamily: "Moul, serif" }}
+                      >
+                        {user.word_en_definition ?? ""}
+                      </li>
+                    </ul>
+                    <ul className="flex mb-2">
+                      <li
+                        className="font-bold text-md w-[260px]"
+                        style={{ fontFamily: "Hanuman, sans-serif" }}
+                      >
+                        បញ្ចេញសម្លេងអង់គ្លេស
+                      </li>
+                      <li className="">:</li>
+                      <li
+                        className="ml-6 text-md w-full"
+                        style={{ fontFamily: "Moul, serif" }}
+                      >
+                        {user.pronunciation_en ?? ""}
+                      </li>
+                    </ul>
+                    <ul className="flex mb-2">
+                      <li
+                        className="font-bold text-md w-[260px]"
+                        style={{ fontFamily: "Hanuman, sans-serif" }}
+                      >
+                        ឧទាហរណ៍អង់គ្លេស
+                      </li>
+                      <li className="">:</li>
+                      <li
+                        className="ml-6 text-md w-full"
+                        style={{ fontFamily: "Moul, serif" }}
+                      >
+                        {user.example_sentence_en ?? ""}
+                      </li>
+                    </ul>
+                  </div>
+                </div>
               </div>
-              {/* grid two */}
-              <div className="ml-2">
-                <ul className="flex mb-2">
-                  <li
-                    className="font-bold text-md w-[260px]"
-                    style={{ fontFamily: "Hanuman, sans-serif" }}
-                  >
-                    ពាក្យអង់គ្លេស
-                  </li>
-                  <li className="">:</li>
-                  <li
-                    className="ml-6 text-md w-full"
-                    style={{ fontFamily: "Moul, serif" }}
-                  >
-                    {user.word_en ?? ""}
-                  </li>
-                </ul>
-                <ul className="flex mb-2">
-                  <li
-                    className="font-bold text-md w-[260px]"
-                    style={{ fontFamily: "Hanuman, sans-serif" }}
-                  >
-                    ថ្នាក់ពាក្យអង់គ្លេស
-                  </li>
-                  <li className="">:</li>
-                  <li
-                    className="ml-6 text-md w-full"
-                    style={{ fontFamily: "Moul, serif" }}
-                  >
-                    {capitalizeFirst(user.word_en_type)}
-                  </li>
-                </ul>
-                <ul className="flex mb-2">
-                  <li
-                    className="font-bold text-md w-[260px]"
-                    style={{ fontFamily: "Hanuman, sans-serif" }}
-                  >
-                    និយមន័យអង់គ្លេស
-                  </li>
-                  <li className="">:</li>
-                  <li
-                    className="ml-6 text-md w-full"
-                    style={{ fontFamily: "Moul, serif" }}
-                  >
-                    {user.word_en_definition ?? ""}
-                  </li>
-                </ul>
-                <ul className="flex mb-2">
-                  <li
-                    className="font-bold text-md w-[260px]"
-                    style={{ fontFamily: "Hanuman, sans-serif" }}
-                  >
-                    បញ្ចេញសម្លេងអង់គ្លេស
-                  </li>
-                  <li className="">:</li>
-                  <li
-                    className="ml-6 text-md w-full"
-                    style={{ fontFamily: "Moul, serif" }}
-                  >
-                    {user.pronunciation_en ?? ""}
-                  </li>
-                </ul>
-                <ul className="flex mb-2">
-                  <li
-                    className="font-bold text-md w-[260px]"
-                    style={{ fontFamily: "Hanuman, sans-serif" }}
-                  >
-                    ឧទាហរណ៍អង់គ្លេស
-                  </li>
-                  <li className="">:</li>
-                  <li
-                    className="ml-6 text-md w-full"
-                    style={{ fontFamily: "Moul, serif" }}
-                  >
-                    {user.example_sentence_en ?? ""}
-                  </li>
-                </ul>
+              {/* button */}
+              <div className="md:absolute md:bottom-5 md:right-5 flex mr-5 mb-5 md:mr-0 md:mb-0 justify-end sm:col-span-2 text-end">
+                <div className=" flex gap-3">
+                  <div>
+                    {" "}
+                    <Link to="/admin/dictionary-list">
+                      <Button color="slate" text="ត្រលប់ក្រោយ" className="" />
+                    </Link>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-          {/* button */}
-          <div className="md:absolute md:bottom-5 md:right-5 flex mr-5 mb-5 md:mr-0 md:mb-0 justify-end sm:col-span-2 text-end">
-            <div className=" flex gap-3">
-              <div>
-                {" "}
-                <Link to="/admin/dictionary-list">
-                  <Button color="slate" text="ត្រលប់ក្រោយ" className="" />
-                </Link>
-              </div>
-            </div>
-          </div>
+          )}
         </div>
       </div>
     </>

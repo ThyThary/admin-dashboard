@@ -10,6 +10,7 @@ import Select from "../../../style/tailwind/Select";
 import api from "../../../config/api";
 import Toastify from "../../../components/Toastify";
 import WEB_BASE_URL from "../../../config/web";
+import LoadingPage from "../../../components/LoadingPage";
 const Edit = () => {
   // Get user id
   const { id } = useParams();
@@ -245,188 +246,199 @@ const Edit = () => {
           </div>
         </div>
         <div className="relative bg-white overflow-y-auto m-5 shadow-md rounded-md min-h-[72vh] max-h-[72vh]">
-          <div className="p-5">
-            <div className=" grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 w-full gap-3">
-              {/* Sub content one */}
-              <div className="mr-1">
-                <div className="">
-                  <Input
-                    label="ពាក្យខ្មែរ"
-                    type="text"
-                    placeholder="បញ្ចូលទិន្នន័យនៅទីនេះ"
-                    id="word_kh"
-                    name="word_kh"
-                    value={formData.word_kh}
-                    onChange={(e) => {
-                      handleChange(e);
-                    }}
-                    classNname={`${errors.word_kh && "border-red-500"}`}
-                    star="true"
-                  />
-                </div>
-                <div className="mt-3">
-                  <Select
-                    options={wordClassKh}
-                    label="ថ្នាក់ពាក្យខ្មែរ"
-                    id="word_kh_type"
-                    name="word_kh_type"
-                    value={formData.word_kh_type}
-                    onChange={(e) => {
-                      handleChange(e);
-                    }}
-                    classNname={`${errors.word_kh_type && "border-red-500"}`}
-                    star="true"
-                  />
-                </div>
-                <div className="mt-3">
-                  <Input
-                    label="បញ្ចេញសម្លេងខ្មែរ"
-                    type="text"
-                    placeholder="បញ្ចូលទិន្នន័យនៅទីនេះ"
-                    id="pronunciation_kh"
-                    name="pronunciation_kh"
-                    value={formData.pronunciation_kh}
-                    onChange={(e) => {
-                      handleChange(e);
-                    }}
-                    classNname=""
-                  />
-                </div>
-                <div className="mt-3">
-                  <TextArea
-                    label="និយមន័យខ្មែរ"
-                    rows="4"
-                    id="word_kh_definition"
-                    name="word_kh_definition"
-                    value={formData.word_kh_definition}
-                    onChange={(e) => {
-                      handleChange(e);
-                    }}
-                    placeholder="បញ្ចូលទិន្នន័យនៅទីនេះ ..."
-                    classNname={`${
-                      errors.word_kh_definition && "border-red-500"
-                    }`}
-                    star="true"
-                  />
-                </div>
-                <div className="mt-3">
-                  <TextArea
-                    label="ឧទាហរណ៍ខ្មែរ"
-                    rows="4"
-                    id="example_sentence_kh"
-                    name="example_sentence_kh"
-                    value={formData.example_sentence_kh}
-                    onChange={(e) => {
-                      handleChange(e);
-                    }}
-                    placeholder="បញ្ចូលទិន្នន័យនៅទីនេះ ..."
-                    classNname=""
-                  />
-                </div>
-              </div>
-              {/* Sub content two */}
-              <div className="ml-1">
-                <div className="">
-                  <Input
-                    label="ពាក្យអង់គ្លេស"
-                    text="text"
-                    placeholder="បញ្ចូលទិន្នន័យនៅទីនេះ"
-                    id="word_en"
-                    name="word_en"
-                    value={formData.word_en}
-                    onChange={(e) => {
-                      handleChange(e);
-                    }}
-                    classNname={`${errors.word_en && "border-red-500"}`}
-                    star="true"
-                  />
-                </div>
-                <div className="mt-3">
-                  <Select
-                    options={wordClassEn}
-                    label="ថ្នាក់ពាក្យអង់គ្លេស"
-                    id="word_en_type"
-                    name="word_en_type"
-                    value={formData.word_en_type}
-                    onChange={(e) => {
-                      handleChange(e);
-                    }}
-                    classNname={`${errors.word_en_type && "border-red-500"}`}
-                    star="true"
-                  />
-                </div>
-                <div className="mt-3">
-                  <Input
-                    label="បញ្ចេញសម្លេងអង់គ្លេស"
-                    type="text"
-                    placeholder="បញ្ចូលទិន្នន័យនៅទីនេះ"
-                    id="pronunciation_en"
-                    name="pronunciation_en"
-                    value={formData.pronunciation_en}
-                    onChange={(e) => {
-                      handleChange(e);
-                    }}
-                    classNname=""
-                  />
-                </div>
-                <div className="mt-3">
-                  <TextArea
-                    label="និយមន័យអង់គ្លេស"
-                    rows="4"
-                    id="word_en_definition"
-                    name="word_en_definition"
-                    value={formData.word_en_definition}
-                    onChange={(e) => {
-                      handleChange(e);
-                    }}
-                    placeholder="បញ្ចូលទិន្នន័យនៅទីនេះ ..."
-                    classNname={`${
-                      errors.word_en_definition && "border-red-500"
-                    }`}
-                    star="true"
-                  />
-                </div>
-                <div className="mt-3">
-                  <TextArea
-                    label="ឧទាហរណ៍អង់គ្លេស"
-                    rows="4"
-                    id="example_sentence_en"
-                    name="example_sentence_en"
-                    value={formData.example_sentence_en}
-                    onChange={(e) => {
-                      handleChange(e);
-                    }}
-                    placeholder="បញ្ចូលទិន្នន័យនៅទីនេះ ..."
-                    classNname=""
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-          {/* button */}
-          <div className=" flex justify-end  sm:col-span-2 text-end mr-5 mb-5">
-            <div className=" flex gap-3">
+          {Array.isArray(user) && user.length === 0 ? (
+            <LoadingPage />
+          ) : (
+            <div>
               {" "}
-              <Link to="/admin/dictionary-list">
-                <Button color="red" text="បោះបង់" className="" />
-              </Link>
-              <div>
-                {" "}
-                <Link to="/admin/dictionary-list">
-                  <Button
-                    color="blue"
-                    text="រក្សាទុក"
-                    className=""
-                    onClick={(e) => {
-                      handleClick(e, setIsLoading);
-                    }}
-                    isLoading={isLoading}
-                    disabled={isLoading}
-                  />
-                </Link>
+              <div className="p-5">
+                <div className=" grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 w-full gap-3">
+                  {/* Sub content one */}
+                  <div className="mr-1">
+                    <div className="">
+                      <Input
+                        label="ពាក្យខ្មែរ"
+                        type="text"
+                        placeholder="បញ្ចូលទិន្នន័យនៅទីនេះ"
+                        id="word_kh"
+                        name="word_kh"
+                        value={formData.word_kh}
+                        onChange={(e) => {
+                          handleChange(e);
+                        }}
+                        classNname={`${errors.word_kh && "border-red-500"}`}
+                        star="true"
+                      />
+                    </div>
+                    <div className="mt-3">
+                      <Select
+                        options={wordClassKh}
+                        label="ថ្នាក់ពាក្យខ្មែរ"
+                        id="word_kh_type"
+                        name="word_kh_type"
+                        value={formData.word_kh_type}
+                        onChange={(e) => {
+                          handleChange(e);
+                        }}
+                        classNname={`${
+                          errors.word_kh_type && "border-red-500"
+                        }`}
+                        star="true"
+                      />
+                    </div>
+                    <div className="mt-3">
+                      <Input
+                        label="បញ្ចេញសម្លេងខ្មែរ"
+                        type="text"
+                        placeholder="បញ្ចូលទិន្នន័យនៅទីនេះ"
+                        id="pronunciation_kh"
+                        name="pronunciation_kh"
+                        value={formData.pronunciation_kh}
+                        onChange={(e) => {
+                          handleChange(e);
+                        }}
+                        classNname=""
+                      />
+                    </div>
+                    <div className="mt-3">
+                      <TextArea
+                        label="និយមន័យខ្មែរ"
+                        rows="4"
+                        id="word_kh_definition"
+                        name="word_kh_definition"
+                        value={formData.word_kh_definition}
+                        onChange={(e) => {
+                          handleChange(e);
+                        }}
+                        placeholder="បញ្ចូលទិន្នន័យនៅទីនេះ ..."
+                        classNname={`${
+                          errors.word_kh_definition && "border-red-500"
+                        }`}
+                        star="true"
+                      />
+                    </div>
+                    <div className="mt-3">
+                      <TextArea
+                        label="ឧទាហរណ៍ខ្មែរ"
+                        rows="4"
+                        id="example_sentence_kh"
+                        name="example_sentence_kh"
+                        value={formData.example_sentence_kh}
+                        onChange={(e) => {
+                          handleChange(e);
+                        }}
+                        placeholder="បញ្ចូលទិន្នន័យនៅទីនេះ ..."
+                        classNname=""
+                      />
+                    </div>
+                  </div>
+                  {/* Sub content two */}
+                  <div className="ml-1">
+                    <div className="">
+                      <Input
+                        label="ពាក្យអង់គ្លេស"
+                        text="text"
+                        placeholder="បញ្ចូលទិន្នន័យនៅទីនេះ"
+                        id="word_en"
+                        name="word_en"
+                        value={formData.word_en}
+                        onChange={(e) => {
+                          handleChange(e);
+                        }}
+                        classNname={`${errors.word_en && "border-red-500"}`}
+                        star="true"
+                      />
+                    </div>
+                    <div className="mt-3">
+                      <Select
+                        options={wordClassEn}
+                        label="ថ្នាក់ពាក្យអង់គ្លេស"
+                        id="word_en_type"
+                        name="word_en_type"
+                        value={formData.word_en_type}
+                        onChange={(e) => {
+                          handleChange(e);
+                        }}
+                        classNname={`${
+                          errors.word_en_type && "border-red-500"
+                        }`}
+                        star="true"
+                      />
+                    </div>
+                    <div className="mt-3">
+                      <Input
+                        label="បញ្ចេញសម្លេងអង់គ្លេស"
+                        type="text"
+                        placeholder="បញ្ចូលទិន្នន័យនៅទីនេះ"
+                        id="pronunciation_en"
+                        name="pronunciation_en"
+                        value={formData.pronunciation_en}
+                        onChange={(e) => {
+                          handleChange(e);
+                        }}
+                        classNname=""
+                      />
+                    </div>
+                    <div className="mt-3">
+                      <TextArea
+                        label="និយមន័យអង់គ្លេស"
+                        rows="4"
+                        id="word_en_definition"
+                        name="word_en_definition"
+                        value={formData.word_en_definition}
+                        onChange={(e) => {
+                          handleChange(e);
+                        }}
+                        placeholder="បញ្ចូលទិន្នន័យនៅទីនេះ ..."
+                        classNname={`${
+                          errors.word_en_definition && "border-red-500"
+                        }`}
+                        star="true"
+                      />
+                    </div>
+                    <div className="mt-3">
+                      <TextArea
+                        label="ឧទាហរណ៍អង់គ្លេស"
+                        rows="4"
+                        id="example_sentence_en"
+                        name="example_sentence_en"
+                        value={formData.example_sentence_en}
+                        onChange={(e) => {
+                          handleChange(e);
+                        }}
+                        placeholder="បញ្ចូលទិន្នន័យនៅទីនេះ ..."
+                        classNname=""
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {/* button */}
+              <div className=" flex justify-end  sm:col-span-2 text-end mr-5 mb-5">
+                <div className=" flex gap-3">
+                  {" "}
+                  <Link to="/admin/dictionary-list">
+                    <Button color="red" text="បោះបង់" className="" />
+                  </Link>
+                  <div>
+                    {" "}
+                    <Link to="/admin/dictionary-list">
+                      <Button
+                        color="blue"
+                        text="រក្សាទុក"
+                        className=""
+                        onClick={(e) => {
+                          handleClick(e, setIsLoading);
+                        }}
+                        isLoading={isLoading}
+                        disabled={isLoading}
+                      />
+                    </Link>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </>

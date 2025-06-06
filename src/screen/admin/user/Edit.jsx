@@ -9,6 +9,7 @@ import DateKhmer from "../../../components/DateKhmer";
 import Toastify from "../../../components/Toastify";
 import api from "../../../config/api";
 import WEB_BASE_URL from "../../../config/web";
+import LoadingPage from "../../../components/LoadingPage";
 const Edit = () => {
   // Get user id
   const { id } = useParams();
@@ -27,6 +28,7 @@ const Edit = () => {
             Authorization: `Bearer ${token}`,
           },
         });
+        setUser(response.data.data);
         setFormData({
           username_kh: response.data.data.username_kh || "",
           email: response.data.data.email || "",
@@ -156,237 +158,225 @@ const Edit = () => {
     { label: "ស្រី", value: "FEMALE" },
   ];
 
-  if (!user)
-    return (
-      <div style={{ padding: "24px", textAlign: "center" }}>
-        <span
-          style={{
-            fontSize: "24px",
-            color: "#007bff",
-            fontFamily: "Hanuman, sans-serif",
-          }}
-        >
-          កំពុងដំណើរការ... 🔄
-        </span>
-      </div>
-    );
   return (
     <>
-      {user ? (
-        <div className=" flex-row">
-          <div className="flex flex-col min-h-28 max-h-28 px-5 pt-5">
-            {/* Breakcrabe */}
-            <div className="flex flex-row items-center cursor-pointer text-gray-500 gap-x-2">
-              <HomeIcon name="home" size="15" />
-              <Link to="/admin/user-list">
-                <label
-                  className="text-sm cursor-pointer"
-                  style={{ fontFamily: "Hanuman, sans-serif" }}
-                >
-                  / អ្នកប្រើប្រាស់
-                </label>
-              </Link>
-              <Link to="">
-                <label
-                  className="text-sm cursor-pointer"
-                  style={{ fontFamily: "Hanuman, sans-serif" }}
-                >
-                  / កែប្រែ
-                </label>
-              </Link>
-              <div className="hidden sm:block ml-auto">
-                <DateKhmer />
-              </div>
-            </div>
-
-            <div className="flex flex-row gap-x-2 items-center mt-7">
-              <div>
-                <EditIcon name="edit" size="25" color="#2a4f8a" />
-              </div>
-              <div>
-                <label
-                  className="text-md font-bold pt-1 text-[#2a4f8a] "
-                  style={{ fontFamily: "Hanuman, sans-serif" }}
-                >
-                  កែប្រែ
-                </label>
-              </div>
+      <div className=" flex-row">
+        <div className="flex flex-col min-h-28 max-h-28 px-5 pt-5">
+          {/* Breakcrabe */}
+          <div className="flex flex-row items-center cursor-pointer text-gray-500 gap-x-2">
+            <HomeIcon name="home" size="15" />
+            <Link to="/admin/user-list">
+              <label
+                className="text-sm cursor-pointer"
+                style={{ fontFamily: "Hanuman, sans-serif" }}
+              >
+                / អ្នកប្រើប្រាស់
+              </label>
+            </Link>
+            <Link to="">
+              <label
+                className="text-sm cursor-pointer"
+                style={{ fontFamily: "Hanuman, sans-serif" }}
+              >
+                / កែប្រែ
+              </label>
+            </Link>
+            <div className="hidden sm:block ml-auto">
+              <DateKhmer />
             </div>
           </div>
-          <div className="relative bg-white overflow-y-auto m-5 shadow-md rounded-md min-h-[72vh] max-h-[72vh]">
-            <div className="p-5">
-              <div className=" grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 w-full gap-3">
-                {/* Sub content one */}
-                <div className="mr-1">
-                  <div className="">
-                    <input
-                      type="text"
-                      name="staff_id"
-                      id="staff_id"
-                      value={formData.staff_id}
-                      hidden
-                    />
-                    <Input
-                      label="លេខសម្គាល់"
-                      type="text"
-                      placeholder="បញ្ចូលទិន្នន័យនៅទីនេះ"
-                      id="staff_ids"
-                      name="staff_ids"
-                      value={formData.staff_id}
-                      star="true"
-                      disabled={true}
-                    />
-                  </div>
-                  <div className=" mt-3">
-                    <Input
-                      label="មុខតំណែង"
-                      type="text"
-                      placeholder="បញ្ចូលទិន្នន័យនៅទីនេះ"
-                      id="position"
-                      name="position"
-                      value={formData.position}
-                      onChange={(e) => {
-                        handleChange(e);
-                      }}
-                      classNname=""
-                      style={{ fontFamily: "Hanuman, sans-serif" }}
-                    />
-                  </div>
-                  <div className="mt-3">
-                    <Select
-                      options={genderOptions}
-                      label="ភេទ"
-                      id="sex"
-                      name="sex"
-                      value={formData.sex}
-                      onChange={(e) => {
-                        handleChange(e);
-                      }}
-                    />
-                  </div>
-                  <div className=" mt-3">
-                    {(() => {
-                      if (userRole.role === "SUPERUSER") {
-                        const roleOptions = [
-                          { label: "អ្នកប្រើប្រាស់", value: "USER" },
-                          { label: "អ្នកគ្រប់គ្រង", value: "ADMIN" },
-                          {
-                            label: "អ្នកគ្រប់គ្រងជាន់ខ្ពស់",
-                            value: "SUPERUSER",
-                          },
-                        ];
-                        return (
-                          <Select
-                            options={roleOptions}
-                            label="តួនាទី"
-                            id="role"
-                            name="role"
-                            value={formData.role}
-                            onChange={(e) => {
-                              handleChange(e);
-                            }}
-                            classNname={`${errors.role && "border-red-500"}`}
-                            star="true"
-                          />
-                        );
-                      } else {
-                        const roleOptions = [
-                          { label: "អ្នកប្រើប្រាស់", value: "USER" },
-                          { label: "អ្នកគ្រប់គ្រង", value: "ADMIN" },
-                        ];
-                        return (
-                          <Select
-                            options={roleOptions}
-                            label="តួនាទី"
-                            id="role"
-                            name="role"
-                            value={formData.role}
-                            onChange={(e) => {
-                              handleChange(e);
-                            }}
-                            classNname={`${errors.role && "border-red-500"}`}
-                            star="true"
-                          />
-                        );
-                      }
-                    })()}
-                  </div>
-                </div>
-                {/* Sub content two */}
-                <div className="ml-1">
-                  <div className="">
-                    <Input
-                      label="ឈ្មោះ"
-                      text="text"
-                      placeholder="បញ្ចូលទិន្នន័យនៅទីនេះ"
-                      id="username_kh"
-                      name="username_kh"
-                      value={formData.username_kh}
-                      onChange={(e) => {
-                        handleChange(e);
-                      }}
-                    />
-                  </div>
-                  <div className="mt-3">
-                    <Input
-                      label="លេខទូរស័ព្ទ"
-                      text="text"
-                      placeholder="បញ្ចូលទិន្នន័យនៅទីនេះ"
-                      id="phone_number"
-                      name="phone_number"
-                      value={formData.phone_number}
-                      onChange={(e) => {
-                        handleChange(e);
-                      }}
-                    />
-                  </div>
-                  <div className="mt-3">
-                    <Input
-                      label="អ៊ីមែល"
-                      type="text"
-                      placeholder="បញ្ចូលទិន្នន័យនៅទីនេះ"
-                      id="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={(e) => {
-                        handleChange(e);
-                      }}
-                      style={{ fontFamily: "Hanuman, sans-serif" }}
-                      classNname={`${errors.email && "border-red-500"}`}
-                      star="true"
-                    />
-                  </div>
-                </div>
-              </div>
+
+          <div className="flex flex-row gap-x-2 items-center mt-7">
+            <div>
+              <EditIcon name="edit" size="25" color="#2a4f8a" />
             </div>
-            {/* button */}
-            <div className="md:absolute md:bottom-5 md:right-5 flex mr-5 mb-5 md:mr-0 md:mb-0 justify-end sm:col-span-2 text-end">
-              {" "}
-              <div className=" flex gap-3">
-                {" "}
-                <Link to="/admin/user-list">
-                  <Button color="red" text="បោះបង់" className="" />
-                </Link>
-                <div>
-                  {" "}
-                  <Button
-                    color="blue"
-                    text="រក្សាទុក"
-                    className=""
-                    onClick={(e) => {
-                      handleClick(e, setIsLoading);
-                    }}
-                    isLoading={isLoading}
-                    disabled={isLoading}
-                  />
-                </div>
-              </div>
+            <div>
+              <label
+                className="text-md font-bold pt-1 text-[#2a4f8a] "
+                style={{ fontFamily: "Hanuman, sans-serif" }}
+              >
+                កែប្រែ
+              </label>
             </div>
           </div>
         </div>
-      ) : (
-        <p>Loading user data...</p>
-      )}
+        <div className="relative bg-white overflow-y-auto m-5 shadow-md rounded-md min-h-[72vh] max-h-[72vh]">
+          {Array.isArray(user) && user.length === 0 ? (
+            <LoadingPage />
+          ) : (
+            <div>
+              <div className="p-5">
+                <div className=" grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 w-full gap-3">
+                  {/* Sub content one */}
+                  <div className="mr-1">
+                    <div className="">
+                      <input
+                        type="text"
+                        name="staff_id"
+                        id="staff_id"
+                        value={formData.staff_id}
+                        hidden
+                      />
+                      <Input
+                        label="លេខសម្គាល់"
+                        type="text"
+                        placeholder="បញ្ចូលទិន្នន័យនៅទីនេះ"
+                        id="staff_ids"
+                        name="staff_ids"
+                        value={formData.staff_id}
+                        star="true"
+                        disabled={true}
+                      />
+                    </div>
+                    <div className=" mt-3">
+                      <Input
+                        label="មុខតំណែង"
+                        type="text"
+                        placeholder="បញ្ចូលទិន្នន័យនៅទីនេះ"
+                        id="position"
+                        name="position"
+                        value={formData.position}
+                        onChange={(e) => {
+                          handleChange(e);
+                        }}
+                        classNname=""
+                        style={{ fontFamily: "Hanuman, sans-serif" }}
+                      />
+                    </div>
+                    <div className="mt-3">
+                      <Select
+                        options={genderOptions}
+                        label="ភេទ"
+                        id="sex"
+                        name="sex"
+                        value={formData.sex}
+                        onChange={(e) => {
+                          handleChange(e);
+                        }}
+                      />
+                    </div>
+                    <div className=" mt-3">
+                      {(() => {
+                        if (userRole.role === "SUPERUSER") {
+                          const roleOptions = [
+                            { label: "អ្នកប្រើប្រាស់", value: "USER" },
+                            { label: "អ្នកគ្រប់គ្រង", value: "ADMIN" },
+                            {
+                              label: "អ្នកគ្រប់គ្រងជាន់ខ្ពស់",
+                              value: "SUPERUSER",
+                            },
+                          ];
+                          return (
+                            <Select
+                              options={roleOptions}
+                              label="តួនាទី"
+                              id="role"
+                              name="role"
+                              value={formData.role}
+                              onChange={(e) => {
+                                handleChange(e);
+                              }}
+                              classNname={`${errors.role && "border-red-500"}`}
+                              star="true"
+                            />
+                          );
+                        } else {
+                          const roleOptions = [
+                            { label: "អ្នកប្រើប្រាស់", value: "USER" },
+                            { label: "អ្នកគ្រប់គ្រង", value: "ADMIN" },
+                          ];
+                          return (
+                            <Select
+                              options={roleOptions}
+                              label="តួនាទី"
+                              id="role"
+                              name="role"
+                              value={formData.role}
+                              onChange={(e) => {
+                                handleChange(e);
+                              }}
+                              classNname={`${errors.role && "border-red-500"}`}
+                              star="true"
+                            />
+                          );
+                        }
+                      })()}
+                    </div>
+                  </div>
+                  {/* Sub content two */}
+                  <div className="ml-1">
+                    <div className="">
+                      <Input
+                        label="ឈ្មោះ"
+                        text="text"
+                        placeholder="បញ្ចូលទិន្នន័យនៅទីនេះ"
+                        id="username_kh"
+                        name="username_kh"
+                        value={formData.username_kh}
+                        onChange={(e) => {
+                          handleChange(e);
+                        }}
+                      />
+                    </div>
+                    <div className="mt-3">
+                      <Input
+                        label="លេខទូរស័ព្ទ"
+                        text="text"
+                        placeholder="បញ្ចូលទិន្នន័យនៅទីនេះ"
+                        id="phone_number"
+                        name="phone_number"
+                        value={formData.phone_number}
+                        onChange={(e) => {
+                          handleChange(e);
+                        }}
+                      />
+                    </div>
+                    <div className="mt-3">
+                      <Input
+                        label="អ៊ីមែល"
+                        type="text"
+                        placeholder="បញ្ចូលទិន្នន័យនៅទីនេះ"
+                        id="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={(e) => {
+                          handleChange(e);
+                        }}
+                        style={{ fontFamily: "Hanuman, sans-serif" }}
+                        classNname={`${errors.email && "border-red-500"}`}
+                        star="true"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {/* button */}
+              <div className="md:absolute md:bottom-5 md:right-5 flex mr-5 mb-5 md:mr-0 md:mb-0 justify-end sm:col-span-2 text-end">
+                {" "}
+                <div className=" flex gap-3">
+                  {" "}
+                  <Link to="/admin/user-list">
+                    <Button color="red" text="បោះបង់" className="" />
+                  </Link>
+                  <div>
+                    {" "}
+                    <Button
+                      color="blue"
+                      text="រក្សាទុក"
+                      className=""
+                      onClick={(e) => {
+                        handleClick(e, setIsLoading);
+                      }}
+                      isLoading={isLoading}
+                      disabled={isLoading}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
     </>
   );
 };
