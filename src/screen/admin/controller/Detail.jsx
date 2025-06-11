@@ -137,50 +137,6 @@ function Detail() {
                         className="font-bold text-md w-[260px]"
                         style={{ fontFamily: "Hanuman, sans-serif" }}
                       >
-                        អ្នកស្នើសុំ
-                      </li>
-                      <li className="">:</li>
-                      <li
-                        className="ml-6 text-md w-full"
-                        style={{ fontFamily: "Hanuman, sans-serif" }}
-                      >
-                        {user.created_by}
-                      </li>
-                    </ul>
-                    <ul className="flex mb-2">
-                      <li
-                        className="font-bold text-md w-[260px]"
-                        style={{ fontFamily: "Hanuman, sans-serif" }}
-                      >
-                        ស្ថានភាព
-                      </li>
-                      <li className="">:</li>
-                      <li
-                        className="ml-6 text-md w-full font-bold"
-                        style={{ fontFamily: "Hanuman, sans-serif" }}
-                      >
-                        {(() => {
-                          if (user.review_status == "PENDING") {
-                            return (
-                              <span className=" text-green-600">ថ្មី</span>
-                            );
-                          } else if (user.review_status == "APPROVED") {
-                            return (
-                              <span className=" text-blue-600">អនុម័ត</span>
-                            );
-                          } else {
-                            return (
-                              <span className=" text-red-600">បដិសេធ</span>
-                            );
-                          }
-                        })()}
-                      </li>
-                    </ul>
-                    <ul className="flex mb-2">
-                      <li
-                        className="font-bold text-md w-[260px]"
-                        style={{ fontFamily: "Hanuman, sans-serif" }}
-                      >
                         ពាក្យខ្មែរ
                       </li>
                       <li className="">:</li>
@@ -251,39 +207,53 @@ function Detail() {
                         {user.example_sentence_kh ?? ""}
                       </li>
                     </ul>
+                    <ul className="flex mb-2">
+                      <li
+                        className="font-bold text-md w-[260px]"
+                        style={{ fontFamily: "Hanuman, sans-serif" }}
+                      >
+                        អ្នកស្នើសុំ
+                      </li>
+                      <li className="">:</li>
+                      <li
+                        className="ml-6 text-md w-full"
+                        style={{ fontFamily: "Hanuman, sans-serif" }}
+                      >
+                        {user.created_by}
+                      </li>
+                    </ul>
+                    <ul className="flex mb-2">
+                      <li
+                        className="font-bold text-md w-[260px]"
+                        style={{ fontFamily: "Hanuman, sans-serif" }}
+                      >
+                        ស្ថានភាព
+                      </li>
+                      <li className="">:</li>
+                      <li
+                        className="ml-6 text-md w-full font-bold"
+                        style={{ fontFamily: "Hanuman, sans-serif" }}
+                      >
+                        {(() => {
+                          if (user.review_status == "PENDING") {
+                            return (
+                              <span className=" text-green-600">ថ្មី</span>
+                            );
+                          } else if (user.review_status == "APPROVED") {
+                            return (
+                              <span className=" text-blue-600">អនុម័ត</span>
+                            );
+                          } else {
+                            return (
+                              <span className=" text-red-600">បដិសេធ</span>
+                            );
+                          }
+                        })()}
+                      </li>
+                    </ul>
                   </div>
                   {/* grid two */}
                   <div className="ml-2">
-                    <ul className="flex mb-2">
-                      <li
-                        className="font-bold text-md w-[260px]"
-                        style={{ fontFamily: "Hanuman, sans-serif" }}
-                      >
-                        កាលបរិច្ឆេទបង្កើត
-                      </li>
-                      <li className="">:</li>
-                      <li
-                        className="ml-6 text-md w-full"
-                        style={{ fontFamily: "Hanuman, sans-serif" }}
-                      >
-                        {user.created_at}
-                      </li>
-                    </ul>
-                    <ul className="flex mb-2">
-                      <li
-                        className="font-bold text-md w-[260px]"
-                        style={{ fontFamily: "Hanuman, sans-serif" }}
-                      >
-                        កាលបរិច្ឆេទត្រួតពិនិត្យ
-                      </li>
-                      <li className="">:</li>
-                      <li
-                        className="ml-6 text-md w-full"
-                        style={{ fontFamily: "Hanuman, sans-serif" }}
-                      >
-                        {user.reviewed_at}
-                      </li>
-                    </ul>
                     <ul className="flex mb-2">
                       <li
                         className="font-bold text-md w-[260px]"
@@ -376,6 +346,36 @@ function Detail() {
                         style={{ fontFamily: "Hanuman, sans-serif" }}
                       >
                         {user.rejection_reason ?? ""}
+                      </li>
+                    </ul>
+                    <ul className="flex mb-2">
+                      <li
+                        className="font-bold text-md w-[260px]"
+                        style={{ fontFamily: "Hanuman, sans-serif" }}
+                      >
+                        កាលបរិច្ឆេទបង្កើត
+                      </li>
+                      <li className="">:</li>
+                      <li
+                        className="ml-6 text-md w-full"
+                        style={{ fontFamily: "Hanuman, sans-serif" }}
+                      >
+                        {user.created_at}
+                      </li>
+                    </ul>
+                    <ul className="flex mb-2">
+                      <li
+                        className="font-bold text-md w-[260px]"
+                        style={{ fontFamily: "Hanuman, sans-serif" }}
+                      >
+                        កាលបរិច្ឆេទត្រួតពិនិត្យ
+                      </li>
+                      <li className="">:</li>
+                      <li
+                        className="ml-6 text-md w-full"
+                        style={{ fontFamily: "Hanuman, sans-serif" }}
+                      >
+                        {user.reviewed_at}
                       </li>
                     </ul>
                   </div>

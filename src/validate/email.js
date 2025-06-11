@@ -109,6 +109,7 @@ const email = async (
   e.preventDefault();
   errorOne("");
   errorTwo("");
+
   // User name validation
   if (valueOne == "" && valueTwo == "") {
     errorOne("ត្រូវការឈ្មោះអ្នកប្រើប្រាស់");
@@ -142,6 +143,7 @@ const email = async (
           }
         )
         .then((res) => {
+          // localStorage.removeItem("access");
           localStorage.setItem("access", res.data.data.access);
           localStorage.setItem("user", JSON.stringify(res.data.data.user));
           console.log(res.data.data.use);
@@ -156,7 +158,7 @@ const email = async (
               res.data.data.user.role == "ADMIN" ||
               res.data.data.user.role == "SUPERUSER"
             ) {
-              window.location.href = `${WEB_BASE_URL}/admin/user-list`;
+              window.location.href = `${WEB_BASE_URL}/admin/controller-list`;
             } else {
               /* empty */
             }

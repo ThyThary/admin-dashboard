@@ -88,9 +88,11 @@ const Master = ({ color = "#2a4f8a" }) => {
         <div className=" w-full flex-col bg-[#e5e7eb]">
           <div>
             <div className="flex h-10 items-center justify-center text-center bg-white shadow-md">
-              <div className="items-center">
+              <div className="items-center m-1">
                 <button
-                  className="p-2 hover:scale-110 transition cursor-pointer"
+                  className={`p-1 hover:scale-110 transition cursor-pointer ${
+                    sidebarOpen ? "border border-[#2f7447] rounded-md ml-4" : ""
+                  } `}
                   onClick={() => setSidebarOpen(!sidebarOpen)}
                 >
                   <MenuIcon name="menu" size="20" color="#6B7280" />
@@ -101,14 +103,14 @@ const Master = ({ color = "#2a4f8a" }) => {
                 {showProfile && (
                   <Profile
                     img={profileDefault || profileDefault}
-                    name={user.username_kh}
-                    email={user.email}
-                    id={user.staff_id}
-                    position={user.position}
-                    phone={user.phone_number}
+                    name={user?.username_kh || ""}
+                    email={user?.email || ""}
+                    id={user?.staff_id || ""}
+                    position={user?.position || ""}
+                    phone={user?.phone_number || ""}
                   />
                 )}
-                <div className="absolute right-14 top-1.5 hover:scale-110 h-[5vh]">
+                <div className="absolute right-14 top-1.5 h-[5vh]">
                   <label
                     className=" text-md"
                     htmlFor=""
@@ -117,7 +119,7 @@ const Master = ({ color = "#2a4f8a" }) => {
                       color: "#2a4f8a",
                     }}
                   >
-                    {user.username_kh}
+                    {user?.username_kh || ""}
                   </label>
                 </div>
                 {/* Toggle Button Show/Hide*/}

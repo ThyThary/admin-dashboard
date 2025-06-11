@@ -25,33 +25,6 @@ const MenuBar = () => {
           sidebarRoute !== `/user/word` ? "" : "hidden"
         } `}
       >
-        {/* User Link */}
-        <Link
-          to="/admin/user-list"
-          className={`w-full px-5 mt-2 text-white  ${
-            location.pathname === `/admin/user-${seperateRoute}`
-              ? "bg-teal-700 shadow-md"
-              : " hover:bg-blue-950"
-          }`}
-          onClick={() => {
-            setActiveTab("អ្នកប្រើប្រាស់");
-          }}
-        >
-          <div className=" flex w-full cursor-pointer py-1 hover:scale-110">
-            <div className="mt-0.5 ">
-              {" "}
-              <UserIcon name="user" size="18" color="white" />
-            </div>
-            <div>
-              <label
-                className=" text-md ml-3 cursor-pointer"
-                style={{ fontFamily: "Hanuman, sans-serif" }}
-              >
-                អ្នកប្រើប្រាស់
-              </label>
-            </div>
-          </div>
-        </Link>
         {/* Controller */}
         <Link
           to="/admin/controller-list"
@@ -88,7 +61,7 @@ const MenuBar = () => {
               : " hover:bg-blue-950"
           }`}
           onClick={() => {
-            setActiveTab("ពាក្យ");
+            setActiveTab("បង្កើតសំណើ");
           }}
         >
           <div className=" flex w-full cursor-pointer py-1 hover:scale-110">
@@ -101,7 +74,7 @@ const MenuBar = () => {
                 className=" text-md ml-3 cursor-pointer"
                 style={{ fontFamily: "Hanuman, sans-serif" }}
               >
-                ពាក្យ
+                បង្កើតសំណើ
               </label>
             </div>
           </div>
@@ -160,6 +133,33 @@ const MenuBar = () => {
             </div>
           </div>
         </Link>
+        {/* User Link */}
+        <Link
+          to="/admin/user-list"
+          className={`w-full px-5 mt-2 text-white  ${
+            location.pathname === `/admin/user-${seperateRoute}`
+              ? "bg-teal-700 shadow-md"
+              : " hover:bg-blue-950"
+          }`}
+          onClick={() => {
+            setActiveTab("អ្នកប្រើប្រាស់");
+          }}
+        >
+          <div className=" flex w-full cursor-pointer py-1 hover:scale-110">
+            <div className="mt-0.5 ">
+              {" "}
+              <UserIcon name="user" size="18" color="white" />
+            </div>
+            <div>
+              <label
+                className=" text-md ml-3 cursor-pointer"
+                style={{ fontFamily: "Hanuman, sans-serif" }}
+              >
+                អ្នកប្រើប្រាស់
+              </label>
+            </div>
+          </div>
+        </Link>
       </div>
       {/* Normal user */}
       <div
@@ -176,7 +176,7 @@ const MenuBar = () => {
               : " hover:bg-blue-950"
           }`}
           onClick={() => {
-            setActiveTab("ពាក្យ");
+            setActiveTab("បង្កើតសំណើ");
           }}
         >
           <div className=" flex w-full cursor-pointer py-1 hover:scale-110">
@@ -189,7 +189,7 @@ const MenuBar = () => {
                 className=" text-md ml-3 cursor-pointer"
                 style={{ fontFamily: "Hanuman, sans-serif" }}
               >
-                ពាក្យ
+                បង្កើតសំណើ
               </label>
             </div>
           </div>

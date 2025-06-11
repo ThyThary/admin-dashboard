@@ -20,6 +20,56 @@ const List = () => {
   const [totalEntries, setTotalEntries] = useState(1);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+
+  const debouncedSearch = useDebounce(search, 500); // delay = 500ms = 0.5s
+  const debouncedStatus = useDebounceStatus(search, 500); // delay = 500ms = 0.5s
+  //Delay after user search
+  function useDebounce(value, delay) {
+    const [debouncedValue, setDebouncedValue] = useState(value);
+    if (value === "ថ្មី" || value === "អនុម័ត" || value === "បដិសេធ") {
+      value = "";
+    } else {
+      value = value;
+    }
+    useEffect(() => {
+      const handler = setTimeout(() => {
+        setDebouncedValue(value);
+      }, delay);
+
+      return () => clearTimeout(handler);
+    }, [value, delay]);
+
+    return debouncedValue;
+  }
+  //Delay after user search
+  function useDebounceStatus(value, delay) {
+    if (value === "ថ្មី" || value === "អនុម័ត" || value === "បដិសេធ") {
+      if (value === "ថ្មី") {
+        value = "PENDING";
+      }
+      if (value === "អនុម័ត") {
+        value = "APPROVED";
+      }
+      if (value === "បដិសេធ") {
+        value = "REJECTED";
+      }
+    } else {
+      value = "";
+    }
+    console.log(value);
+    const [debouncedStatusValue, setDebouncedStatusValue] = useState(value);
+
+    useEffect(() => {
+      const handler = setTimeout(() => {
+        setDebouncedStatusValue(value);
+      }, delay);
+
+      return () => clearTimeout(handler);
+    }, [value, delay]);
+
+    return debouncedStatusValue;
+  }
+
   let globalIndex = 0;
   useEffect(() => {
     const fetchData = async () => {
@@ -29,7 +79,12 @@ const List = () => {
       try {
         const res = await api.get(`/api/dictionary/staging/list`, {
           headers: { Authorization: `Bearer ${token}` },
-          params: { search, page: currentPage, per_page: perPage },
+          params: {
+            search: debouncedSearch,
+            status: debouncedStatus,
+            page: currentPage,
+            per_page: perPage,
+          },
         });
         setData(res.data.data.entries);
         console.log(res.data);
@@ -42,7 +97,7 @@ const List = () => {
     };
 
     fetchData();
-  }, [search, currentPage, perPage]);
+  }, [debouncedSearch, debouncedStatus, currentPage, perPage]);
 
   const totalPages = Math.ceil(totalEntries / perPage);
   function getPageNumbers(current, total) {

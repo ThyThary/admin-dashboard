@@ -5,6 +5,7 @@ import api from "../config/api";
 import CryptoJS from "crypto-js"; // You'll need to install this package
 import Button from "../style/tailwind/Button";
 import WEB_BASE_URL from "../config/web";
+import Overlay from "../components/Overlay";
 // Function to encrypt data using OpenSSL-compatible AES-256 encryption
 const encryptData = (data) => {
   try {
@@ -53,7 +54,6 @@ const encryptData = (data) => {
     return null;
   }
 };
-
 // OpenSSL KDF implementation (EVP_BytesToKey with MD5, one iteration)
 const deriveKeyAndIv = (password, salt) => {
   let key = CryptoJS.lib.WordArray.create();
@@ -162,6 +162,7 @@ const ChangePasword = ({ isOpen, btnNo }) => {
   };
   // Submit form
   const [isLoading, setIsLoading] = useState(false);
+  const [isOverlay, setIsOverlay] = useState(false);
   const handleClick = async (e, setIsLoading) => {
     e.preventDefault();
     // Clear previous errors
@@ -178,6 +179,7 @@ const ChangePasword = ({ isOpen, btnNo }) => {
     }
     try {
       setIsLoading(true);
+      setIsOverlay(true);
       const token = localStorage.getItem("access");
       // Encrypt password fields
       const encryptedData = {
@@ -209,6 +211,8 @@ const ChangePasword = ({ isOpen, btnNo }) => {
         }
       }, 2000);
     } catch (error) {
+      setIsLoading(false);
+      setIsOverlay(false);
       if (error.response) {
         // const backendErrors = error.response.data.data || {};
         const split = error.response.data.message.split(" ");
@@ -222,19 +226,18 @@ const ChangePasword = ({ isOpen, btnNo }) => {
               "បញ្ជាក់ពាក្យសម្ងាត់មិនត្រឹមត្រូវនិង​​​ពាក្យសម្ងាត់ថ្មី",
           });
         }
-        setIsLoading(false);
         // setErrors(backendErrors);
       } else {
         Toastify("error", "ការប្ដូរពាក្យសម្ងាត់បានបរាជ័យ!");
       }
-      setIsLoading(false);
       console.error("Submission error:", error);
     }
   };
 
   return (
     <>
-      <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
+      <Overlay isOpen={isOverlay} />
+      <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-40">
         <div className="bg-white w-1/3 rounded-lg shadow-lg border border-[#2f7447]">
           <div className="w-full mx-5 py-2 !text-left">
             <label
@@ -323,9 +326,6 @@ const ChangePasword = ({ isOpen, btnNo }) => {
           >
             {" "}
             <div>{btnNo}</div>
-            {/* <button onClick={(e) => handleClick(e)}>
-              <div>{btnOk}</div>
-            </button> */}
             <div>
               <Button
                 color="blue"

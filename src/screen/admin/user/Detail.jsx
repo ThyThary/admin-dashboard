@@ -65,7 +65,6 @@ export default function Detail() {
               className="!px-4.5"
             />
           }
-          // btnOk={<Button color="blue" text="បាទ" className=" px-3" />}
           routeWeb="/admin/user-list"
           routeAPIType="post"
           routeAPI="/api/users/suspend/?id="
@@ -222,7 +221,7 @@ export default function Detail() {
                         className="font-bold text-md w-[260px]"
                         style={{ fontFamily: "Hanuman, sans-serif" }}
                       >
-                        <div data-column-id="2">ឈ្មោះអ្នកប្រើប្រាស់</div>
+                        <div data-column-id="2">ឈ្មោះគណនី</div>
                       </li>
                       <li className="">:</li>
                       <li

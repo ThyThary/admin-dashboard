@@ -92,7 +92,7 @@ function ModalImportExcel({ isOpen, btnNo }) {
 
   return (
     <>
-      <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
+      <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-40">
         <div className="bg-white w-2/3 rounded-lg shadow-lg border border-[#2f7447] max-h-[600px] min-w-[400px]">
           <div className="w-full mx-5 py-2 !text-left">
             <label

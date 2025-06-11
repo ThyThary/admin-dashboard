@@ -7,7 +7,8 @@ const Delete = async (
   routeAPI,
   id,
   text,
-  setIsLoading
+  setIsLoading,
+  setIsOverlay
 ) => {
   if (!id) {
     alert("Invalid ID");
@@ -15,6 +16,7 @@ const Delete = async (
   }
   try {
     setIsLoading(true);
+    setIsOverlay(true);
     const token = localStorage.getItem("access");
     if (routeAPIType == "post") {
       console.log("Token", token);
@@ -49,6 +51,8 @@ const Delete = async (
   } catch (err) {
     console.error("Error deleting item", err);
     Toastify("error", `ការ${text}បានបរាជ័យ!`);
+    setIsLoading(false);
+    setIsOverlay(false);
   }
 };
 export default Delete;

@@ -22,7 +22,7 @@ function Profile({ img, name, email, id, position, phone }) {
           }
         />
       </div>
-      <div className=" absolute z-40 right-3 top-9 ">
+      <div className=" absolute z-30 right-3 top-9 ">
         <div className=" relative grid grid-cols-1 border border-[#2f7447] min-h-64 min-w-56 rounded-lg shadow-lg bg-white ">
           <div className="grid m-3 bg-[#D9D9D9] rounded-lg min-h-[10vh] max-h-[15vh]">
             <div className="flex rounded-full justify-center text-center cursor-pointer mt-2">

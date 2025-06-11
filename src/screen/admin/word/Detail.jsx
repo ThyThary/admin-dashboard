@@ -41,7 +41,7 @@ function Detail() {
                 className="text-sm cursor-pointer"
                 style={{ fontFamily: "Hanuman, sans-serif" }}
               >
-                / ពាក្យ
+                / បង្កើតសំណើ
               </label>
             </Link>
             <Link to="">
@@ -84,7 +84,7 @@ function Detail() {
                     style={{ fontFamily: "Hanuman, sans-serif" }}
                     className="font-bold text-lg text-[#2a4f8a]"
                   >
-                    លម្អិតពាក្យ
+                    លម្អិតបង្កើតសំណើ
                   </label>
                 </div>
                 <div className="col-span-2 !border-b-1 border-[#2f7447]"></div>

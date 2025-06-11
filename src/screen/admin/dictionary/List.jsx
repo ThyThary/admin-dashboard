@@ -22,16 +22,33 @@ const List = () => {
   const [userId, setUserId] = useState(null);
   const [search, setSearch] = useState("");
   const user = JSON.parse(localStorage.getItem("user"));
+  const debouncedSearch = useDebounce(search, 500); // delay = 500ms = 0.5s
+  //Delay after user search
+  function useDebounce(value, delay) {
+    const [debouncedValue, setDebouncedValue] = useState(value);
 
+    useEffect(() => {
+      const handler = setTimeout(() => {
+        setDebouncedValue(value);
+      }, delay);
+
+      return () => clearTimeout(handler);
+    }, [value, delay]);
+
+    return debouncedValue;
+  }
   useEffect(() => {
     const fetchData = async () => {
       const token = localStorage.getItem("access");
       setLoading(true);
-
       try {
         const res = await api.get(`/api/dictionary/list`, {
           headers: { Authorization: `Bearer ${token}` },
-          params: { search, page: currentPage, per_page: perPage },
+          params: {
+            search: debouncedSearch,
+            page: currentPage,
+            per_page: perPage,
+          },
         });
         console.log(res.data);
         setData(res.data.data.entries);
@@ -43,7 +60,7 @@ const List = () => {
       }
     };
     fetchData();
-  }, [search, currentPage, perPage]);
+  }, [debouncedSearch, currentPage, perPage]);
 
   const totalPages = Math.ceil(totalEntries / perPage);
   function getPageNumbers(current, total) {

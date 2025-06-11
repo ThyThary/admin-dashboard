@@ -11,11 +11,15 @@ import api from "../../../config/api";
 import Toastify from "../../../components/Toastify";
 import WEB_BASE_URL from "../../../config/web";
 import LoadingPage from "../../../components/LoadingPage";
+import Overlay from "../../../components/Overlay";
+
 const Edit = () => {
   // Get user id
   const { id } = useParams();
   const [user, setUser] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isOverlay, setIsOverlay] = useState(false);
+
   // Word class Khmer
   const wordClassKh = [
     { label: "នាម", value: "នាម" },
@@ -105,7 +109,10 @@ const Edit = () => {
         name === "example_sentence_en") &&
       !englishOnlyRegex.test(value)
     ) {
-      return;
+      return setFormData((prev) => ({
+        ...prev,
+        [name]: "",
+      }));
     } else if (
       (name === "word_kh" ||
         name === "word_kh_type" ||
@@ -114,7 +121,10 @@ const Edit = () => {
         name === "example_sentence_kh") &&
       !khmerOnlyRegex.test(value)
     ) {
-      return;
+      return setFormData((prev) => ({
+        ...prev,
+        [name]: "",
+      }));
     } else {
       setFormData((prev) => ({
         ...prev,
@@ -165,6 +175,7 @@ const Edit = () => {
       return;
     }
     setIsLoading(true);
+    setIsOverlay(true);
     try {
       const token = localStorage.getItem("access");
       await api.put(`/api/dictionary/update?id=${id}`, formData, {
@@ -177,6 +188,8 @@ const Edit = () => {
         window.location.href = `${WEB_BASE_URL}/admin/dictionary-list`;
       }, 2000);
     } catch (error) {
+      setIsLoading(false);
+      setIsOverlay(false);
       if (error.response) {
         const backendErrors = error.response.data.data || {};
         Toastify("warning", "ទិន្នន័យមិនត្រឹមត្រូវ!");
@@ -184,7 +197,7 @@ const Edit = () => {
       } else {
         Toastify("error", "ការរក្សាទុកបានបរាជ័យ!");
       }
-      setIsLoading(false);
+
       console.error("Submission error:", error);
     }
   };
@@ -204,6 +217,7 @@ const Edit = () => {
     );
   return (
     <>
+      <Overlay isOpen={isOverlay} />
       <div className=" flex-row">
         <div className="flex flex-col min-h-28 max-h-28 px-5 pt-5">
           {/* Breakcrabe */}

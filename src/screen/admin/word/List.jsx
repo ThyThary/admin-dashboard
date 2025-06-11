@@ -26,6 +26,21 @@ const List = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [userId, setUserId] = useState(null);
   const [search, setSearch] = useState("");
+  const debouncedSearch = useDebounce(search, 500); // delay = 500ms = 0.5s
+  //Delay after user search
+  function useDebounce(value, delay) {
+    const [debouncedValue, setDebouncedValue] = useState(value);
+
+    useEffect(() => {
+      const handler = setTimeout(() => {
+        setDebouncedValue(value);
+      }, delay);
+
+      return () => clearTimeout(handler);
+    }, [value, delay]);
+
+    return debouncedValue;
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -38,7 +53,11 @@ const List = () => {
           `/api/dictionary/staging/list?id=${user.id}`,
           {
             headers: { Authorization: `Bearer ${token}` },
-            params: { search, page: currentPage, per_page: perPage },
+            params: {
+              search: debouncedSearch,
+              page: currentPage,
+              per_page: perPage,
+            },
           }
         );
         console.log(res.data);
@@ -52,7 +71,7 @@ const List = () => {
     };
 
     fetchData();
-  }, [search, currentPage, perPage]);
+  }, [debouncedSearch, currentPage, perPage]);
 
   const totalPages = Math.ceil(totalEntries / perPage);
   function getPageNumbers(current, total) {
@@ -115,7 +134,7 @@ const List = () => {
                 className="text-sm cursor-pointer"
                 style={{ fontFamily: "Hanuman, sans-serif" }}
               >
-                / ពាក្យ
+                / បង្កើតសំណើ
               </label>
             </Link>
             <Link to="">

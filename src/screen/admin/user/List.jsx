@@ -25,6 +25,53 @@ const List = () => {
   const [userId, setUserId] = useState(null);
   const [search, setSearch] = useState("");
   const user = JSON.parse(localStorage.getItem("user"));
+  const debouncedSearch = useDebounce(search, 500); // delay = 500ms = 0.5s
+  const debouncedStatus = useDebounceStatus(search, 500); // delay = 500ms = 0.5s
+  //Delay after user search
+  function useDebounce(value, delay) {
+    const [debouncedValue, setDebouncedValue] = useState(value);
+    if (value === "ដំណើរការ" || value === "ផ្អាកដំណើរការ") {
+      value = "";
+    } else {
+      value = value;
+    }
+    console.log(value);
+    useEffect(() => {
+      const handler = setTimeout(() => {
+        setDebouncedValue(value);
+      }, delay);
+
+      return () => clearTimeout(handler);
+    }, [value, delay]);
+
+    return debouncedValue;
+  }
+  //Delay after user search
+  function useDebounceStatus(value, delay) {
+    var statusMap;
+    var transformedValue;
+    if (value === "ដំណើរការ" || value === "ផ្អាកដំណើរការ") {
+      statusMap = {
+        ផ្អាកដំណើរការ: 1,
+        ដំណើរការ: 0,
+      };
+      transformedValue = statusMap[value] ?? "";
+    }
+    console.log(transformedValue);
+    const [debouncedStatusValue, setDebouncedStatusValue] =
+      useState(transformedValue);
+
+    useEffect(() => {
+      const handler = setTimeout(() => {
+        setDebouncedStatusValue(transformedValue);
+      }, delay);
+
+      return () => clearTimeout(handler);
+    }, [transformedValue, delay]);
+
+    return debouncedStatusValue;
+  }
+
   useEffect(() => {
     const fetchData = async () => {
       const token = localStorage.getItem("access");
@@ -34,7 +81,12 @@ const List = () => {
       try {
         const res = await api.get(`/api/users/list`, {
           headers: { Authorization: `Bearer ${token}` },
-          params: { search, page: currentPage, per_page: perPage },
+          params: {
+            search: debouncedSearch,
+            status: debouncedStatus,
+            page: currentPage,
+            per_page: perPage,
+          },
         });
         console.log(res.data);
         setData(res.data.data.users);
@@ -47,7 +99,7 @@ const List = () => {
     };
 
     fetchData();
-  }, [search, currentPage, perPage]);
+  }, [debouncedSearch, debouncedStatus, currentPage, perPage]);
 
   const totalPages = Math.ceil(totalEntries / perPage);
   function getPageNumbers(current, total) {
@@ -262,7 +314,7 @@ const List = () => {
                                         textAlign: "center",
                                       }}
                                     >
-                                      បិទ
+                                      ផ្អាកដំណើរការ
                                     </span>
                                   );
                                 } else {
@@ -273,7 +325,7 @@ const List = () => {
                                         fontFamily: "Hanuman, sans-serif",
                                       }}
                                     >
-                                      បើក
+                                      ដំណើរការ
                                     </span>
                                   );
                                 }
@@ -393,8 +445,9 @@ const List = () => {
                       fontSize: "13px",
                     }}
                   >
-                    កំពុងបង្ហាញ {(currentPage - 1) * perPage + 1} ទៅ{" "}
-                    {Math.min(currentPage * perPage, totalEntries)} នៃ{" "}
+                    កំពុងបង្ហាញ{" "}
+                    {(currentPage - 1) * perPage + (totalEntries !== 0 ? 1 : 0)}{" "}
+                    ទៅ {Math.min(currentPage * perPage, totalEntries)} នៃ{" "}
                     {totalEntries} ទិន្នន័យ
                   </p>
                   <div

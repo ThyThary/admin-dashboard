@@ -14,7 +14,21 @@ const List = () => {
   const [totalEntries, setTotalEntries] = useState(1);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+  const debouncedSearch = useDebounce(search, 500); // delay = 500ms = 0.5s
+  //Delay after user search
+  function useDebounce(value, delay) {
+    const [debouncedValue, setDebouncedValue] = useState(value);
 
+    useEffect(() => {
+      const handler = setTimeout(() => {
+        setDebouncedValue(value);
+      }, delay);
+
+      return () => clearTimeout(handler);
+    }, [value, delay]);
+
+    return debouncedValue;
+  }
   useEffect(() => {
     const fetchData = async () => {
       const token = localStorage.getItem("access");
@@ -23,7 +37,11 @@ const List = () => {
       try {
         const res = await api.get(`/api/users/comment/`, {
           headers: { Authorization: `Bearer ${token}` },
-          params: { search, page: currentPage, per_page: perPage },
+          params: {
+            search: debouncedSearch,
+            page: currentPage,
+            per_page: perPage,
+          },
         });
         console.log(res.data);
         setData(res.data.data.comments);
@@ -35,7 +53,7 @@ const List = () => {
       }
     };
     fetchData();
-  }, [search, currentPage, perPage]);
+  }, [debouncedSearch, currentPage, perPage]);
 
   const totalPages = Math.ceil(totalEntries / perPage);
   function getPageNumbers(current, total) {
@@ -63,7 +81,7 @@ const List = () => {
           {/* Breakcrabe */}
           <div className="flex flex-row items-center cursor-pointer text-gray-500 gap-x-2 w-full">
             <HomeIcon name="home" size="15" color="#6B7280" />
-            <Link to="admin/comment-list">
+            <Link to="">
               <label
                 className="text-sm cursor-pointer"
                 style={{ fontFamily: "Hanuman, sans-serif" }}

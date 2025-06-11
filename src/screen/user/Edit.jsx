@@ -11,11 +11,15 @@ import Toastify from "../../components/Toastify";
 import api from "../../config/api";
 import WEB_BASE_URL from "../../config/web";
 import LoadingPage from "../../components/LoadingPage";
+import Overlay from "../../components/Overlay";
+
 const Edit = () => {
   // Get user id
   const { id } = useParams();
   const [wordClassEn, setWordClassEn] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isOverlay, setIsOverlay] = useState(false);
+
   const [user, setUser] = useState([]);
   // Word class Khmer
   const wordClassKh = [
@@ -86,66 +90,66 @@ const Edit = () => {
   //Handle input
   const handleChange = (e) => {
     const { name, value } = e.target;
-    const englishOnlyRegex = /^[\x20-\x7E]*$/;
-    const khmerOnlyRegex = /^[\u1780-\u17FF\u200B\u25CC\u17D4-\u17DC\s]+$/;
-    if (
-      (name === "word_en" ||
-        name === "word_en_type" ||
-        name === "word_en_definition") &&
-      !englishOnlyRegex.test(value)
-    ) {
-      return setFormData((prev) => ({
-        ...prev,
-        [name]: "",
-      }));
-    } else if (name === "word_kh" && !khmerOnlyRegex.test(value)) {
-      return setFormData((prev) => ({
-        ...prev,
-        [name]: "",
-      }));
-    } else {
-      var wordEn;
-      if (name === "word_kh_type") {
-        // Get English by Khmer
-        const wordClassKhmer = e.target.value;
-        switch (true) {
-          case wordClassKhmer === "នាម":
-            wordEn = "NOUN";
-            break;
-          case wordClassKhmer === "កិរិយាសព្ទ":
-            wordEn = "VERB";
-            break;
-          case wordClassKhmer === "គុណនាម":
-            wordEn = "ADJECTIVE";
-            break;
-          case wordClassKhmer === "គុណកិរិយា":
-            wordEn = "ADVERB";
-            break;
-          case wordClassKhmer === "សព្វនាម":
-            wordEn = "PRONOUN";
-            break;
-          case wordClassKhmer === "ធ្នាក់":
-            wordEn = "PREPOSITION";
-            break;
-          case wordClassKhmer === "ឈ្នាប់":
-            wordEn = "CONJUNCTION";
-            break;
-          case wordClassKhmer === "ឧទានសព្ទ":
-            wordEn = "INTERJECTION";
-            break;
-          default:
-        }
-        setWordClassEn(wordEn);
-        setFormData((prev) => ({
-          ...prev,
-          word_en_type: wordEn,
-        }));
+    // const englishOnlyRegex = /^[\x20-\x7E]*$/;
+    // const khmerOnlyRegex = /^[\u1780-\u17FF\u200B\u25CC\u17D4-\u17DC\s]+$/;
+    // if (
+    //   (name === "word_en" ||
+    //     name === "word_en_type" ||
+    //     name === "word_en_definition") &&
+    //   !englishOnlyRegex.test(value)
+    // ) {
+    //   return setFormData((prev) => ({
+    //     ...prev,
+    //     [name]: "",
+    //   }));
+    // } else if (name === "word_kh" && !khmerOnlyRegex.test(value)) {
+    //   return setFormData((prev) => ({
+    //     ...prev,
+    //     [name]: "",
+    //   }));
+    // } else {
+    var wordEn;
+    if (name === "word_kh_type") {
+      // Get English by Khmer
+      const wordClassKhmer = e.target.value;
+      switch (true) {
+        case wordClassKhmer === "នាម":
+          wordEn = "NOUN";
+          break;
+        case wordClassKhmer === "កិរិយាសព្ទ":
+          wordEn = "VERB";
+          break;
+        case wordClassKhmer === "គុណនាម":
+          wordEn = "ADJECTIVE";
+          break;
+        case wordClassKhmer === "គុណកិរិយា":
+          wordEn = "ADVERB";
+          break;
+        case wordClassKhmer === "សព្វនាម":
+          wordEn = "PRONOUN";
+          break;
+        case wordClassKhmer === "ធ្នាក់":
+          wordEn = "PREPOSITION";
+          break;
+        case wordClassKhmer === "ឈ្នាប់":
+          wordEn = "CONJUNCTION";
+          break;
+        case wordClassKhmer === "ឧទានសព្ទ":
+          wordEn = "INTERJECTION";
+          break;
+        default:
       }
+      setWordClassEn(wordEn);
       setFormData((prev) => ({
         ...prev,
-        [name]: value,
+        word_en_type: wordEn,
       }));
     }
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+    // }
   };
   // Form validation (for front-end)
   const validateForm = () => {
@@ -189,6 +193,7 @@ const Edit = () => {
       return;
     }
     setIsLoading(true);
+    setIsOverlay(true);
     try {
       const token = localStorage.getItem("access");
       await api.put(`/api/dictionary/staging/update?id=${id}`, formData, {
@@ -201,6 +206,8 @@ const Edit = () => {
         window.location.href = `${WEB_BASE_URL}/user/word-list`;
       }, 2000);
     } catch (error) {
+      setIsLoading(false);
+      setIsOverlay(false);
       if (error.response) {
         const backendErrors = error.response.data.data || {};
         Toastify("warning", "ទិន្នន័យមិនត្រឹមត្រូវ!");
@@ -208,13 +215,13 @@ const Edit = () => {
       } else {
         Toastify("error", "ការរក្សាទុកបានបរាជ័យ!");
       }
-      setIsLoading(false);
       console.error("Submission error:", error);
     }
   };
 
   return (
     <>
+      <Overlay isOpen={isOverlay} />
       <div className=" flex-row">
         <div className="flex flex-col min-h-28 max-h-28 px-5 pt-5">
           {/* Breakcrabe */}
@@ -225,7 +232,7 @@ const Edit = () => {
                 className="text-sm cursor-pointer"
                 style={{ fontFamily: "Hanuman, sans-serif" }}
               >
-                / ពាក្យ
+                / បង្កើតសំណើ
               </label>
             </Link>
             <Link to="">

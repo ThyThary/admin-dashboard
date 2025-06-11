@@ -22,14 +22,14 @@ function Button({
       className={`${className} cursor-pointer px-2 py-1.5 rounded-lg shadow-lg transition-all font-[Moul, serif] tracking-[2px] text-md font-normal
         ${
           isLoading
-            ? "cursor-not-allowed bg-blue-300 text-white"
+            ? "disabled:cursor-not-allowed bg-blue-300 text-white"
             : colorClasses[color]
         }
       `}
       style={{ fontFamily: "Hanuman, sans-serif" }}
       disabled={disabled}
     >
-      <span className="flex items-center gap-x-2">
+      <span className="flex items-center gap-x-2 text-md">
         {isLoading && <Loading />}
         {text}
       </span>

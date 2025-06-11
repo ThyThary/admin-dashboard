@@ -9,8 +9,10 @@ const Button = lazy(() => import("../../../style/tailwind/Button"));
 import Toastify from "../../../components/Toastify";
 import DateKhmer from "../../../components/DateKhmer";
 import WEB_BASE_URL from "../../../config/web";
+import Overlay from "../../../components/Overlay";
 const Create = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [isOverlay, setIsOverlay] = useState(false);
   const user = JSON.parse(localStorage.getItem("user"));
   //Gender value
   const genderOptions = [
@@ -40,21 +42,25 @@ const Create = () => {
     const { name, value } = e.target;
     const englishOnlyRegex = /^[A-Za-z0-9.@!@#$%^&*+=_-\s]*$/;
     const khmerOnlyRegex = /^[\u1780-\u17FF\s]+$/;
-    const numberOnlyRegex = /^[0-9]*$/;
+    const EnglishNumberRegex = /^[0-9\s]*$/;
+    const khmerNumberRegex = /^[០-៩\s]*$/;
+    // Only khmer / Only English
     if (name === "email" && !englishOnlyRegex.test(value)) {
-      return setFormData((prev) => ({
-        ...prev,
-        [name]: "",
-      }));
-    } else if (name === "phone_number" && !numberOnlyRegex.test(value)) {
+      // Toastify("warning", "បញ្ចូលទិន្នន័យជាភាសាអង់គ្លេស");
       return setFormData((prev) => ({
         ...prev,
         [name]: "",
       }));
     } else if (
-      (name === "username_kh" || name === "position") &&
-      !khmerOnlyRegex.test(value)
+      name === "phone_number" &&
+      !EnglishNumberRegex.test(value) &&
+      name === "phone_number" &&
+      !khmerNumberRegex.test(value)
     ) {
+      // Toastify("warning", "បញ្ចូលទិន្នន័យជាលេខ");
+      return null;
+    } else if (name === "username_kh" && !khmerOnlyRegex.test(value)) {
+      // Toastify("warning", "បញ្ចូលទិន្នន័យជាភាសាខ្មែរ");
       return setFormData((prev) => ({
         ...prev,
         [name]: "",
@@ -103,6 +109,7 @@ const Create = () => {
       return;
     }
     setIsLoading(true);
+    setIsOverlay(true);
     try {
       const token = localStorage.getItem("access");
       await api.post("/api/users/register/", formData, {
@@ -115,6 +122,9 @@ const Create = () => {
         window.location.href = `${WEB_BASE_URL}/admin/user-list`;
       }, 2000);
     } catch (error) {
+      setIsLoading(false);
+      setIsOverlay(false);
+      console.log("Error:", error);
       if (error.response) {
         const backendErrors = error.response.data.data || {};
         console.log("Error:", error.response.data.data);
@@ -128,13 +138,14 @@ const Create = () => {
       } else {
         Toastify("error", "ការរក្សាទុកបានបរាជ័យ!");
       }
-      setIsLoading(false);
+
       console.error("Submission error:", error);
     }
   };
 
   return (
     <>
+      <Overlay isOpen={isOverlay} />
       <div className=" flex-row">
         <div className="flex flex-col min-h-28 max-h-28 px-5 pt-5">
           {/* Breakcrabe */}
@@ -282,10 +293,6 @@ const Create = () => {
                         const roleOptions = [
                           { label: "អ្នកប្រើប្រាស់", value: "USER" },
                           { label: "អ្នកគ្រប់គ្រង", value: "ADMIN" },
-                          {
-                            label: "អ្នកគ្រប់គ្រងជាន់ខ្ពស់",
-                            value: "SUPERUSER",
-                          },
                         ];
                         return (
                           <Select

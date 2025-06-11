@@ -11,14 +11,15 @@ api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
-    // console.log("Error: ", originalRequest._retry);
-    console.log("Error: ", error.response.data.message);
+    console.log("Errors: ", error);
     // Check if error response is 401 and this is the first retry
     if (
-      error.response &&
-      error.response.status === 401 &&
-      !originalRequest._retry &&
-      error.response.data.message === "Invalid token. Please login again"
+      (error.response &&
+        error.response.status === 401 &&
+        !originalRequest._retry &&
+        error.response.data.message === "Invalid token. Please login again") ||
+      error.response.data.message ===
+        "You do not have permission to perform this action"
     ) {
       console.log("Error: ", error.response);
       originalRequest._retry = true;

@@ -91,7 +91,7 @@ function Detail() {
                 <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 w-full gap-3 p-5">
                   {/* grid one */}
                   <div className="mr-2">
-                    <ul className="flex mb-2">
+                    {/* <ul className="flex mb-2">
                       <li
                         className="font-bold text-md w-[260px]"
                         style={{ fontFamily: "Hanuman, sans-serif" }}
@@ -105,7 +105,7 @@ function Detail() {
                       >
                         <span className="text-blue-600">អនុម័ត</span>
                       </li>
-                    </ul>
+                    </ul> */}
                     <ul className="flex mb-2">
                       <li
                         className="font-bold text-md w-[260px]"
